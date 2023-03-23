@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <place></place>
+    <place club="{{ $club }}" user-data="{{ $userData }}"></place>
 @endsection
 <script>
     import PlaceComponent from "../js/components/PlaceComponent";

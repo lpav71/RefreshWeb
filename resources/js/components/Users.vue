@@ -96,7 +96,7 @@
                 <div class="modal-body">
 
                     <div class="main">
-                        <div class="div_1"><span>Сумма</span><input class="input_1 rounded" v-model.number="summa" type="text" maxlength="10" /></div>
+                        <div class="div_1"><span>Сумма</span><input class="input_1 rounded" v-model.number="summa" type="number" maxlength="10" /></div>
                         <div class="div_2">
                             <div class="div_3"><span>Способы оплаты</span>
                                 <div class="div_4">

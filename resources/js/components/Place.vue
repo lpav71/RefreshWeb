@@ -123,7 +123,7 @@ var offsetX = 0; //Смещение мышки внутри перемещаем
 var offsetY = 0; //Смещение мышки внутри перемещаемого элемента по Y
 var globalIndex = 0;
 export default {
-    props: ['name'],
+    props: ['name', 'club', 'user-data'],
     data() {
         return {
             height: 0, //Высота окна браузера
@@ -320,6 +320,8 @@ export default {
             })
             .catch(error => console.log('error', error));
         this.getSmena();
+        console.log(this.$props.club);
+        console.log(this.$props.userData);
     }
 }
 </script>

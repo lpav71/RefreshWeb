@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Club;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,6 +31,14 @@ class HomeController extends Controller
         $surname = $user->surname; //Фамилия
         //$fullName = $name . " " . $surname;
         $fullName = Auth::user()->name;
-        return view('home', compact('fullName'));
+        $clubId = $user->club_id;
+        $club = Club::where('id', $clubId)->get();
+        $userData = collect([
+            'id' => $user->id,
+            'name' => $user->name_auth,
+            'surname' => $user->surname,
+            'name_auth' => $user->name_auth
+        ]);
+        return view('home', compact('fullName', 'club', 'userData'));
     }
 }

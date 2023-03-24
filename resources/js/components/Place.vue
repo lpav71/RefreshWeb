@@ -346,8 +346,9 @@ export default {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
+        var club_id = JSON.parse(this.$props.club).id;
         var urlencoded = new URLSearchParams();
-        urlencoded.append("club_id", "1");
+        urlencoded.append("club_id", club_id);
 
         var requestOptions = {
             method: 'POST',

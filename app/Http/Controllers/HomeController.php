@@ -32,7 +32,7 @@ class HomeController extends Controller
         //$fullName = $name . " " . $surname;
         $fullName = Auth::user()->name;
         $clubId = $user->club_id;
-        $club = Club::where('id', $clubId)->get();
+        $club = Club::where('id', $clubId)->first();
         $userData = collect([
             'id' => $user->id,
             'name' => $user->name,

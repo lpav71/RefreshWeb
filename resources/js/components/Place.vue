@@ -118,18 +118,17 @@
 
     <!-- Модальное окно -->
     <div class="modal fade" id="shiftModal" tabindex="-1" aria-labelledby="shiftModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content shiftModal">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="shiftModalLabel">Заголовок модального окна</h5>
+                    <h5 class="modal-title" id="shiftModalLabel">Открытие смены</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <span>Ждите. Операция выполняется...</span>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary">Сохранить изменения</button>
+                    <button type="button" class="btn btn-secondary" @click="closeModal">Закрыть</button>
                 </div>
             </div>
         </div>
@@ -201,6 +200,10 @@ export default {
             else {
                 alert ('Выберите зону');
             }
+        },
+        closeModal(){
+            this.modal.hide();
+            clearTimeout(this.timerId);
         },
         verifyShift() {
 
@@ -330,6 +333,10 @@ export default {
         var shiftModal = document.getElementById('shiftModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(shiftModal);
 
+        shiftModal.addEventListener('hidden.bs.modal', event => {
+            clearTimeout(this.timerId);
+        })
+
         this.height =  window.innerHeight;
         this.width =  window.innerWidth;
         this.widthout = document.querySelector('.outbox').offsetWidth;
@@ -371,6 +378,10 @@ export default {
 </script>
 
 <style scoped>
+.shiftModal {
+    background: var(--light-blue-bg-color);
+    color: var(--standart-gray);
+}
 .box {
     border-radius: 10px;
     border: 1px solid lightslategray;

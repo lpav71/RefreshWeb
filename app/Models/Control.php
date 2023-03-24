@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Finance extends Model
+class Control extends Model
 {
     use HasFactory;
-    protected $table = 'finance';
+
+    protected $table = 'control';
     public $timestamps = false;
 
-    protected $fillable=['open_shift', 'close_shift'];
+    protected $fillable=['shift_status'];
 }

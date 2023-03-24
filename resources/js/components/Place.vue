@@ -1,120 +1,140 @@
 <template>
-        <div class="center-plus-right">
-            <div style="width: 1438px;height: 965px;">
-                <div style="width: 1438px;height: 272px;display: flex;justify-content: space-between;">
-                    <div class="graphic"></div>
-                    <div class="active-bron">
-                        <div style="width: 430px;margin-top: 10px;color: var(--standart-gray);"><i class="fas fa-book-open"></i><span style="font-size: 13px;margin-left: 11px;">Активные бронирования ПК</span></div>
-                        <div class="active-bron-buttons">
-                            <div class="active-bron2">
-                                <div class="active-bron2-left"><span class="time">16:50</span></div>
-                                <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
-                            </div>
-                            <div class="active-bron2">
-                                <div class="active-bron2-left"><span class="time">16:50</span></div>
-                                <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
-                            </div>
-                            <div class="active-bron2">
-                                <div class="active-bron2-left"><span class="time">16:50</span></div>
-                                <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
-                            </div>
-                            <div class="active-bron2">
-                                <div class="active-bron2-left"><span class="time">16:50</span></div>
-                                <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
-                            </div>
-                            <div class="active-bron2">
-                                <div class="active-bron2-left"><span class="time">16:50</span></div>
-                                <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
-                            </div>
-                            <div class="active-bron2">
-                                <div class="active-bron2-left"><span class="time">16:50</span></div>
-                                <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
-                            </div>
+    <div class="center-plus-right">
+        <div style="width: 1438px;height: 965px;">
+            <div style="width: 1438px;height: 272px;display: flex;justify-content: space-between;">
+                <div class="graphic"></div>
+                <div class="active-bron">
+                    <div style="width: 430px;margin-top: 10px;color: var(--standart-gray);"><i class="fas fa-book-open"></i><span style="font-size: 13px;margin-left: 11px;">Активные бронирования ПК</span></div>
+                    <div class="active-bron-buttons">
+                        <div class="active-bron2">
+                            <div class="active-bron2-left"><span class="time">16:50</span></div>
+                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
                         </div>
-                    </div>
-                </div>
-                <div @mousemove="move" @mouseup="mmup">
-                    <div class="all-buttons">
-                        <div style="display: flex;align-items: center;"><i class="fab fa-delicious fs-2" style="color: var(--standart-color);"></i><span class="panel-manager">Панель управления</span>
-                            <div class="buttons-dark"><span style="color: var(--standart-color);">Общая карта</span></div>
-                            <div v-for="(zone, index) in zones" :class="[{'button-active': zones[index].active, 'buttons': true}]" @click="changeZone(index)"><span>{{ zone.name }}</span></div>
+                        <div class="active-bron2">
+                            <div class="active-bron2-left"><span class="time">16:50</span></div>
+                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
                         </div>
-                        <div style="display: flex;align-items: center;">
-                            <div class="buttons"  @click="addBox" style="width: 57px;height: 34px;"><i class="fas fa-plus fs-5"></i></div>
-                            <div class="buttons-dark" style="width: 57px;height: 34px;"><i class="fas fa-lock fs-5"></i></div>
-                            <div class="buttons-dark" style="width: 185px;height: 42px;"><span>Клиентская карта</span></div>
+                        <div class="active-bron2">
+                            <div class="active-bron2-left"><span class="time">16:50</span></div>
+                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
                         </div>
-                    </div>
-                    <div class="manager outbox">
-                        <div v-for="(position, index) in positions" class="box" @mousedown="mdown($event, index)" :style="{top: position.top + 'px', left: position.left + 'px', width: boxWidth + 'px', height: boxHeight + 'px', background: boxColor}">{{index +1}}</div>
+                        <div class="active-bron2">
+                            <div class="active-bron2-left"><span class="time">16:50</span></div>
+                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
+                        </div>
+                        <div class="active-bron2">
+                            <div class="active-bron2-left"><span class="time">16:50</span></div>
+                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
+                        </div>
+                        <div class="active-bron2">
+                            <div class="active-bron2-left"><span class="time">16:50</span></div>
+                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div style="width: 323px;height: 965px;">
-                <div class="shift-close" style="display: flex;align-items: center;justify-content: center;">
-                    <div style="width: 149px;height: 44px;display: flex;justify-content: center;align-items: center;"><i class="far fa-clock" style="color: var(--standart-gray);font-size: 21px;"></i>
-                        <div style="width: 130px;height: 40px;display: flex;flex-direction: column;"><span style="color: var(--standart-gray);text-align: center;font-size: 15px;font-weight: bold;">{{ shiftStatus }}</span><span style="color: var(--standart-gray);text-align: center;font-size: 15px;">{{ time }}</span></div>
+            <div @mousemove="move" @mouseup="mmup">
+                <div class="all-buttons">
+                    <div style="display: flex;align-items: center;"><i class="fab fa-delicious fs-2" style="color: var(--standart-color);"></i><span class="panel-manager">Панель управления</span>
+                        <div class="buttons-dark"><span style="color: var(--standart-color);">Общая карта</span></div>
+                        <div v-for="(zone, index) in zones" :class="[{'button-active': zones[index].active, 'buttons': true}]" @click="changeZone(index)"><span>{{ zone.name }}</span></div>
                     </div>
-                    <div class="button-shift-close" @click="switchShift"><span style="font-size: 15px;font-weight: bold;">{{ shiftOpenClose }}</span></div>
-                </div>
-                <div class="cash">
-                    <div class="nal-card"><span style="color: var(--standart-gray);">Наличные/карта</span>
-                        <div style="width: 250px;height: 32px;background: #122834;border-radius: 10px;margin-top: 5px;display: flex;align-items: center;justify-content: space-between;padding-right: 15px;">
-                            <div style="width: 179px;height: 32px;background: var(--standart-green);border-radius: 10px;display: flex;justify-content: flex-start;align-items: center;padding-left: 15px;"><span>{{ nalic }}</span></div><span style="color: var(--standart-gray);">{{ card }}</span>
-                        </div>
-                    </div>
-                    <div class="nal-card"><span style="color: var(--standart-gray);">Товары/услуги</span>
-                        <div style="width: 250px;height: 32px;background: #122834;border-radius: 10px;margin-top: 5px;display: flex;align-items: center;justify-content: space-between;padding-right: 15px;">
-                            <div style="width: 179px;height: 32px;background: var(--standart-green);border-radius: 10px;display: flex;justify-content: flex-start;align-items: center;padding-left: 15px;"><span>{{ goods }}</span></div><span style="color: var(--standart-gray);">{{ services }}</span>
-                        </div>
+                    <div style="display: flex;align-items: center;">
+                        <div class="buttons"  @click="addBox" style="width: 57px;height: 34px;"><i class="fas fa-plus fs-5"></i></div>
+                        <div class="buttons-dark" style="width: 57px;height: 34px;"><i class="fas fa-lock fs-5"></i></div>
+                        <div class="buttons-dark" style="width: 185px;height: 42px;"><span>Клиентская карта</span></div>
                     </div>
                 </div>
-                <div class="tasks"><span style="color: var(--standart-gray);display: block;position: relative;top: 20px;left: 40px;width: 143px;">Список задач</span>
-                    <div class="task-list">
-                        <div class="task">
-                            <div class="task-1">
-                                <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                            </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                        </div>
-                        <div class="task">
-                            <div class="task-1">
-                                <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                            </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                        </div>
-                        <div class="task">
-                            <div class="task-1">
-                                <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                            </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                        </div>
-                        <div class="task">
-                            <div class="task-1">
-                                <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                            </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                        </div>
-                        <div class="task">
-                            <div class="task-1">
-                                <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                            </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                        </div>
-                        <div class="task">
-                            <div class="task-1">
-                                <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                            </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                        </div>
-                        <div class="task">
-                            <div class="task-1">
-                                <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                            </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                        </div>
-                        <div class="task">
-                            <div class="task-1">
-                                <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                            </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                        </div>
+                <div class="manager outbox">
+                    <div v-for="(position, index) in positions" class="box" @mousedown="mdown($event, index)" :style="{top: position.top + 'px', left: position.left + 'px', width: boxWidth + 'px', height: boxHeight + 'px', background: boxColor}">{{index +1}}</div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 323px;height: 965px;">
+            <div class="shift-close" style="display: flex;align-items: center;justify-content: center;">
+                <div style="width: 149px;height: 44px;display: flex;justify-content: center;align-items: center;"><i class="far fa-clock" style="color: var(--standart-gray);font-size: 21px;"></i>
+                    <div style="width: 130px;height: 40px;display: flex;flex-direction: column;"><span style="color: var(--standart-gray);text-align: center;font-size: 15px;font-weight: bold;">{{ shiftStatus }}</span><span style="color: var(--standart-gray);text-align: center;font-size: 15px;">{{ time }}</span></div>
+                </div>
+                <div class="button-shift-close" @click="switchShift"><span style="font-size: 15px;font-weight: bold;">{{ shiftOpenClose }}</span></div>
+            </div>
+            <div class="cash">
+                <div class="nal-card"><span style="color: var(--standart-gray);">Наличные/карта</span>
+                    <div style="width: 250px;height: 32px;background: #122834;border-radius: 10px;margin-top: 5px;display: flex;align-items: center;justify-content: space-between;padding-right: 15px;">
+                        <div style="width: 179px;height: 32px;background: var(--standart-green);border-radius: 10px;display: flex;justify-content: flex-start;align-items: center;padding-left: 15px;"><span>{{ nalic }}</span></div><span style="color: var(--standart-gray);">{{ card }}</span>
+                    </div>
+                </div>
+                <div class="nal-card"><span style="color: var(--standart-gray);">Товары/услуги</span>
+                    <div style="width: 250px;height: 32px;background: #122834;border-radius: 10px;margin-top: 5px;display: flex;align-items: center;justify-content: space-between;padding-right: 15px;">
+                        <div style="width: 179px;height: 32px;background: var(--standart-green);border-radius: 10px;display: flex;justify-content: flex-start;align-items: center;padding-left: 15px;"><span>{{ goods }}</span></div><span style="color: var(--standart-gray);">{{ services }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tasks"><span style="color: var(--standart-gray);display: block;position: relative;top: 20px;left: 40px;width: 143px;">Список задач</span>
+                <div class="task-list">
+                    <div class="task">
+                        <div class="task-1">
+                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
+                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
+                    </div>
+                    <div class="task">
+                        <div class="task-1">
+                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
+                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
+                    </div>
+                    <div class="task">
+                        <div class="task-1">
+                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
+                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
+                    </div>
+                    <div class="task">
+                        <div class="task-1">
+                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
+                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
+                    </div>
+                    <div class="task">
+                        <div class="task-1">
+                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
+                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
+                    </div>
+                    <div class="task">
+                        <div class="task-1">
+                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
+                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
+                    </div>
+                    <div class="task">
+                        <div class="task-1">
+                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
+                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
+                    </div>
+                    <div class="task">
+                        <div class="task-1">
+                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
+                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div class="modal fade" id="shiftModal" tabindex="-1" aria-labelledby="shiftModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shiftModalLabel">Заголовок модального окна</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-primary">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -148,7 +168,9 @@ export default {
             time: null,
             shiftStatus: "Начало смены",
             shiftOpenClose: 'Закрыть смену',
-            shiftStatusOpen: true //Смена открыта - значит true
+            shiftStatusOpen: true, //Смена открыта - значит true
+            modal: null,
+            timerId: null
         }
     },
     methods: {
@@ -180,9 +202,28 @@ export default {
                 alert ('Выберите зону');
             }
         },
+        verifyShift() {
+
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+
+            fetch("api/verifyShift", requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                    if (result === 'open'){
+                        this.modal.hide();
+                        clearTimeout(this.timerId);
+                    }
+                })
+                .catch(error => console.log('error', error));
+        },
         switchShift() {
             if (this.shiftStatusOpen) {
                 this.shiftOpenClose = 'Закрыть смену';
+                this.modal.show();
+                this.timerId = setInterval(this.verifyShift,500);
                 console.log('shiftopen');
             }
             else {
@@ -286,6 +327,9 @@ export default {
         window.removeEventListener("resize", this.resizeHandler);
     },
     mounted()  {
+        var shiftModal = document.getElementById('shiftModal')
+        this.modal = bootstrap.Modal.getOrCreateInstance(shiftModal);
+
         this.height =  window.innerHeight;
         this.width =  window.innerWidth;
         this.widthout = document.querySelector('.outbox').offsetWidth;

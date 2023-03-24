@@ -35,7 +35,7 @@ class HomeController extends Controller
         $club = Club::where('id', $clubId)->get();
         $userData = collect([
             'id' => $user->id,
-            'name' => $user->name_auth,
+            'name' => $user->name,
             'surname' => $user->surname,
             'name_auth' => $user->name_auth
         ]);

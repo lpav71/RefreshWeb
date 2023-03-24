@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Control;
 use App\Models\Finance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,24 @@ class FinanceController extends Controller
         return $outData;
     }
 
+    public function findOpenShift(Request $request)
+    {
+        $club_id = $request->club_id;
+        $finance = Finance::where('status', true)->where('club_id', $club_id)->get()->toArray();
+        $count = count($finance);
+        if ($count > 0) {
+            $outData = array(
+                'shiftStatus' => 'open'
+            );
+        }
+        else {
+            $outData = array(
+                'shiftStatus' => 'close'
+            );
+        }
+        return $outData;
+    }
+
     public function getAllFinance()
     {
         $finance = DB::table('finance')->select(DB::raw('admin_name,shift, open_shift, close_shift, cash, cash_num, nocash, nocash_num, bonus, bonus_num,
@@ -41,5 +60,18 @@ class FinanceController extends Controller
             }
         }
         return $finance;
+    }
+    public function verifyShift(Request $request)
+    {
+        $control = Control::all();
+        $ctrl = $control[0];
+        $shiftStatus = $ctrl->shift_status;
+        if ($shiftStatus === 'open') {
+            $ctrl->shift_status = 'close';
+            $ctrl->save();
+            return 'open';
+        }
+        else
+            return 'close';
     }
 }

@@ -20,6 +20,7 @@ class UserController extends Controller
         $name = $user->name_auth; //Имя
         $surname = $user->surname; //Фамилия
         $fullName = $name . " " . $surname;
-        return view('User.FindShow', compact('fullName'));
+        $club_id = $user->club_id;
+        return view('User.FindShow', compact('fullName', 'club_id'));
     }
 }

@@ -136,6 +136,7 @@
 
 <script>
 export default {
+    props: ['club_id'],
     data() {
         return {
             searchUser: "",
@@ -171,14 +172,38 @@ export default {
             };
             console.log(JSON.stringify(outData));
         },
-        topBalance(i, login) {
+        async topBalance(i, login) {
             this.login = login;
             this.currentUser = this.findUsers[i];
             this.summa = 0;
             this.comment = "";
             this.pay = '';
             this.chek = '';
-            this.modal.show();
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.findUsers[i].club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/findOpenShift", requestOptions);
+            var result = await response.json();
+            var forConsole = JSON.stringify(result);
+            console.log(forConsole);
+            var statusShift = result.shiftStatus;
+            if (statusShift === 'open') {
+                this.modal.show();
+            }
+            else {
+                alert ('Нет открытой смены');
+            }
         },
         search() {
             var myHeaders = new Headers();

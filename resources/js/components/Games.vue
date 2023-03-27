@@ -4,10 +4,8 @@
                 <div id="DIV_172">
                     <div id="DIV_173">
                         <a href="https://idyllic-griffin-c0f5f9.netlify.app/" id="A_174"><img src="images/top_left.svg" id="IMG_175" alt='' />Игры и приложения</a>
-
                         <img src="images/search_002.svg" id="IMG_177" alt='' />
                         <input type="text" placeholder="Поиск" id="search_input" v-model="searchGame" @keyup="search" />
-
                         <div id="DIV_179">
                             <button type="button" id="BUTTON_180">
                                 Возраст<img src="images/arrov.svg" id="IMG_181" alt='' />
@@ -25,7 +23,6 @@
                             </ul>
                         </div>
                         <div id="DIV_189">
-
                             <label for="flexCheckChecked" id="LABEL_190">
                                 Отображать только добавленный контент
                             </label>
@@ -33,8 +30,7 @@
                         </div>
                     </div>
                     <div id="DIV_192">
-
-                        <button id="BUTTON_193">
+                        <button id="BUTTON_193" @click="edit_game">
                             <img src="images/plus.svg" id="IMG_194" alt='' /> Добавить вручную
                         </button>
                     </div>
@@ -53,16 +49,103 @@
                             </div>
                             <div id="game-label">
                                 <span id="game-name">{{game.name}}</span>
-                                <button id="game-button">
+                                <button id="game-button" @click="edit_game(index)">
                                     <img src="images/edit.svg" id="IMG_208" alt='' />
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
+
+    <!-- Модальное окно -->
+    <div class="modal fade" id="editGameModal" tabindex="-1" aria-labelledby="editGameModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content edit-game">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editGameModalLabel">Редактирование приложения</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body" style="padding: 0">
+                    <div class="main">
+                        <div class="div_2">
+                            <div class="div_3">
+                                <div><span class="span-1">Тип приложения</span><select class="div_4">
+                                    <optgroup label="This is a group">
+                                        <option value="12" selected>This is item 1</option>
+                                        <option value="13">This is item 2</option>
+                                        <option value="14">This is item 3</option>
+                                    </optgroup>
+                                </select></div>
+                                <div><span class="span-1">Название игры / приложения</span><input class="div_4" type="text" /></div>
+                                <div><span class="span-1">Программа запуска</span><select class="div_4">
+                                    <optgroup label="This is a group">
+                                        <option value="12" selected>This is item 1</option>
+                                        <option value="13">This is item 2</option>
+                                        <option value="14">This is item 3</option>
+                                    </optgroup>
+                                </select></div>
+                                <div><span class="span-1">Путь до приложения</span><input class="div_4" type="text" /></div>
+                            </div>
+                            <div class="div_3">
+                                <div><span class="span-1">Использовать лицензии</span><select class="div_4">
+                                    <optgroup label="This is a group">
+                                        <option value="12" selected>This is item 1</option>
+                                        <option value="13">This is item 2</option>
+                                        <option value="14">This is item 3</option>
+                                    </optgroup>
+                                </select></div>
+                                <div><span class="span-1">Параметры запуска</span><input class="div_4" type="text" /></div>
+                                <div><span class="span-1">Steam APP ID</span><input class="div_4" type="text" /></div>
+                            </div>
+                            <div class="div_5" style="margin-top: 15px;"><span class="span-2">Постер</span><img class="rounded" width="300px" height="309px" src="images/18ad205239bd24b807c10dda353291a4.png"  alt=""/></div>
+                        </div>
+                        <div class="div_6">
+                            <div class="div_3">
+                                <div><span class="span-1">Группы пользователей</span><select class="div_4">
+                                    <optgroup label="This is a group">
+                                        <option value="12" selected>This is item 1</option>
+                                        <option value="13">This is item 2</option>
+                                        <option value="14">This is item 3</option>
+                                    </optgroup>
+                                </select></div>
+                                <div><span class="span-1">Фильтры</span><select class="div_4">
+                                    <optgroup label="This is a group">
+                                        <option value="12" selected>This is item 1</option>
+                                        <option value="13">This is item 2</option>
+                                        <option value="14">This is item 3</option>
+                                    </optgroup>
+                                </select></div>
+                            </div>
+                            <div class="div_3">
+                                <div><span class="span-1">Группы ПК</span><select class="div_4">
+                                    <optgroup label="This is a group">
+                                        <option value="12" selected>This is item 1</option>
+                                        <option value="13">This is item 2</option>
+                                        <option value="14">This is item 3</option>
+                                    </optgroup>
+                                </select></div>
+                                <div><span class="span-1">Возрастное ограничение</span><select class="div_4">
+                                    <optgroup label="This is a group">
+                                        <option value="12" selected>This is item 1</option>
+                                        <option value="13">This is item 2</option>
+                                        <option value="14">This is item 3</option>
+                                    </optgroup>
+                                </select></div>
+                            </div>
+                            <div class="div_7" style="margin-top: 15px;"><span class="span-2">Описание</span><textarea class="text_1" style="height: 108px;width: 305px;" spellcheck="false"></textarea></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-primary" style="background: var(--dark-green); border: none">Оплата</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -71,10 +154,18 @@ export default {
         return {
             games:[],
             currentIndex: 0,
-            searchGame: ""
+            searchGame: "",
+            modal: null
         }
     },
     methods: {
+        edit_game(i) {
+            this.modal.show();
+            if (Number.isFinite(i)) {
+                //Редактирование
+                console.log(i);
+            }
+        },
         async search(e) {
             if (e.keyCode === 13) {
                 const myHeaders = new Headers();
@@ -131,12 +222,150 @@ export default {
         },
     },
     mounted() {
+        var editGameModal = document.getElementById('editGameModal')
+        this.modal = bootstrap.Modal.getOrCreateInstance(editGameModal);
+
         this.getGames();
     }
 }
 </script>
 
 <style scoped>
+
+.main {
+    width: 800px;
+    height: 583px;
+}
+
+.div_2 {
+    height: 393px;
+    display: flex;
+    color: var(--standart-gray);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: #172d39;
+}
+
+.div_6 {
+    height: 188px;
+    display: flex;
+    color: var(--standart-gray);
+}
+.div_3 {
+    width: 220px;
+    height: 171px;
+    display: inline-block;
+    padding: 12px;
+    margin-left: 10px;
+}
+
+.div_4 {
+    height: 35px;
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 1px;
+    color: var(--standart-gray);
+    border: none;
+    width: 190px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.div_5 {
+    width: 321px;
+    padding: 12px;
+    height: 366px;
+    display: flex;
+    flex-direction: column;
+}
+.div_7 {
+    width: 323px;
+    padding: 12px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+}
+.check-1 + label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+
+.check-1 + label::after {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25em;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+    left: 186px;
+    position: absolute;
+}
+
+.check-1:checked + label::after {
+    border-color: #0b76ef;
+    background-color: #0b76ef;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.check-2 + label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+
+.check-2 + label::after {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25em;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+    left: 416px;
+    position: absolute;
+}
+
+.check-2:checked + label::after {
+    border-color: #0b76ef;
+    background-color: #0b76ef;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.span-1 {
+    margin-top: 14px;
+    display: inline-block;
+    font-size: 12px;
+}
+.span-2 {
+    display: inline-block;
+    font-size: 12px;
+}
+.text_1 {
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 1px;
+    color: var(--standart-gray);
+    border: none;
+    padding-top: 0px;
+    width: 190px;
+    border-radius: 8px;
+}
+.edit-game {
+    background: var(--dark-green-b);
+    color: var(--standart-gray);
+}
 .game-wrap {
     background: var(--light-blue-bg-color);
     height: 900px;

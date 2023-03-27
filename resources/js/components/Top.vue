@@ -24,24 +24,14 @@ export default {
 </script>
 
 <style scoped>
-:root {
-    --dark-blue-bg-color: linear-gradient(180deg, #172D39 0%, #122834 100%);
-    --light-blue-bg-color: linear-gradient(180deg, #284F62 0%, #183F52 100%);
-    --dark-green: #4DA6AA;
-    --light-green: #6FC8CC;
-    --standart-green: #01B353;
-    --standart-color: #F6F6F7;
-    --standart-red: #FA4C4C;
-    --standart-gray: #C6C6C6;
-    --standart-black: #122733;
-}
+
 .account {
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     padding: 20px 0px;
-    width: 1820px;
+    width: 1805px;
     height: 94px;
     top: 1px;
     justify-content: space-between;

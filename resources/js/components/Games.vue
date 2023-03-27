@@ -72,11 +72,8 @@
                         <div class="div_2">
                             <div class="div_3">
                                 <div><span class="span-1">Тип приложения</span><select class="div_4">
-                                    <optgroup label="This is a group">
-                                        <option value="12" selected>This is item 1</option>
-                                        <option value="13">This is item 2</option>
-                                        <option value="14">This is item 3</option>
-                                    </optgroup>
+                                        <option value="0">Игра</option>
+                                        <option value="1">Софт</option>
                                 </select></div>
                                 <div><span class="span-1">Название игры / приложения</span><input class="div_4" type="text" /></div>
                                 <div><span class="span-1">Программа запуска</span><select class="div_4">
@@ -90,11 +87,8 @@
                             </div>
                             <div class="div_3">
                                 <div><span class="span-1">Использовать лицензии</span><select class="div_4">
-                                    <optgroup label="This is a group">
-                                        <option value="12" selected>This is item 1</option>
-                                        <option value="13">This is item 2</option>
-                                        <option value="14">This is item 3</option>
-                                    </optgroup>
+                                        <option value="1">Да</option>
+                                        <option value="0">Нет</option>
                                 </select></div>
                                 <div><span class="span-1">Параметры запуска</span><input class="div_4" type="text" /></div>
                                 <div><span class="span-1">Steam APP ID</span><input class="div_4" type="text" /></div>
@@ -140,7 +134,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary" style="background: var(--dark-green); border: none">Оплата</button>
+                    <button type="button" class="btn btn-primary" style="background: var(--dark-green); border: none">Сохранить</button>
                 </div>
             </div>
         </div>

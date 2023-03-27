@@ -121,14 +121,12 @@
         <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content shiftModal">
                 <div class="modal-header">
+                    <div class="shiftModal close-cross"></div>
                     <h5 class="modal-title" id="shiftModalLabel">Открытие смены</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
                     <span>Ждите. Операция выполняется...</span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @click="closeModal">Закрыть</button>
                 </div>
             </div>
         </div>
@@ -208,7 +206,7 @@ export default {
         verifyShift() {
 
             var requestOptions = {
-                method: 'GET',
+                method: 'POST',
                 redirect: 'follow'
             };
 
@@ -380,8 +378,15 @@ export default {
 
 <style scoped>
 .shiftModal {
-    background: var(--light-blue-bg-color);
+    background: var(--dark-green-b);
     color: var(--standart-gray);
+}
+.close-cross {
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    left: 258px;
+    z-index: 100;
 }
 .box {
     border-radius: 10px;

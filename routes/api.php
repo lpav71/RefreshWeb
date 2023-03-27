@@ -28,6 +28,13 @@ Route::post('getGames', [App\Http\Controllers\api\GameController::class, 'getGam
 Route::post('changeStatus', [App\Http\Controllers\api\GameController::class, 'changeStatus'])->name('changeStatus');
 Route::post('searchGame', [App\Http\Controllers\api\GameController::class, 'searchGame'])->name('searchGame');
 Route::post('getAllFinance',[\App\Http\Controllers\api\FinanceController::class,'getAllFinance'])->name('getAllFinance');
+Route::post('shift/close',[\App\Http\Controllers\WebHooks\ShiftController::class, 'close'])->name('shift.close');
+Route::post('shift/open',[\App\Http\Controllers\WebHooks\ShiftController::class, 'open'])->name('shift.open');
+Route::post('verifyShift',[\App\Http\Controllers\api\FinanceController::class,'verifyShift'])->name('verifyShift');
+
+
+
+
 
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');

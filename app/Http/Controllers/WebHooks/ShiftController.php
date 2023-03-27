@@ -37,6 +37,8 @@ class ShiftController extends Controller
         $cash_box_serial = $request->cash_box_serial;
         $club = Club::where('api_key', $apikey)->first();
         if ($club != null) {
+            $timeZone = (int)$club->time_zone;
+            $time = Carbon::now()->addMinutes($timeZone + 180);
             $finance = new Finance;
             $finance->admin_id = $admin_id;
             $finance->admin_name = $admin_name;
@@ -44,6 +46,7 @@ class ShiftController extends Controller
             $finance->shift = $shift;
             $finance->cash_box_serial = $cash_box_serial;
             $finance->status = true;
+            $finance->open_shift = $time;
             $s = $finance->save();
             $control = Control::all();
             if (count($control) > 0){

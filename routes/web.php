@@ -24,9 +24,7 @@ Route::get('finance', [\App\Http\Controllers\FinanceController::class, 'index'])
 Route::get('booking', [\App\Http\Controllers\BookingController::class, 'index'])->name('booking');
 
 
-Route::get('api/shift/close',[\App\Http\Controllers\WebHooks\ShiftController::class, 'close'])->name('shift.close');
-Route::get('api/shift/open',[\App\Http\Controllers\WebHooks\ShiftController::class, 'open'])->name('shift.open');
-Route::get('api/verifyShift',[\App\Http\Controllers\api\FinanceController::class,'verifyShift'])->name('verifyShift');
+
 
 
 Route::get('test', [\App\Http\Controllers\TestController::class, 'index'])->name('testIndex');

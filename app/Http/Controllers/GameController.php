@@ -16,10 +16,8 @@ class GameController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $name = $user->name_auth; //Имя
-        $surname = $user->surname; //Фамилия
-        $fullName = $name . " " . $surname;
-        return view ('game.index', compact('fullName'));
+        $club_id = $user->club_id;
+        return view ('game.index', compact('club_id'));
     }
 
 

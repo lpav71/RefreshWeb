@@ -36,22 +36,24 @@
                     </div>
                 </div>
                 <div class="game-wrap">
-                    <div id="DIV_195">
-                        <div v-for="(game, index) in games" id="icons-game">
-                            <div id="game-image">
-                                <img :src="game.icon" id="IMG_200" alt='' />
-                                <div id="game-selector">
-                                    <button id="game-selector-button" :class="{'game-selector-button-off' : !game.status}" @click="on_off(index)">
-                                        <span v-if="game.status">Вкл</span>
-                                        <span v-if="!game.status">Выкл</span>
+                    <div class="scroll">
+                        <div id="DIV_195">
+                            <div v-for="(game, index) in games" id="icons-game">
+                                <div id="game-image">
+                                    <img :src="game.icon" id="IMG_200" alt='' />
+                                    <div id="game-selector">
+                                        <button id="game-selector-button" :class="{'game-selector-button-off' : !game.status}" @click="on_off(index)">
+                                            <span v-if="game.status">Вкл</span>
+                                            <span v-if="!game.status">Выкл</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="game-label">
+                                    <span id="game-name">{{game.name}}</span>
+                                    <button id="game-button" @click="edit_game(index)">
+                                        <img src="images/edit.svg" id="IMG_208" alt='' />
                                     </button>
                                 </div>
-                            </div>
-                            <div id="game-label">
-                                <span id="game-name">{{game.name}}</span>
-                                <button id="game-button" @click="edit_game(index)">
-                                    <img src="images/edit.svg" id="IMG_208" alt='' />
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -75,7 +77,7 @@
                                         <option value="0">Игра</option>
                                         <option value="1">Софт</option>
                                 </select></div>
-                                <div><span class="span-1">Название игры / приложения</span><input class="div_4" type="text" /></div>
+                                <div><span class="span-1">Название игры / приложения</span><input class="div_4" type="text" v-model="game.name" /></div>
                                 <div><span class="span-1">Программа запуска</span><select class="div_4">
                                     <optgroup label="This is a group">
                                         <option value="12" selected>This is item 1</option>
@@ -83,17 +85,23 @@
                                         <option value="14">This is item 3</option>
                                     </optgroup>
                                 </select></div>
-                                <div><span class="span-1">Путь до приложения</span><input class="div_4" type="text" /></div>
+                                <div><span class="span-1">Путь до приложения</span><input class="div_4" type="text" v-model="game.link" /></div>
                             </div>
                             <div class="div_3">
-                                <div><span class="span-1">Использовать лицензии</span><select class="div_4">
-                                        <option value="1">Да</option>
-                                        <option value="0">Нет</option>
+                                <div><span class="span-1">Использовать лицензии</span><select class="div_4" v-model="game.club_account">
+                                        <option value="true">Да</option>
+                                        <option value="false">Нет</option>
                                 </select></div>
-                                <div><span class="span-1">Параметры запуска</span><input class="div_4" type="text" /></div>
-                                <div><span class="span-1">Steam APP ID</span><input class="div_4" type="text" /></div>
+                                <div><span class="span-1">Параметры запуска</span><input class="div_4" type="text" v-model="game.param" /></div>
+                                <div><span class="span-1">Steam APP ID</span><input class="div_4" type="text" v-model="game.steam_id" /></div>
+                                <div><span class="span-1">Путь к изображению</span><input class="div_4 img_path" type="text" v-model="game.icon" /></div>
                             </div>
-                            <div class="div_5" style="margin-top: 15px;"><span class="span-2">Постер</span><img class="rounded" width="300px" height="309px" src="images/18ad205239bd24b807c10dda353291a4.png"  alt=""/></div>
+                            <div class="div_5" style="margin-top: 15px;">
+                                <span class="span-2">Постер</span>
+                                <div class="div_8">
+                                    <img width="300" :src="game.icon"  alt=""/>
+                                </div>
+                            </div>
                         </div>
                         <div class="div_6">
                             <div class="div_3">
@@ -128,13 +136,13 @@
                                     </optgroup>
                                 </select></div>
                             </div>
-                            <div class="div_7" style="margin-top: 15px;"><span class="span-2">Описание</span><textarea class="text_1" style="height: 108px;width: 305px;" spellcheck="false"></textarea></div>
+                            <div class="div_7" style="margin-top: 15px;"><span class="span-2">Описание</span><textarea class="text_1" spellcheck="false" v-model="game.description"></textarea></div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary" style="background: var(--dark-green); border: none">Сохранить</button>
+                    <button type="button" class="btn btn-primary" style="background: var(--dark-green); border: none" @click="save_game">Сохранить</button>
                 </div>
             </div>
         </div>
@@ -144,20 +152,62 @@
 
 <script>
 export default {
+    props: ['club_id'],
     data() {
         return {
             games:[],
             currentIndex: 0,
             searchGame: "",
-            modal: null
+            modal: null,
+            game: {}
         }
     },
     methods: {
-        edit_game(i) {
+        async save_game(){
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("id", this.game.id);
+            urlencoded.append("name", this.game.name);
+            urlencoded.append("link", this.game.link);
+            urlencoded.append("param", this.game.param);
+            urlencoded.append("steam_id", this.game.steam_id);
+            urlencoded.append("club_account", this.game.club_account);
+            urlencoded.append("description", this.game.description);
+            urlencoded.append('club_id', this.$props.club_id);
+            urlencoded.append('icon', this.game.icon);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            await fetch("api/games/savegame", requestOptions);
+            this.modal.hide();
+            this.getGames();
+        },
+        async edit_game(i) {
             this.modal.show();
+            this.game = {};
             if (Number.isFinite(i)) {
-                //Редактирование
-                console.log(i);
+                // Редактирование
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+                var urlencoded = new URLSearchParams();
+                urlencoded.append("id", this.games[i].id);
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: urlencoded,
+                    redirect: 'follow'
+                };
+                var response = await fetch("api/games/getGameById", requestOptions);
+                this.game = await response.json();
             }
         },
         async search(e) {
@@ -202,6 +252,7 @@ export default {
         },
         async getGames() {
             const urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
 
             const requestOptions = {
                 method: 'POST',
@@ -212,7 +263,6 @@ export default {
             const response = await fetch("api/getGames", requestOptions);
             const result = await response.json();
             this.games = result;
-            console.log(result);
         },
     },
     mounted() {
@@ -230,7 +280,14 @@ export default {
     width: 800px;
     height: 583px;
 }
-
+.scroll {
+    height: 862px;
+    width: 1770px;
+    overflow: auto;
+    position: relative;
+    top: 20px;
+    bottom: 20px;
+}
 .div_2 {
     height: 393px;
     display: flex;
@@ -271,6 +328,10 @@ export default {
     height: 366px;
     display: flex;
     flex-direction: column;
+}
+.div_8 {
+    overflow: hidden;
+    border-radius: 10px;
 }
 .div_7 {
     width: 323px;
@@ -348,13 +409,15 @@ export default {
 }
 .text_1 {
     background: #172D39;
-    padding: 5px 15px 5px 15px;
     margin-top: 1px;
     color: var(--standart-gray);
     border: none;
-    padding-top: 0px;
-    width: 190px;
     border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.1em;
+    padding: 5px;
+    height: 108px;
+    width: 305px;
 }
 .edit-game {
     background: var(--dark-green-b);
@@ -364,13 +427,12 @@ export default {
     background: var(--light-blue-bg-color);
     height: 900px;
     width: 1770px;
-    padding-top: 5px;
     padding-left: 20px;
     border-radius: 20px;
     margin-top: 20px;
 }
 #icons-game {
-    margin-right: 20px;
+    margin-right: 18px;
 }
 #game-button {
     border: none;
@@ -1873,7 +1935,7 @@ export default {
 }
 #DIV_195 {
     display: flex;
-    margin-top: 20px;
+    flex-wrap: wrap;
 }
 .game-selector-button-off {
     float: left !important;

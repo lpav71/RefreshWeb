@@ -31,8 +31,8 @@ Route::post('getAllFinance',[\App\Http\Controllers\api\FinanceController::class,
 Route::post('shift/close',[\App\Http\Controllers\WebHooks\ShiftController::class, 'close'])->name('shift.close');
 Route::post('shift/open',[\App\Http\Controllers\WebHooks\ShiftController::class, 'open'])->name('shift.open');
 Route::post('verifyShift',[\App\Http\Controllers\api\FinanceController::class,'verifyShift'])->name('verifyShift');
-
-
+Route::post('games/getGameById', [App\Http\Controllers\api\GameController::class, 'getGameById'])->name('getGameById');
+Route::post('games/savegame', [App\Http\Controllers\api\GameController::class, 'saveGame'])->name('saveGame');
 
 
 

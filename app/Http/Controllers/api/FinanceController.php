@@ -63,15 +63,18 @@ class FinanceController extends Controller
     }
     public function verifyShift(Request $request)
     {
-        $control = Control::all();
-        $ctrl = $control[0];
-        $shiftStatus = $ctrl->shift_status;
-        if ($shiftStatus === 'open') {
-            $ctrl->shift_status = 'close';
-            $ctrl->save();
-            return 'open';
+        $control = Control::where('user_id', $request->user_id)->get();
+        if (count($control) > 0) {
+            $ctrl = $control[0];
+            $shiftStatus = $ctrl->shift_status;
+            if ($shiftStatus === 'open') {
+                $ctrl->shift_status = 'close';
+                $ctrl->save();
+                return 'open';
+            }
+            else
+                return 'close';
         }
-        else
-            return 'close';
+        return 'close';
     }
 }

@@ -261,8 +261,7 @@ export default {
             };
 
             const response = await fetch("api/getGames", requestOptions);
-            const result = await response.json();
-            this.games = result;
+            this.games = await response.json();
         },
     },
     mounted() {
@@ -433,6 +432,7 @@ export default {
 }
 #icons-game {
     margin-right: 18px;
+    margin-bottom: 30px;
 }
 #game-button {
     border: none;

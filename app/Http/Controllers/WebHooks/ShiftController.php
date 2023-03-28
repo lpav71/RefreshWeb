@@ -48,14 +48,15 @@ class ShiftController extends Controller
             $finance->status = true;
             $finance->open_shift = $time;
             $s = $finance->save();
-            $control = Control::all();
-            if (count($control) > 0){
-                $control[0]->shift_status = 'open';
-                $control[0]->save();
+            $control = Control::where('user_id', $admin_id)->first();
+            if ($control != null){
+                $control->shift_status = 'open';
+                $control->save();
             }
             else {
                 $c = new Control;
                 $c->shift_status = 'open';
+                $c->user_id = $admin_id;
                 $c->save();
             }
             return $finance->id;

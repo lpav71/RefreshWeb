@@ -140,7 +140,7 @@ var offsetX = 0; //Смещение мышки внутри перемещаем
 var offsetY = 0; //Смещение мышки внутри перемещаемого элемента по Y
 var globalIndex = 0;
 export default {
-    props: ['name', 'club', 'user-data'],
+    props: ['name', 'club', 'userData'],
     data() {
         return {
             height: 0, //Высота окна браузера
@@ -204,9 +204,12 @@ export default {
             clearTimeout(this.timerId);
         },
         verifyShift() {
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("user_id", JSON.parse(this.$props.userData).id);
 
             var requestOptions = {
                 method: 'POST',
+                body: urlencoded,
                 redirect: 'follow'
             };
 

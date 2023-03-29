@@ -30,11 +30,12 @@ Route::post('searchGame', [App\Http\Controllers\api\GameController::class, 'sear
 Route::post('getAllFinance',[\App\Http\Controllers\api\FinanceController::class,'getAllFinance'])->name('getAllFinance');
 Route::post('shift/close',[\App\Http\Controllers\WebHooks\ShiftController::class, 'close'])->name('shift.close');
 Route::post('shift/open',[\App\Http\Controllers\WebHooks\ShiftController::class, 'open'])->name('shift.open');
-Route::post('verifyShift',[\App\Http\Controllers\api\FinanceController::class,'verifyShift'])->name('verifyShift');
+Route::post('verifyopenshift',[\App\Http\Controllers\api\FinanceController::class,'verifyOpenShift'])->name('verifyOpenShift');
+Route::post('verifycloseshift',[\App\Http\Controllers\api\FinanceController::class,'verifyCloseShift'])->name('verifyCloseShift');
 Route::post('games/getGameById', [App\Http\Controllers\api\GameController::class, 'getGameById'])->name('getGameById');
 Route::post('games/savegame', [App\Http\Controllers\api\GameController::class, 'saveGame'])->name('saveGame');
-
-
+Route::post('openOpenModal',[\App\Http\Controllers\WebHooks\ShiftController::class, 'openOpenModal'])->name('openOpenModal');
+Route::post('openCloseModal',[\App\Http\Controllers\WebHooks\ShiftController::class, 'openCloseModal'])->name('openCloseModal');
 
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');

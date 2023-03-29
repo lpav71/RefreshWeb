@@ -13,6 +13,7 @@ class ShiftController extends Controller
 {
     public function close(Request $request)
     {
+        $admin_id = $request->admin_id;
         $apikey = $request->apikey;
         $club = Club::where('api_key', $apikey)->first();
         $timeZone = $club->time_zone;
@@ -22,6 +23,17 @@ class ShiftController extends Controller
             $finance->status = false;
             $finance->close_shift = $todayWithUTC;
             $finance->save();
+            $control = Control::where('user_id', $admin_id)->first();
+            if ($control != null){
+                $control->shift_close = 'open';
+                $control->save();
+            }
+            else {
+                $c = new Control;
+                $c->shift_close = 'open';
+                $c->user_id = $admin_id;
+                $c->save();
+            }
             $response = array(
                 'status' => 'OK'
             );
@@ -50,12 +62,12 @@ class ShiftController extends Controller
             $s = $finance->save();
             $control = Control::where('user_id', $admin_id)->first();
             if ($control != null){
-                $control->shift_status = 'open';
+                $control->shift_open = 'open';
                 $control->save();
             }
             else {
                 $c = new Control;
-                $c->shift_status = 'open';
+                $c->shift_open = 'open';
                 $c->user_id = $admin_id;
                 $c->save();
             }
@@ -63,5 +75,36 @@ class ShiftController extends Controller
         }
         else
             return 0;
+    }
+    public function openOpenModal(Request $request)
+    {
+        $admin_id = $request->admin_id;
+        $control = Control::where('user_id', $admin_id)->first();
+        if ($control != null){
+            $control->shift_open = 'open';
+            $control->save();
+        }
+        else {
+            $c = new Control;
+            $c->shift_open = 'open';
+            $c->user_id = $admin_id;
+            $c->save();
+        }
+    }
+
+    public function openCloseModal(Request $request)
+    {
+        $admin_id = $request->admin_id;
+        $control = Control::where('user_id', $admin_id)->first();
+        if ($control != null){
+            $control->shift_close = 'open';
+            $control->save();
+        }
+        else {
+            $c = new Control;
+            $c->shift_close = 'open';
+            $c->user_id = $admin_id;
+            $c->save();
+        }
     }
 }

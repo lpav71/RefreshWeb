@@ -10,13 +10,14 @@ use Illuminate\Support\Facades\DB;
 
 class FinanceController extends Controller
 {
-    public function getSmena()
+    public function getSmena(Request $request)
     {
-        $finance = DB::table('finance')->select(DB::raw('cash, nocash, shop_cash, shop_nocash, to_char(open_shift, \'DD.MM.YYYY HH24:MI\') As time'))->where('status','true')->where('club_id', 1)->get();
+        $clubId = $request->club_id;
+        $finance = DB::table('finance')->select(DB::raw('cash, nocash, shop_cash, shop_nocash, to_char(open_shift, \'DD.MM.YYYY HH24:MI\') As time'))->where('status','true')->where('club_id', $clubId)->get();
         $shift = 'open';
         if (count($finance) == 0){
             $finance = DB::table('finance')->select(DB::raw('cash, nocash, shop_cash, shop_nocash, to_char(close_shift, \'DD.MM.YYYY HH24:MI\') As time'))
-                ->where('status','false')->where('club_id', 1)
+                ->where('status','false')->where('club_id', $clubId)
                 ->orderBy('close_shift', 'desc')
                 ->get();
             $shift = 'close';
@@ -61,14 +62,30 @@ class FinanceController extends Controller
         }
         return $finance;
     }
-    public function verifyShift(Request $request)
+    public function verifyOpenShift(Request $request)
     {
         $control = Control::where('user_id', $request->user_id)->get();
         if (count($control) > 0) {
             $ctrl = $control[0];
-            $shiftStatus = $ctrl->shift_status;
+            $shiftStatus = $ctrl->shift_open;
             if ($shiftStatus === 'open') {
-                $ctrl->shift_status = 'close';
+                $ctrl->shift_open = 'close';
+                $ctrl->save();
+                return 'open';
+            }
+            else
+                return 'close';
+        }
+        return 'close';
+    }
+    public function verifyCloseShift(Request $request)
+    {
+        $control = Control::where('user_id', $request->user_id)->get();
+        if (count($control) > 0) {
+            $ctrl = $control[0];
+            $shiftStatus = $ctrl->shift_close;
+            if ($shiftStatus === 'open') {
+                $ctrl->shift_close = 'close';
                 $ctrl->save();
                 return 'open';
             }

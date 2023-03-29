@@ -122,7 +122,7 @@
             <div class="modal-content shiftModal">
                 <div class="modal-header">
                     <div class="shiftModal close-cross"></div>
-                    <h5 class="modal-title" id="shiftModalLabel">Открытие смены</h5>
+                    <h5 class="modal-title" id="shiftModalLabel">{{ modalHeader }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
@@ -167,7 +167,8 @@ export default {
             shiftOpenClose: 'Закрыть смену',
             shiftStatusOpen: true, //Смена открыта - значит true
             modal: null,
-            timerId: null
+            timerId: null,
+            modalHeader: "Открытие смены"
         }
     },
     methods: {
@@ -203,7 +204,8 @@ export default {
             this.modal.hide();
             clearTimeout(this.timerId);
         },
-        verifyShift() {
+        // Проверка состояния окна Открытие смены
+        verifyOpenShift() {
             var urlencoded = new URLSearchParams();
             urlencoded.append("user_id", JSON.parse(this.$props.userData).id);
 
@@ -213,12 +215,31 @@ export default {
                 redirect: 'follow'
             };
 
-            fetch("api/verifyShift", requestOptions)
+            fetch("api/verifyopenshift", requestOptions)
                 .then(response => response.text())
                 .then(result => {
                     if (result === 'open'){
-                        this.modal.hide();
-                        clearTimeout(this.timerId);
+                        location.reload();
+                    }
+                })
+                .catch(error => console.log('error', error));
+        },
+        // Проверка состояния окна Закрытие смены
+        verifyCloseShift() {
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("user_id", JSON.parse(this.$props.userData).id);
+
+            var requestOptions = {
+                method: 'POST',
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            fetch("api/verifycloseshift", requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                    if (result === 'open'){
+                        location.reload();
                     }
                 })
                 .catch(error => console.log('error', error));
@@ -226,12 +247,16 @@ export default {
         switchShift() {
             if (this.shiftStatusOpen) {
                 this.shiftOpenClose = 'Закрыть смену';
+                this.modalHeader = "Открытие смены";
                 this.modal.show();
-                this.timerId = setInterval(this.verifyShift,500);
+                this.timerId = setInterval(this.verifyOpenShift,5000);
                 console.log('shiftopen');
             }
             else {
                 this.shiftOpenClose = "Открыть смену";
+                this.modalHeader = "Закрытие смены";
+                this.modal.show();
+                this.timerId = setInterval(this.verifyCloseShift,5000);
                 console.log('shiftclose');
             }
             this.shiftStatusOpen = !this.shiftStatusOpen;
@@ -296,6 +321,7 @@ export default {
         },
         async getSmena() {
             var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", JSON.parse(this.$props.userData).club_id);
 
             var requestOptions = {
                 method: 'POST',

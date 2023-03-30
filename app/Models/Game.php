@@ -9,4 +9,5 @@ class Game extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    protected $fillable = ['club_id', 'map_comp_id'];
 }

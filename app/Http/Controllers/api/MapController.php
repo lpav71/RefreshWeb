@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Game;
 use App\Models\Map;
 use App\Models\Zone;
 use Illuminate\Http\Request;
@@ -44,5 +45,18 @@ class MapController extends Controller
         $map->id_comp = $request->id_comp;
         $map->club_id = 1;
         $map->save();
+    }
+    public function findPCForAdd(Request $request)
+    {
+        $comps = array();
+        $pc = Map::where('club_id', $request->club_id)->where('zone', $request->zone)->get();
+        foreach ($pc as $item) {
+            $comp['club_id'] = $request->club_id;
+            $comp['map_comp_id'] = $item->id_comp;
+            array_push($comps, $comp);
+        }
+        $game = new Game;
+        $game->insert($comps);
+        return $comps;
     }
 }

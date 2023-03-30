@@ -121,13 +121,11 @@
                                 </select></div>
                             </div>
                             <div class="div_3">
-                                <div><span class="span-1">Группы ПК</span><select class="div_4">
-                                    <optgroup label="This is a group">
-                                        <option value="12" selected>This is item 1</option>
-                                        <option value="13">This is item 2</option>
-                                        <option value="14">This is item 3</option>
-                                    </optgroup>
-                                </select></div>
+                                <div><span class="span-1">Группы ПК</span>
+                                    <select class="div_4" v-model="zone">
+                                        <option v-for="zone in zones" :value="zone.num" selected>{{ zone.name }}</option>
+                                    </select>
+                                </div>
                                 <div><span class="span-1">Возрастное ограничение</span><select class="div_4">
                                     <optgroup label="This is a group">
                                         <option value="12" selected>This is item 1</option>
@@ -159,11 +157,36 @@ export default {
             currentIndex: 0,
             searchGame: "",
             modal: null,
-            game: {}
+            game: {},
+            mode: '',
+            zones: [],
+            zone: null
         }
     },
     methods: {
+        async addGames() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+            urlencoded.append("zone", this.zone);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            await fetch("api/map/findpc", requestOptions);
+        },
         async save_game(){
+            if (this.mode === 'add') {
+                // Режим добавления
+                this.addGames();
+                this.modal.hide();
+            }
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -189,11 +212,30 @@ export default {
             this.modal.hide();
             this.getGames();
         },
+        async getZone() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/zone/getZone", requestOptions);
+            this.zones = await response.json();
+        },
         async edit_game(i) {
             this.modal.show();
             this.game = {};
+            this.getZone();
             if (Number.isFinite(i)) {
                 // Редактирование
+                this.mode = 'edit';
                 var myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -208,6 +250,9 @@ export default {
                 };
                 var response = await fetch("api/games/getGameById", requestOptions);
                 this.game = await response.json();
+            }
+            else {
+                this.mode = 'add';
             }
         },
         async search(e) {

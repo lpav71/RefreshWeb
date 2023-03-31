@@ -183,6 +183,15 @@ export default {
             var urlencoded = new URLSearchParams();
             urlencoded.append("club_id", this.$props.club_id);
             urlencoded.append("zone", this.zone);
+            urlencoded.append("id", this.game.id);
+            urlencoded.append("name", this.game.name);
+            urlencoded.append("link", this.game.link);
+            urlencoded.append("param", this.game.param);
+            urlencoded.append("steam_id", this.game.steam_id);
+            urlencoded.append("club_account", false);
+            urlencoded.append("description", this.game.description);
+            urlencoded.append('icon', this.game.icon);
+
 
             var requestOptions = {
                 method: 'POST',
@@ -208,7 +217,7 @@ export default {
             urlencoded.append("link", this.game.link);
             urlencoded.append("param", this.game.param);
             urlencoded.append("steam_id", this.game.steam_id);
-            urlencoded.append("club_account", this.game.club_account);
+            urlencoded.append("club_account", false);
             urlencoded.append("description", this.game.description);
             urlencoded.append('club_id', this.$props.club_id);
             urlencoded.append('icon', this.game.icon);

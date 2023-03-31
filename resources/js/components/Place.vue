@@ -46,7 +46,11 @@
                     </div>
                 </div>
                 <div class="manager outbox">
-                    <div v-for="(position, index) in positions" class="box" @mousedown="mdown($event, index)" :style="{top: position.top + 'px', left: position.left + 'px', width: boxWidth + 'px', height: boxHeight + 'px', background: boxColor}">{{index +1}}</div>
+                    <div v-for="(position, index) in positions" class="box" @mousedown="mdown($event, index)"
+                         :style="{top: position.top + 'px', left: position.left + 'px', width: boxWidth + 'px', height: boxHeight + 'px', background: boxColor}">
+                        {{ index + 1 }}
+                        <div class="inbox" :style="{'background-color': position.bg}"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -389,7 +393,8 @@ export default {
             .then(response => response.json())
             .then(result => {
                 result.map.forEach(function (item, index){
-                    this.element = {top: item.pos_y, left: item.pos_x, offsetLeft: 0, zone: item.zone}; //offsetLeft используется для вычисления смещения при изменении размера окна
+                    var bg = item.ping === 0 ? '#FE3434' : '#01B253';
+                    this.element = {top: item.pos_y, left: item.pos_x, offsetLeft: 0, zone: item.zone, ping: item.ping, bg: bg}; //offsetLeft используется для вычисления смещения при изменении размера окна
                     this.positions.push(this.element);
                     this.element = {};
                 }.bind(this));
@@ -408,6 +413,15 @@ export default {
 </script>
 
 <style scoped>
+
+.inbox {
+    width: 5px;
+    height: 5px;
+    border-radius: 3px;
+    position: relative;
+    left: 24px;
+    top: -3px;
+}
 .shiftModal {
     background: var(--dark-green-b);
     color: var(--standart-gray);
@@ -428,6 +442,7 @@ export default {
     color: white;
     font-weight: bold;
     user-select: none;
+    padding-top: 5px;
 }
 .box:hover {
     cursor: move;

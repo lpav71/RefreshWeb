@@ -14,10 +14,10 @@ class MapController extends Controller
     public function saveMapPosition(Request $request)
     {
         $comp = $request->comp;
-        $map = Map::where('id_comp',$comp)->first();
+        $map = Map::where('id_comp',$comp)->where('club_id', $request->club_id)->first();
         $map->pos_x = $request->posx;
         $map->pos_y = $request->posy;
-        $map->save();
+        $s = $map->save();
         return $map;
     }
     public function getMapPosition(Request $request)
@@ -26,8 +26,8 @@ class MapController extends Controller
         {
             $join->on('zone.club_id','=','map.club_id');
             $join->on('zone.num', '=', 'map.zone');
-        })->where('map.club_id', '=', 1)->where('map.id_comp', '=', 1)->orderBy('id_comp', 'asc')->get()->toArray();
-        $zone = Zone::where('club_id', 1)->get()->toArray();
+        })->where('map.club_id', '=', $request->club_id)->orderBy('id_comp', 'asc')->get()->toArray();
+        $zone = Zone::where('club_id', $request->club_id)->get()->toArray();
         $map = Map::where(['club_id'=>$request->club_id])->orderBy('id_comp')->get()->toArray();
         $outData = array(
             'zone' => $zone,

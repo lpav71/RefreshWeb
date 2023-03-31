@@ -73,10 +73,11 @@
                     <div class="main">
                         <div class="div_2">
                             <div class="div_3">
-                                <div><span class="span-1">Тип приложения</span><select class="div_4">
-                                        <option value="0">Игра</option>
-                                        <option value="1">Софт</option>
-                                </select></div>
+                                <div>
+                                    <span class="span-1">Тип приложения</span>
+                                    <select v-model="appType" class="div_4">
+                                        <option v-for="t in allTypes" :value="t.type">{{ t.name }}</option>
+                                    </select></div>
                                 <div><span class="span-1">Название игры / приложения</span><input class="div_4" type="text" v-model="game.name" /></div>
                                 <div><span class="span-1">Программа запуска</span><select class="div_4">
                                     <optgroup label="This is a group">
@@ -88,10 +89,11 @@
                                 <div><span class="span-1">Путь до приложения</span><input class="div_4" type="text" v-model="game.link" /></div>
                             </div>
                             <div class="div_3">
-                                <div><span class="span-1">Использовать лицензии</span><select class="div_4" v-model="game.club_account">
-                                        <option value="true">Да</option>
-                                        <option value="false">Нет</option>
-                                </select></div>
+                                <div>
+                                    <span class="span-1">Использовать лицензии</span>
+                                    <select class="div_4" v-model="selectetedLicenses">
+                                        <option v-for="u in useLicenses" :value="u.value">{{ u.name }}</option>
+                                    </select></div>
                                 <div><span class="span-1">Параметры запуска</span><input class="div_4" type="text" v-model="game.param" /></div>
                                 <div><span class="span-1">Steam APP ID</span><input class="div_4" type="text" v-model="game.steam_id" /></div>
                                 <div><span class="span-1">Путь к изображению</span><input class="div_4 img_path" type="text" v-model="game.icon" /></div>
@@ -153,14 +155,24 @@ export default {
     props: ['club_id'],
     data() {
         return {
-            games:[],
+            games: [],
             currentIndex: 0,
             searchGame: "",
             modal: null,
             game: {},
             mode: '',
             zones: [],
-            zone: null
+            zone: null,
+            allTypes: [
+                {name: 'Игра', type: 0},
+                {name: 'Софт', type: 1}
+            ],
+            appType: null,
+            useLicenses: [
+                {name: 'Да', value: true},
+                {name: 'Нет', value: false}
+            ],
+            selectetedLicenses: null
         }
     },
     methods: {
@@ -250,6 +262,8 @@ export default {
                 };
                 var response = await fetch("api/games/getGameById", requestOptions);
                 this.game = await response.json();
+                this.selectetedLicenses = this.game.club_account;
+                this.appType = this.game.type;
             }
             else {
                 this.mode = 'add';

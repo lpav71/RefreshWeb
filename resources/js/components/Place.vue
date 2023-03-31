@@ -306,6 +306,7 @@ export default {
                 urlencoded.append("comp", globalIndex + 1);
                 urlencoded.append("posx", left);
                 urlencoded.append("posy", top);
+                urlencoded.append("club_id", JSON.parse(this.$props.userData).club_id);
 
                 var requestOptions = {
                     method: 'POST',
@@ -392,10 +393,11 @@ export default {
                     this.positions.push(this.element);
                     this.element = {};
                 }.bind(this));
-                result.mapZone.forEach(function (item){
+                this.zones = result.zone;
+                /*result.mapZone.forEach(function (item){
                     item.active = false;
                     this.zones.push(item);
-                }.bind(this));
+                }.bind(this));*/
             })
             .catch(error => console.log('error', error));
         this.getSmena();

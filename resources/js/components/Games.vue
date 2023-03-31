@@ -191,6 +191,7 @@ export default {
             urlencoded.append("club_account", false);
             urlencoded.append("description", this.game.description);
             urlencoded.append('icon', this.game.icon);
+            urlencoded.append('type', this.game.type);
 
 
             var requestOptions = {
@@ -221,6 +222,7 @@ export default {
             urlencoded.append("description", this.game.description);
             urlencoded.append('club_id', this.$props.club_id);
             urlencoded.append('icon', this.game.icon);
+            urlencoded.append('type', this.appType);
 
             var requestOptions = {
                 method: 'POST',

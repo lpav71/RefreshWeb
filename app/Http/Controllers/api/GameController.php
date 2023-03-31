@@ -48,6 +48,7 @@ class GameController extends Controller
             $game->club_account = $request->club_account == 'null' ? null : $request->club_account;
             $game->description = $request->description == 'null' ? null : $request->description;
             $game->icon = $request->icon == 'null' ? null : $request->icon;
+            $game->type = $request->type == 'null' ? null : $request->type;
         }
         else {
             $game = new Game;
@@ -60,6 +61,7 @@ class GameController extends Controller
             $game->club_account = $request->club_account == 'undefined' ? null : $request->club_account;
             $game->description = $request->description == 'undefined' ? null : $request->description;
             $game->icon = $request->icon == 'undefined' ? null : $request->icon;
+            $game->type = $request->type == 'undefined' ? null : $request->type;
         }
         $game->save();
     }

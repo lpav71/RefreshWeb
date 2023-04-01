@@ -38,7 +38,7 @@ Route::post('openOpenModal',[\App\Http\Controllers\WebHooks\ShiftController::cla
 Route::post('openCloseModal',[\App\Http\Controllers\WebHooks\ShiftController::class, 'openCloseModal'])->name('openCloseModal');
 Route::post('zone/getZone', [\App\Http\Controllers\api\ZoneController::class, 'getZone'])->name('getZone');
 Route::post('map/findpc', [\App\Http\Controllers\api\MapController::class, 'findPCForAdd'])->name('findPCForAdd');
-
+Route::post('sendMassage',[\App\Http\Controllers\api\FinanceController::class,'sendMassage'])->name('sendMassage');
 
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Events\MyEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Control;
 use App\Models\Finance;
@@ -93,5 +94,9 @@ class FinanceController extends Controller
                 return 'close';
         }
         return 'close';
+    }
+    public function sendMassage()
+    {
+        event(new MyEvent('hello world'));
     }
 }

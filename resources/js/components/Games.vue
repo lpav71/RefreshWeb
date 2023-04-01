@@ -151,10 +151,12 @@
 </template>
 
 <script>
+
 export default {
     props: ['club_id'],
     data() {
         return {
+            messages: [],
             games: [],
             currentIndex: 0,
             searchGame: "",
@@ -252,6 +254,11 @@ export default {
             var response = await fetch("api/zone/getZone", requestOptions);
             this.zones = await response.json();
         },
+        openModal() {
+            var c = this.messages.length;
+            if (c>0)
+                console.log(this.messages[c-1]);
+        },
         async edit_game(i) {
             this.modal.show();
             this.game = {};
@@ -335,10 +342,24 @@ export default {
         },
     },
     mounted() {
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('6a5d1d953f639e0236dc', {
+            cluster: 'mt1'
+        });
+
+        var channel = pusher.subscribe('my-channel');
+        channel.bind('my-event', function(data) {
+            this.messages.push(JSON.stringify(data));
+        }.bind(this));
+
         var editGameModal = document.getElementById('editGameModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(editGameModal);
 
         this.getGames();
+
+        setInterval(this.openModal, 2000);
     }
 }
 </script>

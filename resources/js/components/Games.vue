@@ -256,8 +256,11 @@ export default {
         },
         openModal() {
             var c = this.messages.length;
-            if (c>0)
+            if (c>0) {
                 console.log(this.messages[c-1]);
+                this.messages = [];
+            }
+
         },
         async edit_game(i) {
             this.modal.show();
@@ -342,6 +345,7 @@ export default {
         },
     },
     mounted() {
+        // PUSHER ---------------------------------------------
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
 
@@ -353,6 +357,7 @@ export default {
         channel.bind('my-event', function(data) {
             this.messages.push(JSON.stringify(data));
         }.bind(this));
+        // ~PUSHER ---------------------------------------------
 
         var editGameModal = document.getElementById('editGameModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(editGameModal);

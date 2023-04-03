@@ -126,7 +126,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn pay" @click="payment">Оплата</button>
+                    <button type="button" class="btn pay" :disabled="payTextDisabled" @click="payment">{{ payText }}</button>
                 </div>
             </div>
         </div>
@@ -139,6 +139,9 @@ export default {
     props: ['club_id'],
     data() {
         return {
+            payText: 'Оплата',
+            payTextDisabled: false, //Кнопка доступна
+            messages: [],
             searchUser: "",
             findUsers: [],
             modal: null,
@@ -147,7 +150,8 @@ export default {
             chek: '',
             currentUser: {},
             summa: 0,
-            comment: ''
+            comment: '',
+            timer: null
         }
     },
     methods: {
@@ -171,6 +175,23 @@ export default {
                 }]
             };
             console.log(JSON.stringify(outData));
+            this.messages = [];
+            this.payText = 'Ждите';
+            this.payTextDisabled = true;
+            this.timer = setInterval(this.listenMessage, 1000);
+
+        },
+        listenMessage() {
+            if (this.messages[0] !== undefined) {
+                var ms = JSON.parse(this.messages[0]);
+                if (ms.message.id == this.$props.club_id && ms.message.operation === 'close') {
+                    this.modal.hide();
+                    this.payText = 'Оплата';
+                    this.payTextDisabled = false;
+                    clearInterval(this.timer);
+                }
+                this.messages = [];
+            }
         },
         async topBalance(i, login) {
             this.login = login;
@@ -198,6 +219,7 @@ export default {
             var forConsole = JSON.stringify(result);
             console.log(forConsole);
             var statusShift = result.shiftStatus;
+            statusShift = 'open';
             if (statusShift === 'open') {
                 this.modal.show();
             }
@@ -227,6 +249,19 @@ export default {
         }
     },
     mounted() {
+        // PUSHER ---------------------------------------------
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('6a5d1d953f639e0236dc', {
+            cluster: 'mt1'
+        });
+
+        var channel = pusher.subscribe('my-channel');
+        channel.bind('my-event', function(data) {
+            this.messages.push(JSON.stringify(data));
+        }.bind(this));
+        // ~PUSHER ---------------------------------------------
         var widgetModal = document.getElementById('topBalanceModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(widgetModal);
     }

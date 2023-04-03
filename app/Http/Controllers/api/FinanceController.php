@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Events\MyEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Club;
 use App\Models\Control;
 use App\Models\Finance;
 use Illuminate\Http\Request;
@@ -98,5 +99,17 @@ class FinanceController extends Controller
     public function sendMassage()
     {
         event(new MyEvent('hello world'));
+    }
+
+    public function closePaymentWindow(Request $request)
+    {
+        $club = Club::where('api_key', $request->api_key)->first();
+        if ($club !== null) {
+            $data = array(
+                'id' => $club->id,
+                'operation' => 'close'
+            );
+            event(new MyEvent($data));
+        }
     }
 }

@@ -30,7 +30,7 @@
             </div><button class="btn btn-danger" type="button" style="width: 250px;">Оплатить</button>
         </div>
         <div class="right">
-            <div class="top"><img src="images/shop/2.svg" /><span style="margin-left: 14px;">Магазин</span><i class="fas fa-search lupa"></i><input class="input_shop" type="text" placeholder="Поиск товаров" /><button class="butt" type="button">Все</button><button class="butt" type="button">Товары</button><button class="butt" type="button">Пакетные предложения</button><button class="butt" type="button">Услуги</button></div>
+            <div class="top"><img src="images/shop/2.svg" /><span style="margin-left: 14px;">Магазин</span><i class="fas fa-search lupa"></i><input @keydown="enter" v-model="product_name" class="input_shop" type="text" placeholder="Поиск товаров" /><button class="butt" type="button">Все</button><button class="butt" type="button">Товары</button><button class="butt" type="button">Пакетные предложения</button><button class="butt" type="button">Услуги</button></div>
             <div class="bottom" style="border-radius: 20px;padding: 30px;">
                 <div class="goods" v-for="(g, index) in goods">
                     <div class="goods_img"><img :src="g.icon" height="200" /></div>
@@ -53,16 +53,22 @@ export default {
     props: ['club_id'],
     data() {
         return {
-            goods: []
+            goods: [],
+            product_name: ''
         }
     },
     methods: {
-        async getAll() {
+        enter(e) {
+            if (e.keyCode === 13) {
+                this.find();
+            }
+        },
+        async find() {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
             var urlencoded = new URLSearchParams();
-            urlencoded.append("club_id", "2");
+            urlencoded.append("search", this.product_name);
 
             var requestOptions = {
                 method: 'POST',
@@ -71,7 +77,24 @@ export default {
                 redirect: 'follow'
             };
 
-            var response = await fetch("https://localhost:7150/api/shop/get", requestOptions);
+            var response = await fetch("api/shop/find", requestOptions);
+            this.goods = await response.json();
+        },
+        async getAll() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/shop/get", requestOptions);
             this.goods = await response.json();
         }
     },

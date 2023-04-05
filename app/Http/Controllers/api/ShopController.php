@@ -13,4 +13,10 @@ class ShopController extends Controller
         $store = Store::where('club_id', $request->club_id)->get();
         return($store);
     }
+    public function find(Request $request)
+    {
+        $searchText = $request->search;
+        $products = Store::where('product', 'ILIKE', '%'.$searchText.'%')->orWhere('product_param', 'ILIKE', '%'.$searchText.'%')->get()->toArray();
+        return $products;
+    }
 }

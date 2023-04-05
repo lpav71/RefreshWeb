@@ -38,7 +38,8 @@ import FinanceComponent from "./components/Finance.vue";
 app.component('finance', FinanceComponent);
 import BookingComponent from "./components/Booking.vue";
 app.component('booking', BookingComponent);
-
+import ShopComponent from "./components/Shop.vue";
+app.component('shop', ShopComponent);
 
 
 

@@ -40,6 +40,7 @@ Route::post('zone/getZone', [\App\Http\Controllers\api\ZoneController::class, 'g
 Route::post('map/findpc', [\App\Http\Controllers\api\MapController::class, 'findPCForAdd'])->name('findPCForAdd');
 Route::post('sendMassage',[\App\Http\Controllers\api\FinanceController::class,'sendMassage'])->name('sendMassage');
 Route::post('closepay',[\App\Http\Controllers\api\FinanceController::class,'closePaymentWindow'])->name('closePaymentWindow');
+Route::post('shop/get', [\App\Http\Controllers\api\ShopController::class, 'getAll']);
 
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');

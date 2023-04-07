@@ -1,7 +1,7 @@
 <template>
     <div class="account">
         <div class="left-user-account"><i class="fas fa-search fs-5 lupa"></i><input type="text" class="user-search" placeholder="Поиск пользователя">
-            <div class="user-search-button"><i class="fas fa-user-plus fs-3 icon-user-plus"></i></div>
+            <div class="user-search-button" @click="addClient"><i class="fas fa-user-plus fs-3 icon-user-plus"></i></div>
         </div>
         <div class="right-user-account">
             <div class="user-search-button"><i class="fas fa-comment fs-3 icon-user-plus"></i></div>
@@ -15,16 +15,319 @@
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно -->
+    <div class="modal fade" id="regModal" tabindex="-1" aria-labelledby="regModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content reg">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="regModalLabel">Регистрация нового пользователя</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="main">
+                        <div class="div_2">
+                            <div class="div_login">
+                                <div><input v-model="login" class="div_4" type="text" placeholder="Логин пользователя" /></div>
+                                <div><input v-model="pass" class="div_4" type="text" placeholder="Пароль пользователя" /></div>
+                            </div>
+                            <div class="div_data">
+                                <div class="div_3">
+                                    <div><input v-model="firstName" class="div_4" type="text" placeholder="Фамилия" /><input v-model="lastName" class="div_4" type="text" placeholder="Имя" /><input v-model="patronymic" class="div_4" type="text" placeholder="Отчество" />
+                                        <input v-model="bday" class="div_4" type="date" placeholder="Дата рождения" /></div>
+                                </div>
+                                <div class="div_3">
+                                    <div><input v-model="phone" class="div_4" type="text" placeholder="Номер телефона" /><input v-model="address" class="div_4" type="text" placeholder="Адрес" /><input v-model="email" class="div_4" type="text" placeholder="E-Mail" /><input v-model="vkId" class="div_4" type="text" placeholder="VK ID" /></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="div_7">
+                            <div class="bottom"><span class="span_1">Срок бездействия аккаунта до его удаления</span><select class="div_6">
+                                <optgroup label="This is a group">
+                                    <option value="12" selected>This is item 1</option>
+                                    <option value="13">This is item 2</option>
+                                    <option value="14">This is item 3</option>
+                                </optgroup>
+                            </select></div>
+                            <div class="bottom"><span class="span_1">Откуда клиент узнал о клубе? </span><select class="div_6">
+                                <optgroup label="This is a group">
+                                    <option value="12" selected>This is item 1</option>
+                                    <option value="13">This is item 2</option>
+                                    <option value="14">This is item 3</option>
+                                </optgroup>
+                            </select></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn bt" @click="register">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 export default {
-    props: ['name'],
+    props: ['name', 'club_id'],
+    data() {
+        return {
+            modal: null,
+            login: null,
+            pass: null,
+            lastName: null,  //Фамилия
+            firstName: null, //Имя
+            patronymic: null, //Отчество
+            bday: null,
+            phone: null,
+            address: null,
+            email: null,
+            vkId: null
+        }
+    },
+    methods: {
+        addClient() {
+            this.login = null;
+            this.pass = null;
+            this.lastName = null;
+            this.firstName = null;
+            this.patronymic = null;
+            this.bday = null;
+            this.phone = null;
+            this.address = null;
+            this.email = null;
+            this.vkId = null;
+            this.modal.show();
+        },
+        async register() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+            urlencoded.append("login", this.login);
+            urlencoded.append("pass", this.pass);
+            urlencoded.append("lastName", this.lastName);
+            urlencoded.append("firstName", this.firstName);
+            urlencoded.append("patronymic", this.patronymic);
+            urlencoded.append("bday", this.bday);
+            urlencoded.append("phone", this.phone);
+            urlencoded.append("address", this.address);
+            urlencoded.append("email", this.email);
+            urlencoded.append("vkId", this.vkId);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/client/register", requestOptions);
+            var result = await response.text();
+            if(result == 200) {
+                this.modal.hide();
+            }
+            else {
+                alert('!!! Ошибка записи !!!');
+            }
+        }
+    },
+    mounted() {
+        var regModal = document.getElementById('regModal')
+        this.modal = bootstrap.Modal.getOrCreateInstance(regModal);
+    }
 }
 </script>
 
 <style scoped>
+.modal-body {
+    padding: 0;
+}
+.reg {
+    background: var(--dark-green-b);
+    color: var(--standart-gray);
+}
+.main {
+    width: 500px;
+    height: 642px;
+}
 
+.div_1 {
+    height: 74px;
+    display: flex;
+    flex-direction: column;
+}
+
+.div_2 {
+    height: 353px;
+    display: flex;
+    color: var(--standart-gray);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: #172d39;
+    flex-direction: column;
+}
+
+.div_3 {
+    width: 499px;
+    height: 273px;
+    display: flex;
+    padding: 31px;
+    padding-top: 0;
+}
+
+.div_7 {
+    width: 257px;
+    height: 183px;
+    display: flex;
+    padding: 31px;
+    padding-top: 0;
+    flex-direction: column;
+}
+
+.input_1 {
+    background: #172D39;
+    border: none;
+    padding: 5px;
+}
+
+.div_4 {
+    height: 35px;
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 23px;
+    color: var(--standart-gray);
+    border: none;
+    padding-top: 2px;
+    width: 190px;
+    border-radius: 8px;
+}
+
+.div_6 {
+    height: 35px;
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 6px;
+    color: var(--standart-gray);
+    border: none;
+    padding-top: 2px;
+    width: 190px;
+    border-radius: 8px;
+}
+
+.div_5 {
+    width: 300px;
+    padding: 12px;
+    height: 191px;
+    display: flex;
+    flex-direction: column;
+}
+
+.check-1 + label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+
+.check-1 + label::after {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25em;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+    left: 186px;
+    position: absolute;
+}
+
+.check-1:checked + label::after {
+    border-color: #0b76ef;
+    background-color: #0b76ef;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.label-1 {
+    font-size: 15px;
+    width: 500px;
+}
+
+.check-2 + label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+
+.check-2 + label::after {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25em;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+    left: 416px;
+    position: absolute;
+}
+
+.check-2:checked + label::after {
+    border-color: #0b76ef;
+    background-color: #0b76ef;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.span_1 {
+    margin-top: 14px;
+    display: inline-block;
+    font-size: 11px;
+    color: var(--standart-gray);
+}
+
+.text_1 {
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 1px;
+    color: var(--standart-gray);
+    border: none;
+    padding-top: 0px;
+    width: 190px;
+    border-radius: 8px;
+}
+
+.div_login {
+    width: 500px;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #172d39;
+    padding-bottom: 21px;
+}
+
+.div_data {
+    display: flex;
+}
+
+.bottom {
+    height: 92px;
+}
+
+.btn {
+}
+
+.bt {
+    background: var(--light-green);
+}
 .account {
     position: relative;
     display: flex;

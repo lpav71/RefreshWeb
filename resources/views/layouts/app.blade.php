@@ -83,13 +83,8 @@
                     $name = $user->name_auth; //Имя
                     $surname = $user->surname; //Фамилия
                     $fullName = $name . " " . $surname;
+                    $club_id = $user->club_id;
                 }
-                /*$user = Auth::user();
-                if ($user !== null) {
-                    $name = $user->name_auth; //Имя
-                    $surname = $user->surname; //Фамилия
-                    $fullName = $name . " " . $surname;
-                }*/
                 else {
                     $fullName = "";
                 }
@@ -97,7 +92,7 @@
             <div style="display: flex">
                 <left-menu></left-menu>
                 <div>
-                    <top name="{{ $fullName }}"></top>
+                    <top name="{{ $fullName }}" club_id="{{ $club_id }}"></top>
                     @yield('content')
                 </div>
             </div>

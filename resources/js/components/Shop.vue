@@ -93,7 +93,7 @@ export default {
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
             var urlencoded = new URLSearchParams();
-            urlencoded.append("login", "petr");
+            urlencoded.append("login", this.client);
 
             var requestOptions = {
                 method: 'POST',

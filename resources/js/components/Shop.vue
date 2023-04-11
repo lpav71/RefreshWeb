@@ -80,9 +80,7 @@ export default {
     },
     methods: {
         pay() {
-            var c = JSON.stringify(this.cart);
-            var e = JSON.parse(c);
-            console.log(e);
+            console.log(JSON.stringify(this.cart));
         },
         clearClient() {
             this.findClient = {};

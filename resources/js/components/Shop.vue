@@ -46,15 +46,15 @@
             <div class="bottom" style="border-radius: 20px;padding: 30px;">
                 <div class="goods" v-for="(g, index) in goods">
                     <div class="goods_img"><img :src="g.icon" height="200" /></div>
-                    <div class="goods_text"><span>{{ g.types }}</span>
-                        <div class="goods_price">
-                            <div><img src="images/shop/rub.svg" /><span>{{ g.price }}</span></div>
-                            <div><img src="images/shop/logo.svg" /><span>н.у.</span></div>
-                        </div>
+                    <div class="goods_text">
+                        <div>{{ g.name }}</div><br><div>{{ g.product }} {{ g.product_param }}</div>
                     </div>
                     <div class="goods-btn">
-                        <span>{{ g.product }} {{ g.product_param }}</span>
-                        <button class="goods_cart" @click="toCart(index)" type="button">В корзину</button>
+                        <div class="goods_price">
+                            <div v-if="g.price != 0"><img src="images/shop/rub.png" width="20" /><span>{{ g.price }}</span></div>
+                            <div v-if="g.price_bonus != 0"><img src="images/shop/coin.png" width="20" /><span>{{ g.price_bonus }}</span></div>
+                        </div>
+                        <button class="goods_cart" @click="toCart(index)" type="button"><i class="fa fa-cart-plus fa-lg"></i></button>
                     </div>
                 </div>
             </div>
@@ -388,11 +388,13 @@ export default {
 
 .goods_text {
     width: 156px;
-    height: 24px;
+    height: 22px;
     display: flex;
     justify-content: space-between;
     font-size: 10px;
-    align-items: center;
+    flex-direction: column;
+    line-height: 8px;
+    margin-top: 7px;
 }
 
 .goods_price {
@@ -409,6 +411,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     font-size: 10px;
+    margin-top: 4px;
 }
 
 .goods_cart {
@@ -416,5 +419,7 @@ export default {
     border-radius: 4px;
     background: var(--dark-green);
     color: var(--standart-color);
+    width: 30px;
+    height: 25px;
 }
 </style>

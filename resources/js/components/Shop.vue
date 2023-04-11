@@ -39,7 +39,7 @@
                     <span class="rub_summa" style="color: #FFCD00;">{{ bonuses }}</span>
                 </div>
             </div>
-            <button class="btn btn-danger" type="button" style="width: 250px;">Оплатить</button>
+            <button class="btn btn-danger" type="button" style="width: 250px;" @click="pay">Оплатить</button>
         </div>
         <div class="right">
             <div class="top"><img src="images/shop/2.svg" /><span style="margin-left: 14px;">Магазин</span><i class="fas fa-search lupa"></i><input @keydown="enter" v-model="product_name" class="input_shop" type="text" placeholder="Поиск товаров" /><button class="butt" type="button">Все</button><button class="butt" type="button">Товары</button><button class="butt" type="button">Пакетные предложения</button><button class="butt" type="button">Услуги</button></div>
@@ -79,6 +79,11 @@ export default {
         }
     },
     methods: {
+        pay() {
+            var c = JSON.stringify(this.cart);
+            var e = JSON.parse(c);
+            console.log(e);
+        },
         clearClient() {
             this.findClient = {};
             this.client = '';

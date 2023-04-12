@@ -43,7 +43,7 @@
         </div>
         <div class="right">
             <div class="top"><img src="images/shop/2.svg" /><span style="margin-left: 14px;">Магазин</span><i class="fas fa-search lupa"></i><input @keydown="enter" v-model="product_name" class="input_shop" type="text" placeholder="Поиск товаров" /><button class="butt" type="button">Все</button><button class="butt" type="button">Товары</button><button class="butt" type="button">Пакетные предложения</button><button class="butt" type="button">Услуги</button></div>
-            <div class="bottom" style="border-radius: 20px;padding: 30px;">
+            <div class="bottom2" style="border-radius: 20px;padding: 30px;">
                 <div class="goods" v-for="(g, index) in goods">
                     <div class="goods_img"><img :src="g.icon" height="200" /></div>
                     <div class="goods_text">
@@ -60,6 +60,46 @@
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно -->
+    <div class="modal fade" id="payModal" tabindex="-1" aria-labelledby="payModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="payModalLabel">Оплата</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="main2">
+                        <div class="div_2">
+                            <div class="div_data">
+                                <div class="div_3">
+                                    <div>
+                                        <div class="div_4"><input id="formcheck_1" class="formcheck_1" name="pay" type="radio" checked /><label class="form-label" for="formcheck_1">Наличные</label></div>
+                                        <div class="div_4"><input id="formcheck_2" class="formcheck_1" name="pay" type="radio" /><label class="form-label" for="formcheck_2">Карта</label></div>
+                                    </div>
+                                </div>
+                                <div class="div_3">
+                                    <div>
+                                        <div class="div_4"><input id="formcheck_3" class="formcheck_1" type="checkbox" /><label class="form-label" for="formcheck_3">Отправить на почту</label></div>
+                                        <div class="div_4"><input id="formcheck_4" class="formcheck_1" type="checkbox" /><label class="form-label" for="formcheck_4">Печать</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="div_7" style="border-style: none;">
+                            <div class="bottom"><span class="span_1">Комментарий к платежу</span><input class="div_6" type="text" /></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-primary save">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -75,12 +115,14 @@ export default {
             rubs: 0,
             bonuses: 0,
             client: '',
-            findClient: {}
+            findClient: {},
+            modal: null
         }
     },
     methods: {
         pay() {
             console.log(JSON.stringify(this.cart));
+            this.modal.show();
         },
         clearClient() {
             this.findClient = {};
@@ -186,12 +228,284 @@ export default {
         }
     },
     mounted() {
+        var payModal = document.getElementById('payModal')
+        this.modal = bootstrap.Modal.getOrCreateInstance(payModal);
+
         this.getAll();
     }
 }
 </script>
 
 <style scoped>
+.bottom2 {
+    display: flex;
+
+}
+.div_1 {
+    height: 74px;
+    display: flex;
+    flex-direction: column;
+}
+.save {
+    background: var(--disable);
+    border: none;
+}
+
+.div_2 {
+    height: 150px;
+    display: flex;
+    color: var(--standart-gray);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: #172d39;
+    flex-direction: column;
+}
+
+.div_3 {
+    width: 499px;
+    height: 158px;
+    display: flex;
+    padding: 31px;
+    padding-top: 0;
+}
+
+.div_7 {
+    width: 500px;
+    height: 102px;
+    display: flex;
+    padding: 31px;
+    padding-top: 0;
+    flex-direction: column;
+}
+
+.input_1 {
+    background: #172D39;
+    border: none;
+    padding: 5px;
+}
+
+.div_4 {
+    height: 35px;
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 23px;
+    color: var(--standart-gray);
+    border: none;
+    padding-top: 2px;
+    width: 190px;
+    border-radius: 8px;
+}
+
+.div_6 {
+    height: 35px;
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 6px;
+    color: var(--standart-gray);
+    border: none;
+    padding-top: 2px;
+    width: 444px;
+    border-radius: 8px;
+}
+
+.div_5 {
+    width: 300px;
+    padding: 12px;
+    height: 191px;
+    display: flex;
+    flex-direction: column;
+}
+
+.check-1 + label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+
+.check-1 + label::after {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25em;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+    left: 186px;
+    position: absolute;
+}
+
+.check-1:checked + label::after {
+    border-color: #0b76ef;
+    background-color: #0b76ef;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.label-1 {
+    font-size: 15px;
+    width: 500px;
+}
+
+.check-2 + label {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+
+.check-2 + label::after {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25em;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+    left: 416px;
+    position: absolute;
+}
+
+.check-2:checked + label::after {
+    border-color: #0b76ef;
+    background-color: #0b76ef;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.span_1 {
+    margin-top: 14px;
+    display: inline-block;
+    font-size: 11px;
+    color: var(--standart-gray);
+}
+
+.text_1 {
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 1px;
+    color: var(--standart-gray);
+    border: none;
+    padding-top: 0px;
+    width: 190px;
+    border-radius: 8px;
+}
+
+.div_login {
+    width: 500px;
+    display: flex;
+    justify-content: start;
+    border-bottom: 1px solid #172d39;
+    align-items: center;
+    height: 50px;
+    padding-left: 34px;
+}
+
+.div_data {
+    display: flex;
+    font-size: 13px;
+}
+
+.bottom {
+    height: 92px;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn {
+}
+
+.bt {
+    margin-top: 23px;
+    margin-left: 32px;
+    background: var(--light-green);
+}
+
+.formcheck_1 {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+.main2 {
+    width: 500px;
+    height: 255px;
+}
+.modal-body {
+    padding: 0;
+}
+.content {
+    background: var(--dark-green-b);
+    color: var(--standart-gray);
+}
+.formcheck_1 + label::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25em;
+    margin-right: 0.5em;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+}
+
+.formcheck_1:checked + label::before {
+    border-color: #0b76ef;
+    background-color: #0b76ef;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.formcheck_1 + label::before {
+    position: relative;
+    left: 161px;
+    top: 2px;
+}
+
+.formcheck_1 + label {
+    position: relative;
+    left: -23px;
+    top: 5px;
+}
+
+/* стили при наведении курсора на checkbox */
+
+.formcheck_1:not(:disabled):not(:checked) + label:hover::before {
+    border-color: #b3d7ff;
+}
+
+/* стили для активного состояния чекбокса (при нажатии на него) */
+
+.formcheck_1:not(:disabled):active + label::before {
+    background-color: #b3d7ff;
+    border-color: #b3d7ff;
+}
+
+/* стили для чекбокса, находящегося в фокусе */
+
+.formcheck_1:focus + label::before {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* стили для чекбокса, находящегося в фокусе и не находящегося в состоянии checked */
+
+.formcheck_1:focus:not(:checked) + label::before {
+    border-color: #80bdff;
+}
+
+/* стили для чекбокса, находящегося в состоянии disabled */
+
+.formcheck_1:disabled + label::before {
+    background-color: #e9ecef;
+}
 .main {
     width: 1790px;
     height: 945px;
@@ -223,15 +537,6 @@ export default {
     display: flex;
     justify-content: start;
     align-items: center;
-}
-
-.bottom {
-    width: 1490px;
-    height: 881px;
-    margin-left: 20px;
-    margin-top: 20px;
-    background: var(--light-blue-bg-color);
-    display: flex;
 }
 
 .input_shop {

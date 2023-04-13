@@ -5,32 +5,16 @@
                 <div class="graphic"></div>
                 <div class="active-bron">
                     <div style="width: 430px;margin-top: 10px;color: var(--standart-gray);"><i class="fas fa-book-open"></i><span style="font-size: 13px;margin-left: 11px;">Активные бронирования ПК</span></div>
+
                     <div class="active-bron-buttons">
-                        <div class="active-bron2">
-                            <div class="active-bron2-left"><span class="time">16:50</span></div>
-                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
-                        </div>
-                        <div class="active-bron2">
-                            <div class="active-bron2-left"><span class="time">16:50</span></div>
-                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
-                        </div>
-                        <div class="active-bron2">
-                            <div class="active-bron2-left"><span class="time">16:50</span></div>
-                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
-                        </div>
-                        <div class="active-bron2">
-                            <div class="active-bron2-left"><span class="time">16:50</span></div>
-                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
-                        </div>
-                        <div class="active-bron2">
-                            <div class="active-bron2-left"><span class="time">16:50</span></div>
-                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
-                        </div>
-                        <div class="active-bron2">
-                            <div class="active-bron2-left"><span class="time">16:50</span></div>
-                            <div class="active-bron2-right"><span class="active-bron2-text">Darvin</span><span class="tasks-text-2">28 компьютер</span></div>
+                        <div class="active-bron2" v-for="(c, i) in clientList">
+                            <div class="active-bron2">
+                                <div class="active-bron2-left"><span class="time">{{ c.time_start }}</span></div>
+                                <div class="active-bron2-right"><span class="active-bron2-text">{{ c.login }}</span><span class="tasks-text-2">{{ c.map_comp_id }} компьютер</span></div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div @mousemove="move" @mouseup="mmup">
@@ -172,7 +156,9 @@ export default {
             shiftStatusOpen: true, //Смена открыта - значит true
             modal: null,
             timerId: null,
-            modalHeader: "Открытие смены"
+            modalHeader: "Открытие смены",
+            //------------------------
+            clientList: []
         }
     },
     methods: {
@@ -324,6 +310,24 @@ export default {
                     .catch(error => console.log('error', error));
             }
         },
+        async getClients() {
+            var club_id = JSON.parse(this.$props.club).id;
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("https://localhost:7150/api/booking/all", requestOptions);
+            this.clientList = await response.json();
+        },
         async getSmena() {
             var urlencoded = new URLSearchParams();
             urlencoded.append("club_id", JSON.parse(this.$props.userData).club_id);
@@ -406,6 +410,7 @@ export default {
             })
             .catch(error => console.log('error', error));
         this.getSmena();
+        this.getClients();
         console.log(this.$props.club);
         console.log(this.$props.userData);
     }

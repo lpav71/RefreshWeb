@@ -547,9 +547,6 @@ export default {
     justify-content: space-between;
     width: 156px;
 }
-#game-image {
-
-}
 #game-selector-button {
     display: flex;
     justify-content: center;
@@ -562,9 +559,6 @@ export default {
     border-radius: 10px;
     transition: all 0.5s ease 0s;
     position: relative;
-}
-#game-selector-button span {
-
 }
 #game-selector {
     position: relative;

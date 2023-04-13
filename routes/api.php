@@ -44,7 +44,7 @@ Route::post('shop/get', [\App\Http\Controllers\api\ShopController::class, 'getAl
 Route::post('shop/find', [\App\Http\Controllers\api\ShopController::class, 'find']);
 Route::post('client/register', [\App\Http\Controllers\api\ClientController::class, 'register']);
 Route::post('shop/find/client', [\App\Http\Controllers\api\ShopController::class, 'searchClient']);
-
+Route::post('booking/all', [\App\Http\Controllers\api\BookingController::class, 'getAllClients']);
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');
 

@@ -12,7 +12,7 @@ class ShopController extends Controller
 {
     public function getAll(Request $request)
     {
-        $store = Store::where('store.club_id', $request->club_id)->join('product_type', function($join)
+        $store = Store::where('store.club_id', $request->club_id)->where('product_type.club_id', $request->club_id)->join('product_type', function($join)
         {
             $join->on('store.types', 'product_type.types');
         })->get();

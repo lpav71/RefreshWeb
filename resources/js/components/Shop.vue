@@ -10,7 +10,7 @@
                     <img src="images/shop/ava.svg" style="width: 22px;margin-top: 10px;margin-left: 10px;" />
                     <i class="far fa-star" style="margin-left: 119px;position: relative;top: 5px;left: 71px;"></i>
                     <div style="display: inline-block;position: relative;top: -30px;left: 28px;">
-                        <span style="display: inline-block;position: relative;top: 35px;left: -136px;">{{ findClient.login }}</span>
+                        <span class="client_login">{{ findClient.login }}</span>
                     </div>
                 </div>
                 <div class="info">
@@ -63,7 +63,7 @@
 
     <!-- Модальное окно -->
     <div class="modal fade" id="payModal" tabindex="-1" aria-labelledby="payModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="payModalLabel">Оплата</h5>
@@ -93,8 +93,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-primary save">Сохранить изменения</button>
+                    <button type="button" class="btn btn-primary save" @click="payJson">Оплата</button>
                 </div>
             </div>
         </div>
@@ -121,8 +120,11 @@ export default {
     },
     methods: {
         pay() {
-            console.log(JSON.stringify(this.cart));
             this.modal.show();
+        },
+        payJson() {
+            console.log(JSON.stringify(this.cart));
+            this.modal.hide();
         },
         clearClient() {
             this.findClient = {};
@@ -148,7 +150,17 @@ export default {
             };
 
             var response = await fetch("api/shop/find/client", requestOptions);
-            this.findClient = await response.json();
+            try {
+                var result = await response.json();
+                this.findClient = result;
+            }
+            catch (e) {
+                result = null;
+            }
+            if (result === null) {
+                alert('Клиент не найден');
+                this.findClient = {};
+            }
         },
         del(i) {
             this.cart.splice(i,1);
@@ -237,6 +249,15 @@ export default {
 </script>
 
 <style scoped>
+
+.client_login {
+    display: inline-block;
+    margin-top: 5px;
+    margin-left: 14px;
+}
+.modal-footer {
+    justify-content: flex-start;
+}
 .bottom2 {
     display: flex;
 
@@ -249,6 +270,7 @@ export default {
 .save {
     background: var(--disable);
     border: none;
+    margin-left: 20px;
 }
 
 .div_2 {

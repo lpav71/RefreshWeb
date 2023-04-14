@@ -139,8 +139,8 @@
                                         <td><span class="name_modal">Компьютер: </span><span class="value_modal">{{ currentClient.zone }} {{ currentClient.map_comp_id }}</span></td>
                                     </tr>
                                     <tr>
-                                        <td><span class="name_modal">Дата: </span><span class="value_modal">{{ currentClient.time_start }}</span></td>
-                                        <td><span class="name_modal">Время: </span><span class="value_modal">{{ currentClient.date }}</span></td>
+                                        <td><span class="name_modal">Дата: </span><span class="value_modal">{{ currentClient.date }}</span></td>
+                                        <td><span class="name_modal">Время: </span><span class="value_modal">{{ currentClient.time_start }}</span></td>
                                     </tr>
                                     <tr>
                                         <td><span class="name_modal">Тариф: </span><span class="value_modal">{{ currentClient.tariff }}</span></td>

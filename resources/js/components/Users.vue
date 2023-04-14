@@ -510,6 +510,8 @@ nav{
 }
 .home {
     margin-top: 20px;
+    width: 1793px;
+    margin-left: 13px;
 }
 .home .header_bottom {
     display: flex;

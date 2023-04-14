@@ -334,7 +334,7 @@ export default {
     flex-direction: row;
     align-items: flex-start;
     padding: 20px 0px;
-    width: 1805px;
+    width: 1820px;
     height: 94px;
     top: 1px;
     justify-content: space-between;

@@ -521,13 +521,13 @@ export default {
 .game-wrap {
     background: var(--light-blue-bg-color);
     height: 900px;
-    width: 1770px;
+    width: 1793px;
     padding-left: 20px;
     border-radius: 20px;
     margin-top: 20px;
 }
 #icons-game {
-    margin-right: 18px;
+    margin-right: 21px;
     margin-bottom: 30px;
 }
 #game-button {
@@ -575,122 +575,14 @@ export default {
     color: white;
 }
 #DIV_136 {
-    border-block-end-color: rgb(33, 37, 41);
-    border-block-start-color: rgb(33, 37, 41);
-    border-inline-end-color: rgb(33, 37, 41);
-    border-inline-start-color: rgb(33, 37, 41);
-    box-sizing: border-box;
-    caret-color: rgb(33, 37, 41);
-    color: rgb(33, 37, 41);
-    column-rule-color: rgb(33, 37, 41);
-    min-block-size: auto;
-    min-height: auto;
-    min-inline-size: auto;
-    min-width: auto;
-    padding-inline-end: 20px;
-    padding-inline-start: 20px;
-    perspective-origin: 905px 592px;
-    text-decoration: none solid rgb(33, 37, 41);
-    text-emphasis-color: rgb(33, 37, 41);
-    text-size-adjust: 100%;
-    transform-origin: 905px 592px;
-    width: 1810px;
-    border: 0 none rgb(33, 37, 41);
-    font: 16px / 24px Russia, sans-serif;
-    outline: rgb(33, 37, 41) none 0;
+    width: 1813px;
     padding: 0 20px;
-}/*#DIV_136*/
-
-#DIV_136:after {
-    border-block-end-color: rgb(33, 37, 41);
-    border-block-start-color: rgb(33, 37, 41);
-    border-inline-end-color: rgb(33, 37, 41);
-    border-inline-start-color: rgb(33, 37, 41);
-    box-sizing: border-box;
-    caret-color: rgb(33, 37, 41);
-    color: rgb(33, 37, 41);
-    column-rule-color: rgb(33, 37, 41);
-    text-decoration: none solid rgb(33, 37, 41);
-    text-emphasis-color: rgb(33, 37, 41);
-    text-size-adjust: 100%;
-    border: 0 none rgb(33, 37, 41);
-    font: 16px / 24px Russia, sans-serif;
-    outline: rgb(33, 37, 41) none 0;
-}/*#DIV_136:after*/
-
-#DIV_136:before {
-    border-block-end-color: rgb(33, 37, 41);
-    border-block-start-color: rgb(33, 37, 41);
-    border-inline-end-color: rgb(33, 37, 41);
-    border-inline-start-color: rgb(33, 37, 41);
-    box-sizing: border-box;
-    caret-color: rgb(33, 37, 41);
-    color: rgb(33, 37, 41);
-    column-rule-color: rgb(33, 37, 41);
-    text-decoration: none solid rgb(33, 37, 41);
-    text-emphasis-color: rgb(33, 37, 41);
-    text-size-adjust: 100%;
-    border: 0 none rgb(33, 37, 41);
-    font: 16px / 24px Russia, sans-serif;
-    outline: rgb(33, 37, 41) none 0;
+    margin-left: -9px;
 }
 
 #DIV_171 {
-    block-size: 862px;
-    border-block-end-color: rgb(33, 37, 41);
-    border-block-start-color: rgb(33, 37, 41);
-    border-inline-end-color: rgb(33, 37, 41);
-    border-inline-start-color: rgb(33, 37, 41);
-    box-sizing: border-box;
-    caret-color: rgb(33, 37, 41);
-    color: rgb(33, 37, 41);
-    column-rule-color: rgb(33, 37, 41);
-    height: 862px;
-    inline-size: 1770px;
-    perspective-origin: 885px 431px;
-    text-decoration: none solid rgb(33, 37, 41);
-    text-emphasis-color: rgb(33, 37, 41);
-    text-size-adjust: 100%;
-    transform-origin: 885px 431px;
-    width: 1770px;
-    border: 0 none rgb(33, 37, 41);
     font: 16px / 24px Russia, sans-serif;
-    outline: rgb(33, 37, 41) none 0;
-}/*#DIV_171*/
-
-#DIV_171:after {
-    border-block-end-color: rgb(33, 37, 41);
-    border-block-start-color: rgb(33, 37, 41);
-    border-inline-end-color: rgb(33, 37, 41);
-    border-inline-start-color: rgb(33, 37, 41);
-    box-sizing: border-box;
-    caret-color: rgb(33, 37, 41);
-    color: rgb(33, 37, 41);
-    column-rule-color: rgb(33, 37, 41);
-    text-decoration: none solid rgb(33, 37, 41);
-    text-emphasis-color: rgb(33, 37, 41);
-    text-size-adjust: 100%;
-    border: 0 none rgb(33, 37, 41);
-    font: 16px / 24px Russia, sans-serif;
-    outline: rgb(33, 37, 41) none 0;
-}/*#DIV_171:after*/
-
-#DIV_171:before {
-    border-block-end-color: rgb(33, 37, 41);
-    border-block-start-color: rgb(33, 37, 41);
-    border-inline-end-color: rgb(33, 37, 41);
-    border-inline-start-color: rgb(33, 37, 41);
-    box-sizing: border-box;
-    caret-color: rgb(33, 37, 41);
-    color: rgb(33, 37, 41);
-    column-rule-color: rgb(33, 37, 41);
-    text-decoration: none solid rgb(33, 37, 41);
-    text-emphasis-color: rgb(33, 37, 41);
-    text-size-adjust: 100%;
-    border: 0 none rgb(33, 37, 41);
-    font: 16px / 24px Russia, sans-serif;
-    outline: rgb(33, 37, 41) none 0;
-}/*#DIV_171:before*/
+}
 
 #DIV_172 {
     align-items: center;
@@ -712,7 +604,7 @@ export default {
     text-emphasis-color: rgb(33, 37, 41);
     text-size-adjust: 100%;
     transform-origin: 885px 21px;
-    width: 1770px;
+    width: 1793px;
     border: 0 none rgb(33, 37, 41);
     font: 16px / 24px Russia, sans-serif;
     outline: rgb(33, 37, 41) none 0;

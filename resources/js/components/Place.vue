@@ -8,7 +8,7 @@
 
                     <div class="active-bron-buttons">
                         <div class="active-bron2" v-for="(c, i) in clientList">
-                            <div class="active-bron2">
+                            <div class="active-bron2" @click="bModal(i)">
                                 <div class="active-bron2-left"><span class="time">{{ c.time_start }}</span></div>
                                 <div class="active-bron2-right"><span class="active-bron2-text">{{ c.login }}</span><span class="tasks-text-2">{{ c.map_comp_id }} компьютер</span></div>
                             </div>
@@ -120,6 +120,61 @@
         </div>
     </div>
 
+    <!-- Модальное окно -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookingModalLabel">Информация о бронировании</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="main_modal">
+                        <div class="info_modal" style="margin-top: 26px;">
+                            <div class="table-responsive">
+                                <table class="table table-borderless user_info_modal">
+                                    <tbody>
+                                    <tr>
+                                        <td><span class="name_modal">Пользователь: </span><span class="value_modal">{{ currentClient.login }}</span></td>
+                                        <td><span class="name_modal">Компьютер: </span><span class="value_modal">{{ currentClient.zone }} {{ currentClient.map_comp_id }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="name_modal">Дата: </span><span class="value_modal">{{ currentClient.time_start }}</span></td>
+                                        <td><span class="name_modal">Время: </span><span class="value_modal">{{ currentClient.date }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="name_modal">Тариф: </span><span class="value_modal">{{ currentClient.tariff }}</span></td>
+                                        <td><span class="name_modal">Источник: </span><span class="value_modal">booking.refresh-software.ru/id3456789</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="name_modal">Оплата: </span><span class="value_modal">Произведена</span></td>
+                                        <td><span class="name_modal">Метод оплаты: </span><span class="value_modal">Банковская карта (онлайн)</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px;"><span>Контактная информация</span>
+                            <div class="contact_modal">
+                                <table class="table table-borderless user_info_modal">
+                                    <tbody>
+                                    <tr>
+                                        <td><span class="name_modal">Номер телефона: </span><span class="value_modal">{{ currentClient.phone }}</span></td>
+                                        <td><span class="name_modal">E-mail: </span><span class="value_modal">{{ currentClient.email }} {{ currentClient.map_comp_id }}</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" @click="cancelBooking">Отмена бронирования</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -155,13 +210,41 @@ export default {
             shiftOpenClose: 'Закрыть смену',
             shiftStatusOpen: true, //Смена открыта - значит true
             modal: null,
+            bookingModal: null,
             timerId: null,
             modalHeader: "Открытие смены",
             //------------------------
-            clientList: []
+            clientList: [],
+            currentClient: {}
         }
     },
     methods: {
+        async changeStatus(id) {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("id", id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            fetch("api/booking/cancel", requestOptions);
+        },
+        cancelBooking() {
+            this.bookingModal.hide();
+            var id = this.currentClient.id;
+            this.changeStatus(id);
+            this.getClients();
+        },
+        bModal(i) {
+            this.bookingModal.show();
+            this.currentClient = this.clientList[i];
+        },
         addBox() {
             if (this.zone !== -1) {
                 this.element = {top:top, left: this.otstupLeft, offsetLeft: 0}; //offsetLeft используется для вычисления смещения при изменении размера окна
@@ -325,7 +408,7 @@ export default {
                 redirect: 'follow'
             };
 
-            var response = await fetch("https://localhost:7150/api/booking/all", requestOptions);
+            var response = await fetch("api/booking/all", requestOptions);
             this.clientList = await response.json();
         },
         async getSmena() {
@@ -368,6 +451,9 @@ export default {
     mounted()  {
         var shiftModal = document.getElementById('shiftModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(shiftModal);
+
+        var bookingModal = document.getElementById('bookingModal')
+        this.bookingModal = bootstrap.Modal.getOrCreateInstance(bookingModal);
 
         shiftModal.addEventListener('hidden.bs.modal', event => {
             clearTimeout(this.timerId);
@@ -418,7 +504,55 @@ export default {
 </script>
 
 <style scoped>
+.modal-footer {
+    justify-content: flex-start;
+}
+.main_modal {
+    width: 800px;
+    height: 314px;
+    background: var(--light-blue-bg-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.modal-body {
+    padding: 0;
+}
+.modal-content {
+    background: var(--light-blue-bg-color);
+    color: var(--standart-gray);
+}
+.info_modal {
+    width: 760px;
+    background: var(--dark-blue-bg-color);
+    border-radius: 20px;
+}
 
+.contact_modal {
+    width: 760px;
+    height: 60px;
+    background: var(--dark-blue-bg-color);
+    border-radius: 20px;
+    display: flex;
+    padding-top: 4px;
+    margin-top: 10px;
+}
+
+.user_info_modal {
+    color: var(--standart-gray);
+    margin-top: 10px;
+    font-size: 13px;
+    width: 90%;
+    margin-left: 10px;
+}
+
+.user_info_modal td {
+    width: 50%;
+}
+
+.value_modal {
+    color: var(--light-green);
+}
 .inbox {
     width: 5px;
     height: 5px;

@@ -86,6 +86,10 @@ export default {
 </script>
 
 <style scoped>
+.home {
+    width: 1795px;
+    margin-left: 11px;
+}
 .home table{
     width: 100%;
     color: white;

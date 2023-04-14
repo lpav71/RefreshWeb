@@ -44,14 +44,14 @@
                         <div class="div_7">
                             <div class="bottom"><span class="span_1">Срок бездействия аккаунта до его удаления</span><select class="div_6">
                                 <optgroup label="This is a group">
-                                    <option value="12" selected>This is item 1</option>
+                                    <option value="12" selected>Выберите</option>
                                     <option value="13">This is item 2</option>
                                     <option value="14">This is item 3</option>
                                 </optgroup>
                             </select></div>
                             <div class="bottom"><span class="span_1">Откуда клиент узнал о клубе? </span><select class="div_6">
                                 <optgroup label="This is a group">
-                                    <option value="12" selected>This is item 1</option>
+                                    <option value="12" selected>Выберите</option>
                                     <option value="13">This is item 2</option>
                                     <option value="14">This is item 3</option>
                                 </optgroup>
@@ -60,8 +60,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn bt" @click="register">Сохранить изменения</button>
+                    <button type="button" class="btn btn-success" @click="register">Сохранить</button>
                 </div>
             </div>
         </div>
@@ -145,13 +144,16 @@ export default {
 .modal-body {
     padding: 0;
 }
+.modal-footer {
+    justify-content: flex-start;
+}
 .reg {
     background: var(--dark-green-b);
     color: var(--standart-gray);
 }
 .main {
     width: 500px;
-    height: 642px;
+    height: 546px;
 }
 
 .div_1 {

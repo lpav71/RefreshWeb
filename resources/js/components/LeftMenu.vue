@@ -4,7 +4,7 @@
         <div style="display: flex;flex-direction: column;align-items: center;margin-top: 15px;">
             <img class="left-icon" src="img/1.svg" alt="">
             <a href="shop"><img class="left-icon" src="img/2.svg"></a>
-            <img class="left-icon" src="img/3.svg" alt="">
+            <a href="map"><img class="left-icon" src="img/3.svg" alt=""></a>
             <img class="left-icon" src="img/4.svg" alt="">
             <a href="finduser"><img class="left-icon" src="img/5.svg"></a>
             <a href="booking"><img class="left-icon" src="img/6.svg" alt=""></a>

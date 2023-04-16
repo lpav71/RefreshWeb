@@ -23,6 +23,7 @@ Route::get('game', [\App\Http\Controllers\GameController::class, 'index'])->name
 Route::get('finance', [\App\Http\Controllers\FinanceController::class, 'index'])->name('finance');
 Route::get('booking', [\App\Http\Controllers\BookingController::class, 'index'])->name('booking');
 Route::get('shop', [\App\Http\Controllers\ShopController::class, 'index'])->name('shop');
+Route::get('map', [\App\Http\Controllers\MapController::class, 'index'])->name('map');
 
 
 

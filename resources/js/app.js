@@ -40,6 +40,8 @@ import BookingComponent from "./components/Booking.vue";
 app.component('booking', BookingComponent);
 import ShopComponent from "./components/Shop.vue";
 app.component('shop', ShopComponent);
+import MapComponent from "./components/Map.vue";
+app.component('maps', MapComponent);
 
 
 

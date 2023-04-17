@@ -252,8 +252,10 @@ export default {
 
 .client_login {
     display: inline-block;
-    margin-top: 5px;
-    margin-left: 14px;
+    margin-top: 3px;
+    margin-left: -147px;
+    position: relative;
+    top: 35px;
 }
 .modal-footer {
     justify-content: flex-start;
@@ -533,6 +535,7 @@ export default {
     height: 945px;
     display: flex;
     color: white;
+    margin-left: 13px;
 }
 
 .left {

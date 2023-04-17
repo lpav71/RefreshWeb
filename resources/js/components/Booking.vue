@@ -66,23 +66,13 @@ export default {
 </script>
 
 <style scoped>
-.div_1::-webkit-scrollbar {
-    width: 12px;               /* ширина scrollbar */
-}
-.div_1::-webkit-scrollbar-track {
-    background: var(--dark-green);        /* цвет дорожки */
-}
-.div_1::-webkit-scrollbar-thumb {
-    background-color: var(--light-green);    /* цвет плашки */
-    border-radius: 20px;       /* закругления плашки */
-    border: 3px solid var(--standart-black);  /* padding вокруг плашки */
-}
 .div_1 {
-    width: 1780px;
+    width: 1794px;
     height: 880px;
     color: white;
     border-radius: 20px;
     overflow: auto;
+    margin-left: 11px;
 }
 
 .booking-table {

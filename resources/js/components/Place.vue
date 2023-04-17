@@ -24,7 +24,8 @@
                         <div v-for="(zone, index) in zones" :class="[{'button-active': zones[index].active, 'buttons': true}]" @click="changeZone(index)"><span>{{ zone.name }}</span></div>
                     </div>
                     <div style="display: flex;align-items: center;">
-                        <div class="buttons"  @click="addBox" style="width: 57px;height: 34px;"><i class="fas fa-plus fs-5"></i></div>
+                        <div class="buttons" @click="addZone" style="width: 150px;height: 34px;">Добавить зону</div>
+                        <div class="buttons" @click="addBox" style="width: 57px;height: 34px;"><i class="fas fa-plus fs-5"></i></div>
                         <div class="buttons-dark" style="width: 57px;height: 34px;"><i class="fas fa-lock fs-5"></i></div>
                         <div class="buttons-dark" style="width: 185px;height: 42px;"><span>Клиентская карта</span></div>
                     </div>
@@ -121,6 +122,24 @@
     </div>
 
     <!-- Модальное окно -->
+    <div class="modal fade" id="addZoneModal" tabindex="-1" aria-labelledby="addZoneModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content addZoneModal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addZoneModalLabel">Добавить группу ПК</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <input class="input_zone" type="text" placeholder="Введите название зала" v-model="zoneName">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" @click="zoneSave">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно -->
     <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -211,14 +230,40 @@ export default {
             shiftStatusOpen: true, //Смена открыта - значит true
             modal: null,
             bookingModal: null,
+            addZoneModal: null,
             timerId: null,
             modalHeader: "Открытие смены",
             //------------------------
             clientList: [],
-            currentClient: {}
+            currentClient: {},
+            zoneName: ''
         }
     },
     methods: {
+        addZone() {
+            this.addZoneModal.show();
+        },
+        async zoneSave() {
+            var club_id = JSON.parse(this.$props.club).id;
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", club_id);
+            urlencoded.append("zone_name", this.zoneName);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/zone/add", requestOptions);
+            var result = await response.json();
+            location.reload();
+        },
         async changeStatus(id) {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -455,6 +500,9 @@ export default {
         var bookingModal = document.getElementById('bookingModal')
         this.bookingModal = bootstrap.Modal.getOrCreateInstance(bookingModal);
 
+        var addZoneModal = document.getElementById('addZoneModal')
+        this.addZoneModal = bootstrap.Modal.getOrCreateInstance(addZoneModal);
+
         shiftModal.addEventListener('hidden.bs.modal', event => {
             clearTimeout(this.timerId);
         })
@@ -504,6 +552,16 @@ export default {
 </script>
 
 <style scoped>
+
+.input_zone {
+    margin: 15px;
+    width: 90%;
+    background: var(--dark-blue-bg-color);
+    border: none;
+    border-radius: 7px;
+    padding: 7px;
+    color: gray;
+}
 .modal-footer {
     justify-content: flex-start;
 }

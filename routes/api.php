@@ -46,7 +46,7 @@ Route::post('client/register', [\App\Http\Controllers\api\ClientController::clas
 Route::post('shop/find/client', [\App\Http\Controllers\api\ShopController::class, 'searchClient']);
 Route::post('booking/all', [\App\Http\Controllers\api\BookingController::class, 'getAllClients']);
 Route::post('booking/cancel', [\App\Http\Controllers\api\BookingController::class, 'cancelBooking']);
-
+Route::post('zone/add', [\App\Http\Controllers\api\ZoneController::class, 'addZone']);
 
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');

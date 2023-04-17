@@ -14,4 +14,16 @@ class ZoneController extends Controller
         $zone = Zone::where('club_id', $clubId)->orderBy('num')->get();
         return $zone;
     }
+    public function addZone(Request $request)
+    {
+        $club_id = $request->club_id;
+        $zoneName = $request->zone_name;
+        $maxNum = Zone::where('club_id', $club_id)->selectRaw('MAX(num)')->first()->max;
+        $zone = new Zone;
+        $zone->num = $maxNum + 1;
+        $zone->club_id = $club_id;
+        $zone->name = $zoneName;
+        $zone->save();
+        return $zone;
+    }
 }

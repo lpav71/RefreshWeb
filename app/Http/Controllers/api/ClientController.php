@@ -51,6 +51,7 @@ class ClientController extends Controller
 
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://194.87.144.7:6150/api/clients/register',
+            //CURLOPT_URL => 'https://localhost:7161/api/clients/register',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

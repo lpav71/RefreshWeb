@@ -25,7 +25,7 @@ class BookingController extends Controller
             'clients.id'
         )
             ->join(
-            'zone',
+                'zone',
                 'booking.id_zone',
                 '=',
                 'zone.id'

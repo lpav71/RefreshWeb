@@ -26,8 +26,8 @@
                     <table>
                         <tbody>
                             <tr v-for="c in comps">
-                                <td>{{ c.id }}</td>
-                                <td style="color: green">Включен</td>
+                                <td>{{ c.id_comp }}</td>
+                                <td :style="{ color: c.status_color }">{{ c.status_ping }}</td>
                                 <td>{{ c.mac }}</td>
                                 <td>{{ c.cpu }}</td>
                                 <td>{{ c.ram }}</td>
@@ -56,6 +56,16 @@ export default {
     },
     mounted() {
         this.comps = JSON.parse(this.$props.comps);
+        this.comps.forEach(function (item, index) {
+            if (item.ping == 1) {
+                this.comps[index].status_ping = 'Доступен';
+                this.comps[index].status_color = 'green';
+            }
+            else {
+                this.comps[index].status_ping = 'Не доступен';
+                this.comps[index].status_color = '#cc5a5a';
+            }
+        }.bind(this))
     }
 }
 </script>
@@ -70,6 +80,7 @@ export default {
     width: 1793px;
     height: 947px;
     color: var(--standart-gray);
+    margin-left: 11px;
 }
 
 .home .header_bottom .header_bottom_left {

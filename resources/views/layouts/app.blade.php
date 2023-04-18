@@ -87,6 +87,7 @@
                 }
                 else {
                     $fullName = "";
+                    $club_id = 1;
                 }
             @endphp
             <div style="display: flex">

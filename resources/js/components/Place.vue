@@ -115,7 +115,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
-                    <span>Ждите. Операция выполняется...</span>
+                    <span class="waiting">Ждите. Операция выполняется...</span>
                 </div>
             </div>
         </div>
@@ -553,6 +553,10 @@ export default {
 
 <style scoped>
 
+.waiting {
+    display: block;
+    margin: 23px;
+}
 .input_zone {
     margin: 15px;
     width: 90%;

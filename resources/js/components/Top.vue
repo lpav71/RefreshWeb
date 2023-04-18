@@ -9,9 +9,11 @@
                 <div class="notification"><span class="count-notif" style="color: var(--standart-color);font-size: 9px;">10</span></div>
             </div>
             <div class="user-select-button">
-                <div class="avatar"><img style="width: 42px;height: 42px;" src="img/logo_test.jpg"></div><select class="user-change">
-                <option value="12" selected="">{{ name }}</option>
-            </select>
+                <div class="avatar"><img style="width: 42px;height: 42px;" src="img/logo_test.jpg"></div>
+                <select v-model="user_data" class="user-change" @change="promo">
+                    <option value="name" selected="selected">{{ name }}</option>
+                    <option value="promo">Промокоды</option>
+                </select>
             </div>
         </div>
     </div>
@@ -82,10 +84,16 @@ export default {
             phone: null,
             address: null,
             email: null,
-            vkId: null
+            vkId: null,
+            user_data: 'name'
         }
     },
     methods: {
+        promo(e) {
+            if (this.user_data == 'promo') {
+                window.open("promo", '_self');
+            }
+        },
         addClient() {
             this.login = null;
             this.pass = null;

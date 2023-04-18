@@ -42,6 +42,8 @@ import ShopComponent from "./components/Shop.vue";
 app.component('shop', ShopComponent);
 import MapComponent from "./components/Map.vue";
 app.component('maps', MapComponent);
+import PromoComponent from "./components/Promo.vue";
+app.component('promo', PromoComponent);
 
 
 

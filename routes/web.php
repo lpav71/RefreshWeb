@@ -24,7 +24,7 @@ Route::get('finance', [\App\Http\Controllers\FinanceController::class, 'index'])
 Route::get('booking', [\App\Http\Controllers\BookingController::class, 'index'])->name('booking');
 Route::get('shop', [\App\Http\Controllers\ShopController::class, 'index'])->name('shop');
 Route::get('map', [\App\Http\Controllers\MapController::class, 'index'])->name('map');
-
+Route::get('promo', [\App\Http\Controllers\PromoController::class, 'index'])->name('promo');
 
 
 

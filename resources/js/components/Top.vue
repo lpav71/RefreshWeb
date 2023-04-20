@@ -13,6 +13,7 @@
                 <select v-model="user_data" class="user-change" @change="promo">
                     <option value="name" selected="selected">{{ name }}</option>
                     <option value="promo">Промокоды</option>
+                    <option value="dashboard">Статистика</option>
                 </select>
             </div>
         </div>
@@ -92,6 +93,9 @@ export default {
         promo(e) {
             if (this.user_data == 'promo') {
                 window.open("promo", '_self');
+            }
+            if (this.user_data == 'dashboard') {
+                window.open("dashboard", '_self');
             }
         },
         addClient() {

@@ -44,7 +44,8 @@ import MapComponent from "./components/Map.vue";
 app.component('maps', MapComponent);
 import PromoComponent from "./components/Promo.vue";
 app.component('promo', PromoComponent);
-
+import DashboardComponent from "./components/Dashboard.vue";
+app.component('dashboard', DashboardComponent);
 
 
 /**

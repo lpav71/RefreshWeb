@@ -8,7 +8,7 @@
             <label>Введите промокод<br><input v-model="promocode" class="input_text" type="text" placeholder="Введите промокод"><a class="gen" @click="autoGen" href="">Сгенирировать автоматически</a></label>
             <label>Начало действия промокода<br><input v-model="data_start" class="input_text" type="date"></label>
             <label>Окончание действия промокода<br><input v-model="data_stop" class="input_text" type="date"></label>
-            <label>Ограничение активаций<br><input v-model="num" class="input_text" type="text" placeholder="Введите количество"></label>
+            <label>Ограничение активаций<br><input v-model="max_activation" class="input_text" type="text" placeholder="Введите количество"></label>
             <label>Комментарий<br><textarea v-model="comment" spellcheck="false" class="input_text area" type="text" placeholder="Опишите мотив промокода"></textarea></label>
             <button class="btn btn-success" @click="save">Создать</button>
         </div>
@@ -30,7 +30,7 @@
                             <td>{{ p.promo }}</td>
                             <td>{{ p.date_start }} - {{ p.date_stop }}</td>
                             <td>{{ p.description }}</td>
-                            <td>{{ p.num }}</td>
+                            <td>{{ p.max_activation }}</td>
                             <td :style="{ color: p.status_color }">{{ p.status_active }}</td>
                         </tr>
                     </table>
@@ -51,7 +51,8 @@ export default {
             data_start: '',
             data_stop: '',
             num: 0,
-            comment: ''
+            comment: '',
+            max_activation: 0
         }
     },
     methods: {

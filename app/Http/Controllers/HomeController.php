@@ -42,4 +42,10 @@ class HomeController extends Controller
         ]);
         return view('home', compact('fullName', 'club', 'userData'));
     }
+    public function dashboard()
+    {
+        $user = Auth::user();
+        $club_id = $user->club_id;
+        return view('common.dashboard', compact('club_id'));
+    }
 }

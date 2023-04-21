@@ -46,6 +46,8 @@ import PromoComponent from "./components/Promo.vue";
 app.component('promo', PromoComponent);
 import DashboardComponent from "./components/Dashboard.vue";
 app.component('dashboard', DashboardComponent);
+import TaskComponent from "./components/Task.vue";
+app.component('task', TaskComponent);
 
 
 /**

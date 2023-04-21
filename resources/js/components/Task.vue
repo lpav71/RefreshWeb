@@ -1,21 +1,21 @@
 <template>
     <div class="home">
         <div class="header_bottom">
-            <div class="header_bottom_left"><i class="fas fa-info-circle"></i><span>Сведения о системе</span><button class="btn" type="button" style="border-top-left-radius: 20px;border-bottom-right-radius: 20px;">Произвести сканирование</button></div>
+            <div class="header_bottom_left"><i class="fas fa-info-circle"></i><span>История задач</span></div>
         </div>
         <div class="main_table" style="margin-top: 20px;">
             <div class="t1">
                 <table>
                     <thead>
                     <tr>
-                        <th>Номер ПК</th>
-                        <th>Статус ПК</th>
-                        <th>MAC Устройства</th>
-                        <th>CPU/Температура</th>
-                        <th>RAM</th>
-                        <th>GPU/Температура</th>
-                        <th>Материнскаяя плата</th>
-                        <th style="border-right-style: none;">Требуется внимание</th>
+                        <th>Акт</th>
+                        <th>Задача</th>
+                        <th>Дата</th>
+                        <th>Срок выполнения</th>
+                        <th>Поручил</th>
+                        <th>Исполнитель</th>
+                        <th>Статус</th>
+                        <th>Операции</th>
                     </tr>
                     </thead>
                     <tbody></tbody>
@@ -25,16 +25,16 @@
                 <div class="scroll_table">
                     <table>
                         <tbody>
-                            <tr v-for="c in comps">
-                                <td>{{ c.id_comp }}</td>
-                                <td :style="{ color: c.status_color }">{{ c.status_ping }}</td>
-                                <td>{{ c.mac }}</td>
-                                <td>{{ c.cpu }}</td>
-                                <td>{{ c.ram }}</td>
-                                <td>{{ c.gpu }}</td>
-                                <td>{{ c.mb }}</td>
-                                <td style="border-right-style: none;color: green">Нет</td>
-                            </tr>
+                        <tr v-for="c in tasks">
+                            <td class="status_column"><div class="status" style="background: green">Новый</div></td>
+                            <td>{{ c.descript_admin }}</td>
+                            <td>{{ c.create_dt }}</td>
+                            <td>{{ c.end_dt }}</td>
+                            <td>{{ c.name }}</td>
+                            <td></td>
+                            <td class="status_column"><div class="status" :style="{background: c.color}">{{ c.description }}</div></td>
+                            <td style="border-right-style: none;color: green"><button class="btn btn-success"><i class="far fa-edit"></i></button><button class="btn btn-success"><i class="fas fa-times"></i></button></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -45,32 +45,41 @@
 
 <script>
 export default {
-    props: ['club_id', 'comps'],
+    name: "Task",
+    props: ['club_id', 'tasks'],
     data() {
         return {
-            comps: []
+            tasks: []
         }
     },
     methods: {
 
     },
     mounted() {
-        this.comps = JSON.parse(this.$props.comps);
-        this.comps.forEach(function (item, index) {
-            if (item.ping == 1) {
-                this.comps[index].status_ping = 'Доступен';
-                this.comps[index].status_color = 'green';
-            }
-            else {
-                this.comps[index].status_ping = 'Не доступен';
-                this.comps[index].status_color = '#cc5a5a';
-            }
-        }.bind(this))
+        this.tasks = JSON.parse(this.$props.tasks);
     }
 }
 </script>
 
 <style scoped>
+.btn {
+    color: var(--standart-gray);
+    margin-right: 10px;
+}
+.status_column {
+    display: flex;
+    flex-direction: row;
+    width: 100% !important;
+    justify-content: center;
+}
+.status {
+    width: 180px;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .scroll_table {
     overflow-x: auto;
     height: 850px;
@@ -99,14 +108,6 @@ export default {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.btn {
-    background: var(--dark-green);
-}
-
-.btn:hover {
-    background: var(--dark-green);
 }
 
 .main_table {

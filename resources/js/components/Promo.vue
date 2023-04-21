@@ -70,6 +70,7 @@ export default {
             urlencoded.append("description", this.comment);
             urlencoded.append("date_start", this.data_start);
             urlencoded.append("date_stop", this.data_stop);
+            urlencoded.append("max_activation", this.max_activation);
 
             var requestOptions = {
                 method: 'POST',

@@ -14,6 +14,7 @@
                     <option value="name" selected="selected">{{ name }}</option>
                     <option value="promo">Промокоды</option>
                     <option value="dashboard">Статистика</option>
+                    <option value="task">История задач</option>
                 </select>
             </div>
         </div>
@@ -96,6 +97,9 @@ export default {
             }
             if (this.user_data == 'dashboard') {
                 window.open("dashboard", '_self');
+            }
+            if (this.user_data == 'task') {
+                window.open("task", '_self');
             }
         },
         addClient() {

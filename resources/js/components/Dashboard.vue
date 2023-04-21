@@ -183,7 +183,7 @@
                             <span class="income_adm_name">12:00-18:00</span>
                             <div class="income_all">
                                 <div class="income_data2">
-                                    <span>50</span>
+                                    <span>50%</span>
                                 </div>
                             </div>
                         </div>
@@ -210,6 +210,7 @@ export default {
     components: {
         GChart
     },
+    props: ['club_id'],
     data() {
         return {
             chartData: [

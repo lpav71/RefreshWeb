@@ -16,6 +16,7 @@ class PromoController extends Controller
         $promo->description = $request->description;
         $promo->date_start = $request->date_start;
         $promo->date_stop = $request->date_stop;
+        $promo->max_activation = $request->max_activation;
         $promo->status = true;
         $promo->save();
     }

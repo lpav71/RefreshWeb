@@ -27,6 +27,7 @@ Route::get('map', [\App\Http\Controllers\MapController::class, 'index'])->name('
 Route::get('promo', [\App\Http\Controllers\PromoController::class, 'index'])->name('promo');
 Route::get('dashboard', [\App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
 Route::get('task', [\App\Http\Controllers\TaskController::class, 'index'])->name('task');
+Route::get('userinfo', [\App\Http\Controllers\UserInfoController::class, 'index'])->name('userinfo');
 
 
 

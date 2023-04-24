@@ -60,46 +60,13 @@
             </div>
             <div class="tasks"><span style="color: var(--standart-gray);display: block;position: relative;top: 20px;left: 40px;width: 143px;">Список задач</span>
                 <div class="task-list">
-                    <div class="task">
+
+                    <div class="task" v-for="t in tasks">
                         <div class="task-1">
-                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
+                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">{{ t.create_dt }}</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">{{ t.descript_admin }}</span>
                         </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
                     </div>
-                    <div class="task">
-                        <div class="task-1">
-                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                    </div>
-                    <div class="task">
-                        <div class="task-1">
-                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                    </div>
-                    <div class="task">
-                        <div class="task-1">
-                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                    </div>
-                    <div class="task">
-                        <div class="task-1">
-                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                    </div>
-                    <div class="task">
-                        <div class="task-1">
-                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                    </div>
-                    <div class="task">
-                        <div class="task-1">
-                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                    </div>
-                    <div class="task">
-                        <div class="task-1">
-                            <div class="intask"><span style="color: var(--standart-gray);font-size: 12px;">18.02.22 14:00</span></div><span class="tasks-text" style="font-size: 12px;margin-left: 7px;">Провести уборку</span>
-                        </div><i class="fas fa-caret-right" style="color: var(--standart-gray);margin-right: 10px;"></i>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -236,7 +203,9 @@ export default {
             //------------------------
             clientList: [],
             currentClient: {},
-            zoneName: ''
+            zoneName: '',
+            uData: {},
+            tasks: null
         }
     },
     methods: {
@@ -485,6 +454,24 @@ export default {
                 this.shiftStatusOpen = true;
             }
         },
+        async getTasks() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.uData.club_id);
+            urlencoded.append("admin_id", this.uData.id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+           var response = await fetch("api/tasks/tasks", requestOptions);
+           this.tasks = await response.json();
+        }
     },
     created()  {
         window.addEventListener("resize", this.resizeHandler);
@@ -505,7 +492,10 @@ export default {
 
         shiftModal.addEventListener('hidden.bs.modal', event => {
             clearTimeout(this.timerId);
-        })
+        });
+
+        var userData = JSON.parse(this.$props.userData);
+        this.uData = userData.user;
 
         this.height =  window.innerHeight;
         this.width =  window.innerWidth;
@@ -545,6 +535,7 @@ export default {
             .catch(error => console.log('error', error));
         this.getSmena();
         this.getClients();
+        this.getTasks();
         console.log(this.$props.club);
         console.log(this.$props.userData);
     }

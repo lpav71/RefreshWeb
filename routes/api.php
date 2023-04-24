@@ -48,7 +48,7 @@ Route::post('booking/all', [\App\Http\Controllers\api\BookingController::class, 
 Route::post('booking/cancel', [\App\Http\Controllers\api\BookingController::class, 'cancelBooking']);
 Route::post('zone/add', [\App\Http\Controllers\api\ZoneController::class, 'addZone']);
 Route::post('promo/save', [\App\Http\Controllers\api\PromoController::class, 'save']);
-
+Route::post('tasks/tasks', [\App\Http\Controllers\api\TaskController::class, 'tasks']);
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');
 

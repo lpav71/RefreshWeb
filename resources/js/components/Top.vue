@@ -15,6 +15,7 @@
                     <option value="promo">Промокоды</option>
                     <option value="dashboard">Статистика</option>
                     <option value="task">История задач</option>
+                    <option value="infouser">Информация о пользователе</option>
                 </select>
             </div>
         </div>
@@ -100,6 +101,9 @@ export default {
             }
             if (this.user_data == 'task') {
                 window.open("task", '_self');
+            }
+            if (this.user_data == 'infouser') {
+                window.open("userinfo", '_self');
             }
         },
         addClient() {

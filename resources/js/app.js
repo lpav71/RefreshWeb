@@ -48,6 +48,8 @@ import DashboardComponent from "./components/Dashboard.vue";
 app.component('dashboard', DashboardComponent);
 import TaskComponent from "./components/Task.vue";
 app.component('task', TaskComponent);
+import UserInfoComponent from "./components/UserInfo.vue";
+app.component('userinfo', UserInfoComponent);
 
 
 /**

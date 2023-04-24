@@ -265,8 +265,6 @@ export default {
 }
 .bottom {
     height: 900px;
-    /*background: var(--light-blue-bg-color);
-    border-radius: 20px;*/
     display: flex;
 }
 .left_part {

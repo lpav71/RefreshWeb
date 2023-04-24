@@ -38,7 +38,8 @@ class HomeController extends Controller
             'name' => $user->name,
             'surname' => $user->surname,
             'name_auth' => $user->name_auth,
-            'club_id' => $clubId
+            'club_id' => $clubId,
+            'user' => $user
         ]);
         return view('home', compact('fullName', 'club', 'userData'));
     }

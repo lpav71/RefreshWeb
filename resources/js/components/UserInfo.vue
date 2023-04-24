@@ -17,15 +17,12 @@
                         </td>
                         <td>Фамилия: <span class="ldata_text">Лариков</span></td></tr>
                     <tr>
-
                         <td>Имя: <span class="ldata_text">Алексей</span></td>
                     </tr>
                     <tr>
-
                         <td>Отчество: <span class="ldata_text">Викторович</span></td>
                     </tr>
                     <tr>
-
                         <td>Дата рож: <span class="ldata_text">12.10.1995</span></td>
                     </tr>
                     </tbody>
@@ -49,7 +46,25 @@
                 </div>
             </div>
         </div>
-        <div class="right"></div>
+        <div class="right">
+            <div class="right1">
+                <span>Заработная плата</span><button class="btn b1">Мои доходы</button>
+            </div>
+            <div class="right2">
+                <span>Постоянная ставка</span><br /><span class="right_span">1100</span>
+            </div>
+            <div class="right3">
+                <span>Процентная ставка</span><br /><span class="right_span">5%</span>
+            </div>
+            <div class="right4">
+                <span class="r4_span">История смен</span>
+                <div class="scrl">
+                    <div class="in1" v-for="t in 8">
+                        <div class="in2">08.05.2023 15:25</div><span class="r4_span2">Закрытие смены</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </template>
@@ -152,5 +167,93 @@ td {
     align-items: center;
     overflow: auto;
     max-height: 510px;
+}
+.b1 {
+    background: var(--light-green);
+    border-radius: 5px 30px 5px 30px;
+}
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.right1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+.right2 {
+    width: 200px;
+    height: 125px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+    border-bottom: 1px solid #4a7369;
+}
+.right_span {
+    font-size: 70px;
+    color: var(--light-green);
+    font-weight: bold;
+    margin-top: 26px;
+}
+.right3 {
+    width: 200px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 1px solid #4a7369;
+    height: 120px;
+    margin-top: 20px;
+}
+.right4 {
+    width: 100%;
+    padding: 15px;
+}
+.r4_span {
+    border-bottom: 1px solid #4a7369;
+    width: 100%;
+    display: block;
+    margin-top: 20px;
+    padding-bottom: 10px;
+}
+.in1 {
+    width: 94%;
+    height: 40px;
+    background: var(--standart-black);
+    margin: 12px auto;
+    border-radius: 6px;
+}
+.in2 {
+    width: 45%;
+    height: 80%;
+    background: var(--regular);
+    position: relative;
+    top: 4px;
+    left: 4px;
+    border-radius: 4px;
+    transition-duration: 300ms;
+    display: inline-block;
+    font-size: 15px;
+    padding: 5px 0 0 6px;
+}
+.r4_span2 {
+    display: inline-block;
+    top: 3px;
+    position: relative;
+    left: 12px;
+    font-size: 15px;
+}
+.in2:hover {
+    background: var(--light-green);
+    color: var(--standart-black);
+}
+.scrl {
+    height: 470px;
+    overflow-y: auto;
+    position: relative;
+    top: 10px;
 }
 </style>

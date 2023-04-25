@@ -238,6 +238,7 @@ td {
     display: inline-block;
     font-size: 15px;
     padding: 5px 0 0 6px;
+    cursor: pointer;
 }
 .r4_span2 {
     display: inline-block;

@@ -9,6 +9,7 @@
             <label>Начало действия промокода<br><input v-model="data_start" class="input_text" type="date"></label>
             <label>Окончание действия промокода<br><input v-model="data_stop" class="input_text" type="date"></label>
             <label>Ограничение активаций<br><input v-model="max_activation" class="input_text" type="text" placeholder="Введите количество"></label>
+            <label>Размер скидки<br><input v-model="num" class="input_text" type="text" placeholder="Введите размер скидки"></label>
             <label>Комментарий<br><textarea v-model="comment" spellcheck="false" class="input_text area" type="text" placeholder="Опишите мотив промокода"></textarea></label>
             <button class="btn btn-success" @click="save">Создать</button>
         </div>
@@ -71,6 +72,7 @@ export default {
             urlencoded.append("date_start", this.data_start);
             urlencoded.append("date_stop", this.data_stop);
             urlencoded.append("max_activation", this.max_activation);
+            urlencoded.append("num", this.num);
 
             var requestOptions = {
                 method: 'POST',

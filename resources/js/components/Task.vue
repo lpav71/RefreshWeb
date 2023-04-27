@@ -228,7 +228,7 @@ export default {
                 redirect: 'follow'
             };
 
-            var response = await fetch("https://localhost:7150/api/tasks/all", requestOptions);
+            var response = await fetch("api/tasks/all", requestOptions);
             this.tasks = await response.json();
         }
     },

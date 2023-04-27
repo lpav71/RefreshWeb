@@ -140,7 +140,7 @@ export default {
                 redirect: 'follow'
             };
 
-            var response = await fetch("https://localhost:7150/api/tasks/save-new-status", requestOptions);
+            var response = await fetch("api/tasks/save-new-status", requestOptions);
             var result = await response.json();
             this.modalStatus.hide();
             this.alltasks();

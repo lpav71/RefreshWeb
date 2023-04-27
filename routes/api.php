@@ -49,6 +49,11 @@ Route::post('booking/cancel', [\App\Http\Controllers\api\BookingController::clas
 Route::post('zone/add', [\App\Http\Controllers\api\ZoneController::class, 'addZone']);
 Route::post('promo/save', [\App\Http\Controllers\api\PromoController::class, 'save']);
 Route::post('tasks/tasks', [\App\Http\Controllers\api\TaskController::class, 'tasks']);
+Route::post('tasks/users', [\App\Http\Controllers\api\TaskController::class, 'users']);
+Route::post('tasks/save', [\App\Http\Controllers\api\TaskController::class, 'saveAddModal']);
+Route::post('tasks/new-status', [\App\Http\Controllers\api\TaskController::class, 'getNewStatus']);
+Route::post('tasks/save-new-status', [\App\Http\Controllers\api\TaskController::class, 'saveNewStatus']);
+Route::post('tasks/all', [\App\Http\Controllers\api\TaskController::class, 'allTasks']);
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');
 

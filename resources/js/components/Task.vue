@@ -31,7 +31,7 @@
                             <td>{{ c.create_dt }}</td>
                             <td>{{ c.end_dt }}</td>
                             <td>{{ c.name }}</td>
-                            <td></td>
+                            <td>{{ c.employ }}</td>
                             <td class="status_column"><div class="status" :style="{background: c.color}" @click="showModalStatus(i)">{{ c.description }}</div></td>
                             <td style="border-right-style: none;color: green"><button class="btn btn-success"><i class="far fa-edit"></i></button><button class="btn btn-success"><i class="fas fa-times"></i></button></td>
                         </tr>

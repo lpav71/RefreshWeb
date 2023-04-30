@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<booking></booking>
+<booking club_id="{{ $club_id  }}"></booking>
 @endsection
 <script>
     import Booking from "../../js/components/Booking";

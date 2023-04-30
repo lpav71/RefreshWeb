@@ -4,6 +4,8 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Map;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -47,5 +49,22 @@ class BookingController extends Controller
         $booking->status = 4;
         $booking->save();
         return $booking;
+    }
+    public function draw(Request $request)
+    {
+        $club_id = $request->club_id;
+        $maps = Map::leftJoin('booking', 'map.id_comp', '=', 'booking.map_comp_id')
+            ->where('map.club_id', '=', $club_id)
+            ->get(['booking.map_comp_id', 'booking.time_start', 'booking.time_stop']);
+        for ($i = 0; $i < count($maps); $i++) {
+            $time_start = Carbon::parse($maps[$i]->time_start);
+            $time_stop = Carbon::parse($maps[$i]->time_stop);
+            $diff = $time_stop->diffInMinutes($time_start);
+            $maps[$i]['diff'] = $diff;
+            $start = $time_start->toDateTime()->setTime(8, 0, 0);
+            $offset = $time_start->diffInMinutes($start);
+            $maps[$i]['offset'] = $offset;
+        }
+        return $maps;
     }
 }

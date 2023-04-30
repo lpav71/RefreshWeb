@@ -54,6 +54,11 @@ Route::post('tasks/save', [\App\Http\Controllers\api\TaskController::class, 'sav
 Route::post('tasks/new-status', [\App\Http\Controllers\api\TaskController::class, 'getNewStatus']);
 Route::post('tasks/save-new-status', [\App\Http\Controllers\api\TaskController::class, 'saveNewStatus']);
 Route::post('tasks/all', [\App\Http\Controllers\api\TaskController::class, 'allTasks']);
+Route::post('booking/draw', [\App\Http\Controllers\api\BookingController::class, 'draw']);
+
+
+
+
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');
 

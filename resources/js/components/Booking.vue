@@ -26,8 +26,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="t in 50">
-                <td>&emsp;</td>
+            <tr v-for="t in maps">
+                <td>{{ t.map_comp_id }}</td>
                 <td>&emsp;</td>
                 <td>&emsp;</td>
                 <td>&emsp;</td>
@@ -48,30 +48,81 @@
                 <td>&emsp;</td>
                 <td>&emsp;</td>
             </tr>
-
             </tbody>
         </table>
     </div>
+
+    <table class="tdata">
+        <tr v-for="m in maps">
+            <td><div class="off" :style="{width: m.offset *1.3833 + 'px' }"></div><div class="bar" :style="{width: m.diff *1.3833 + 'px' }"></div></td>
+        </tr>
+    </table>
 </template>
 
 <script>
 export default {
     name: "Booking",
+    props: ['club_id'],
     data() {
         return {
-            tdata: []
+            maps: []
         }
+    },
+    methods: {
+        async draw() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var resonse = await fetch("api/booking/draw", requestOptions);
+            this.maps = await resonse.json();
+            var cnt = this.maps.length;
+            console.log(cnt);
+            var i = 0;
+            for (i = 0; i <= 19 - cnt; i++) {
+                this.maps.push('');
+            }
+        }
+    },
+    mounted() {
+        this.draw();
     }
 }
 </script>
 
 <style scoped>
+.off {
+    height: 30px;
+    color: yellow;
+    display: inline-block;
+}
+.tdata {
+    position: absolute;
+    top: 116px;
+    left: 321px;
+}
+.tdata .bar {
+    background-color: var(--dark-green);
+    height: 30px;
+    border-radius: 5px 30px 5px 30px;
+    display: inline-block;
+    margin-top: 12px;
+}
 .div_1 {
     width: 1794px;
-    height: 880px;
+    height: 900px;
     color: white;
     border-radius: 20px;
-    overflow: auto;
+    overflow: hidden;
     margin-left: 11px;
 }
 
@@ -97,6 +148,8 @@ export default {
 }
 .booking-table td:first-child {
     background: #284f62;
+    height: 44.2px;
+    text-align: center;
 }
 
 </style>

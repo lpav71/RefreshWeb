@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Map;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,11 +22,11 @@ class BookingController extends Controller
             ->where('price.club_id', $club_id)
             ->where('booking.status', 0)
             ->join(
-            'clients',
-            'booking.user_id',
-            '=',
-            'clients.id'
-        )
+                'clients',
+                'booking.user_id',
+                '=',
+                'clients.id'
+            )
             ->join(
                 'zone',
                 'booking.id_zone',
@@ -42,6 +43,7 @@ class BookingController extends Controller
             ->get();
         return $booking;
     }
+
     public function cancelBooking(Request $request)
     {
         $id = $request->id;
@@ -50,21 +52,95 @@ class BookingController extends Controller
         $booking->save();
         return $booking;
     }
+
     public function draw(Request $request)
     {
         $club_id = $request->club_id;
-        $maps = Map::leftJoin('booking', 'map.id_comp', '=', 'booking.map_comp_id')
-            ->where('map.club_id', '=', $club_id)
-            ->get(['booking.map_comp_id', 'booking.time_start', 'booking.time_stop']);
-        for ($i = 0; $i < count($maps); $i++) {
-            $time_start = Carbon::parse($maps[$i]->time_start);
-            $time_stop = Carbon::parse($maps[$i]->time_stop);
-            $diff = $time_stop->diffInMinutes($time_start);
-            $maps[$i]['diff'] = $diff;
-            $start = $time_start->toDateTime()->setTime(8, 0, 0);
-            $offset = $time_start->diffInMinutes($start);
-            $maps[$i]['offset'] = $offset;
+        $time_start = $request->time_start;
+        $time_start = "2023-04-30";  //TODO Убрать!!!
+        $time_start = Carbon::parse($time_start)->setTime(0, 0, 0);
+        $time_stop = Carbon::parse($time_start)->setTime(23, 59, 0);
+
+        $maps = DB::table('map')
+            ->leftJoin('booking as b', 'map.id_comp', '=', 'b.map_comp_id')
+            ->join('clients as c', 'map.user_id', '=', 'c.id')
+            ->where('map.club_id', $club_id)
+            ->where('b.time_start', '>=', $time_start)
+            ->orWhere('time_stop', '<', $time_stop)
+            ->orWhereNull('b.time_start')
+            ->orWhereNull('b.time_stop')
+            ->groupBy('id_comp')
+            ->orderBy('id_comp', 'asc')
+            ->select(DB::raw("id_comp,
+        (
+             SELECT json_agg(row(b.time_start, b.time_stop, c.login)
+             ORDER BY b.time_start ASC)
+             FROM booking
+             WHERE map.id_comp = booking.map_comp_id
+             GROUP BY map_comp_id
+        ) AS fulldata"))->get();
+
+        $drawData = array();
+        foreach ($maps as $map) {
+            $recData = array();
+            $rec = json_decode($map->fulldata, true);
+            $recData['fulldata'] = $rec;
+            $recData['id_comp'] = $map->id_comp;
+            array_push($drawData, $recData);
         }
-        return $maps;
+// Обрезка time_stop до f1 даты и времени 23:59 -----------------------------------------------------------------------
+        foreach ($drawData as &$item) {
+            if (!is_null($item['fulldata'])) {
+                foreach ($item['fulldata'] as &$data) {
+                    $f1 = Carbon::parse($data['f1'])->setTime(0, 0, 0);
+                    $f2 = Carbon::parse($data['f2'])->setTime(0, 0, 0);
+                    if ($f1->notEqualTo($f2)) {
+                        $data['f2'] = $f1->setTime(23, 59, 0)->toDateTimeString();
+                    }
+                }
+            }
+        }
+// ~Обрезка time_stop до f1 даты и времени 23:59 ----------------------------------------------------------------------
+
+// Расчет diff и offset -----------------------------------------------------------------------------------------------
+
+        $newDrawData = array_map(function ($draw) {
+            $newDraw = [
+                'id_comp' => $draw['id_comp'],
+                'fulldata' => null,
+            ];
+
+            if (isset($draw['fulldata'])) {
+                $newFulldata = [];
+
+                $prevF2 = null;
+                array_map(function ($data) use (&$newFulldata, &$prevF2) {
+                    $newData = [
+                        'f1' => $data['f1'],
+                        'f2' => $data['f2'],
+                        'f3' => $data['f3'],
+                    ];
+
+                    $newData['diff'] = Carbon::parse($data['f2'])->diffInMinutes(Carbon::parse($data['f1']));
+                    if ($prevF2 !== null) {
+                        $newData['offset'] = Carbon::parse($data['f1'])->diffInMinutes(Carbon::parse($prevF2));
+                    } else {
+                        $newData['offset'] = Carbon::parse($data['f1'])->diffInMinutes(Carbon::parse($data['f1'])->startOfDay());
+                    }
+
+                    $newFulldata[] = $newData;
+                    $prevF2 = $data['f2'];
+                }, $draw['fulldata']);
+
+                $newDraw['fulldata'] = $newFulldata;
+            }
+
+            return $newDraw;
+        }, $drawData);
+
+// ~Расчет diff и offset ----------------------------------------------------------------------------------------------
+
+        return $newDrawData;
     }
 }
+

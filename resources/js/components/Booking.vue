@@ -4,49 +4,13 @@
             <thead>
             <tr>
                 <th style="width: 200px"></th>
-                <th>08:00</th>
-                <th>09:00</th>
-                <th>10:00</th>
-                <th>11:00</th>
-                <th>12:00</th>
-                <th>13:00</th>
-                <th>14:00</th>
-                <th>15:00</th>
-                <th>16:00</th>
-                <th>17:00</th>
-                <th>18:00</th>
-                <th>19:00</th>
-                <th>20:00</th>
-                <th>21:00</th>
-                <th>22:00</th>
-                <th>23:00</th>
-                <th>00:00</th>
-                <th>01:00</th>
-                <th>02:00</th>
+                <th v-for="t in 24">{{ t-1 }}:00</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="t in maps">
-                <td>{{ t.map_comp_id }}</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
-                <td>&emsp;</td>
+                <td>{{ t.id_comp }}</td>
+                <td v-for="t in 24">&emsp;</td>
             </tr>
             </tbody>
         </table>
@@ -54,7 +18,11 @@
 
     <table class="tdata">
         <tr v-for="m in maps">
-            <td><div class="off" :style="{width: m.offset *1.3833 + 'px' }"></div><div class="bar" :style="{width: m.diff *1.3833 + 'px' }"></div></td>
+            <td>
+                <template v-for="f in m.fulldata">
+                    <div class="off" :style="{width: f.offset *1.145 + 'px' }"></div><div class="bar" :style="{width: f.diff *1.145 + 'px' }"><span>{{ f.f3 }}</span></div>
+                </template>
+            </td>
         </tr>
     </table>
 </template>
@@ -70,11 +38,18 @@ export default {
     },
     methods: {
         async draw() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = (today.getMonth() + 1).toString().padStart(2, '0');
+            const day = today.getDate().toString().padStart(2, '0');
+            const todayFormatted = `${year}-${month}-${day}`;
+
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
             var urlencoded = new URLSearchParams();
             urlencoded.append("club_id", this.$props.club_id);
+            urlencoded.append('time_start', todayFormatted);
 
             var requestOptions = {
                 method: 'POST',
@@ -85,12 +60,13 @@ export default {
 
             var resonse = await fetch("api/booking/draw", requestOptions);
             this.maps = await resonse.json();
-            var cnt = this.maps.length;
-            console.log(cnt);
-            var i = 0;
-            for (i = 0; i <= 19 - cnt; i++) {
-                this.maps.push('');
-            }
+            // this.maps = await resonse.json();
+            // var cnt = this.maps.length;
+            // console.log(cnt);
+            // var i = 0;
+            // for (i = 0; i <= 19 - cnt; i++) {
+            //     this.maps.push('');
+            // }
         }
     },
     mounted() {
@@ -108,7 +84,7 @@ export default {
 .tdata {
     position: absolute;
     top: 116px;
-    left: 321px;
+    left: 257px;
 }
 .tdata .bar {
     background-color: var(--dark-green);
@@ -116,6 +92,12 @@ export default {
     border-radius: 5px 30px 5px 30px;
     display: inline-block;
     margin-top: 12px;
+    text-align: center;
+}
+.tdata .bar span {
+    display: inline-block;
+    margin-top: 4px;
+    color: var(--standart-gray);
 }
 .div_1 {
     width: 1794px;

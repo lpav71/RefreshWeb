@@ -21,7 +21,7 @@
             <td style="color: white">
                 <template v-for="f in m.fulldata">
                     <template v-if="f != null">
-                        <div class="off" :style="{width: f.offset *1.145 + 'px' }"></div><div class="bar" :style="{width: f.diff *1.145 + 'px' }"><span>{{ f.f3 }}</span></div>
+                        <div class="off" :style="{width: f.offset *1.147 + 'px' }"></div><div class="bar" :style="{width: f.diff *1.147 + 'px' }"><span>{{ f.f3 }}</span></div>
                     </template>
                     <template v-if="f == null">
                         <div class="off" style="width: 100%"></div>
@@ -83,11 +83,12 @@ export default {
 .off {
     color: yellow;
     display: inline-block;
+    height: 10px;
 }
 .tdata {
     position: absolute;
     top: 122px;
-    left: 257px;
+    left: 253px;
 }
 .tdata tr {
     /*border: 1px solid white;*/

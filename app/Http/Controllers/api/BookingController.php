@@ -57,7 +57,6 @@ class BookingController extends Controller
     {
         $club_id = $request->club_id;
         $time_start = $request->time_start;
-        //$time_start = "2023-04-30";  //TODO Убрать!!!
         $time_start = Carbon::parse($time_start)->setTime(0, 0, 0);
         $time_stop = Carbon::parse($time_start)->setTime(23, 59, 0);
 

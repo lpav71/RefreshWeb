@@ -18,9 +18,14 @@
 
     <table class="tdata">
         <tr v-for="m in maps">
-            <td>
+            <td style="color: white">
                 <template v-for="f in m.fulldata">
-                    <div class="off" :style="{width: f.offset *1.145 + 'px' }"></div><div class="bar" :style="{width: f.diff *1.145 + 'px' }"><span>{{ f.f3 }}</span></div>
+                    <template v-if="f != null">
+                        <div class="off" :style="{width: f.offset *1.145 + 'px' }"></div><div class="bar" :style="{width: f.diff *1.145 + 'px' }"><span>{{ f.f3 }}</span></div>
+                    </template>
+                    <template v-if="f == null">
+                        <div class="off" style="width: 100%"></div>
+                    </template>
                 </template>
             </td>
         </tr>
@@ -60,13 +65,12 @@ export default {
 
             var resonse = await fetch("api/booking/draw", requestOptions);
             this.maps = await resonse.json();
-            // this.maps = await resonse.json();
-            // var cnt = this.maps.length;
-            // console.log(cnt);
-            // var i = 0;
-            // for (i = 0; i <= 19 - cnt; i++) {
-            //     this.maps.push('');
-            // }
+            var cnt = this.maps.length;
+            console.log(cnt);
+            var i = 0;
+            for (i = 0; i <= 19 - cnt; i++) {
+                this.maps.push('');
+            }
         }
     },
     mounted() {
@@ -77,22 +81,26 @@ export default {
 
 <style scoped>
 .off {
-    height: 30px;
     color: yellow;
     display: inline-block;
 }
 .tdata {
     position: absolute;
-    top: 116px;
+    top: 122px;
     left: 257px;
+}
+.tdata tr {
+    /*border: 1px solid white;*/
+}
+.tdata td, .tdata .bar {
+    height: 44.8px;
 }
 .tdata .bar {
     background-color: var(--dark-green);
-    height: 30px;
     border-radius: 5px 30px 5px 30px;
     display: inline-block;
-    margin-top: 12px;
     text-align: center;
+    height: 31px;
 }
 .tdata .bar span {
     display: inline-block;
@@ -132,6 +140,7 @@ export default {
     background: #284f62;
     height: 44.2px;
     text-align: center;
+    padding-top: 19px;
 }
 
 </style>

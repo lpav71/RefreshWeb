@@ -57,7 +57,7 @@ class BookingController extends Controller
     {
         $club_id = $request->club_id;
         $time_start = $request->time_start;
-        $time_start = "2023-04-30";  //TODO Убрать!!!
+        //$time_start = "2023-04-30";  //TODO Убрать!!!
         $time_start = Carbon::parse($time_start)->setTime(0, 0, 0);
         $time_stop = Carbon::parse($time_start)->setTime(23, 59, 0);
 
@@ -73,11 +73,12 @@ class BookingController extends Controller
             ->orderBy('id_comp', 'asc')
             ->select(DB::raw("id_comp,
         (
-             SELECT json_agg(row(b.time_start, b.time_stop, c.login)
-             ORDER BY b.time_start ASC)
-             FROM booking
-             WHERE map.id_comp = booking.map_comp_id
-             GROUP BY map_comp_id
+            SELECT json_agg(row(d.time_start, d.time_stop, clients.login, clients.id)
+            ORDER BY d.time_start ASC)
+            FROM clients
+            left join booking d on clients.id=d.user_id
+            WHERE map.id_comp = d.map_comp_id
+            GROUP BY d.map_comp_id
         ) AS fulldata"))->get();
 
         $drawData = array();

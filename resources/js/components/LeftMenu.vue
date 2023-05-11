@@ -2,10 +2,10 @@
     <div class="block-icons">
         <a href="/"><img src="img/logo.svg" style="margin-top: 30px;margin-left: 30px;" alt=""></a>
         <div style="display: flex;flex-direction: column;align-items: center;margin-top: 15px;">
-            <img class="left-icon" src="img/1.svg" alt="">
+            <a href="/"><img class="left-icon" src="img/1.svg" alt=""></a>
             <a href="shop"><img class="left-icon" src="img/2.svg"></a>
             <a href="map"><img class="left-icon" src="img/3.svg" alt=""></a>
-            <img class="left-icon" src="img/4.svg" alt="">
+            <a href="warehouse"><img class="left-icon" src="img/4.svg" alt=""></a>
             <a href="finduser"><img class="left-icon" src="img/5.svg"></a>
             <a href="booking"><img class="left-icon" src="img/6.svg" alt=""></a>
             <img class="left-icon" src="img/7.svg" alt="">

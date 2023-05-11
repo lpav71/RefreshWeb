@@ -50,6 +50,8 @@ import TaskComponent from "./components/Task.vue";
 app.component('task', TaskComponent);
 import UserInfoComponent from "./components/UserInfo.vue";
 app.component('userinfo', UserInfoComponent);
+import WarehouseComponent from "./components/Warehouse.vue";
+app.component('warehouse', WarehouseComponent);
 
 
 /**

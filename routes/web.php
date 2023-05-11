@@ -28,6 +28,7 @@ Route::get('promo', [\App\Http\Controllers\PromoController::class, 'index'])->na
 Route::get('dashboard', [\App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
 Route::get('task', [\App\Http\Controllers\TaskController::class, 'index'])->name('task');
 Route::get('userinfo', [\App\Http\Controllers\UserInfoController::class, 'index'])->name('userinfo');
+Route::get('warehouse', [\App\Http\Controllers\WarehouseController::class, 'index'])->name('warehouse');
 
 
 

@@ -2,7 +2,7 @@
 <div class="home">
     <div class="header">
         <div class="left">
-            <div class="top"><img src="img/4.svg"/><span style="margin-left: 14px;">Склад</span><i
+            <div class="top"><img src="img/4.svg" alt=""/><span style="margin-left: 14px;">Склад</span><i
                 class="fas fa-search lupa"></i><input @keydown="enter" v-model="product_name" class="input_shop"
                                                       type="text" placeholder="Поиск товаров"/>
                 <button class="butt" type="button">Все</button>
@@ -20,7 +20,7 @@
     <div class="bottom">
         <div class="in-bottom">
             <div class="goods" v-for="(g, index) in goods">
-                <div class="goods_img"><img :src="g.icon" height="200"></div>
+                <div class="goods_img"><img :src="g.icon" height="200" alt=""></div>
                 <div class="goods_text">
                     <div>{{ g.name }}</div><br><div>{{ g.product }} {{ g.product_param }}</div>
                 </div>

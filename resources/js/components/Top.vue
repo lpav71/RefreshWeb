@@ -1,8 +1,10 @@
 <template>
     <div class="account">
-        <div class="left-user-account"><i class="fas fa-search fs-5 lupa"></i><input type="text" class="user-search" placeholder="Поиск пользователя">
+        <form action="finduser" method="get">
+            <div class="left-user-account"><i class="fas fa-search fs-5 lupa"></i><input type="text" class="user-search" placeholder="Поиск пользователя">
             <div class="user-search-button" @click="addClient"><i class="fas fa-user-plus fs-3 icon-user-plus"></i></div>
         </div>
+        </form>
         <div class="right-user-account">
             <div class="user-search-button"><i class="fas fa-comment fs-3 icon-user-plus"></i></div>
             <div class="user-search-button" style="padding-left: 10px;"><i class="fas fa-bell fs-3 icon-user-plus"></i>

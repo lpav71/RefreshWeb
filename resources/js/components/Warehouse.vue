@@ -14,7 +14,7 @@
         <div class="right">
             <button class="butt" type="button">Внесение</button>
             <button class="butt" type="button">Изъятие</button>
-            <button class="butt" type="button">Добавить</button>
+            <button @click="editModal" class="butt" type="button">Добавить</button>
         </div>
     </div>
     <div class="bottom">
@@ -26,12 +26,56 @@
                 </div>
                 <div class="goods-btn">
                     <span>{{ g.num }}</span>
-                    <button class="goods_cart" @click="toCart(index)" type="button"><i class="fa fa-edit fa-lg"></i></button>
+                    <button class="goods_cart" @click="editModal(index)" type="button"><i class="fa fa-edit fa-lg"></i></button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Модальное окно -->
+<div class="modal fade" id="editWarehouseModal" tabindex="-1" aria-labelledby="editWarehouseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editWarehouseModalLabel">Добавить товар</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <div class="block" style="margin-top: 0">
+                    <span>Наименование товара</span>
+                    <input type="text" class="input" placeholder="Введите наименование товара" v-model="product.product" />
+                </div>
+                <div class="block" style="margin-top: 0">
+                    <span>Стоимость закупки</span>
+                    <input type="text" class="input" placeholder="Введите стоимость закупки" v-model="descript_admin" />
+                </div>
+                <div class="block" style="margin-top: 0">
+                    <span>Стоимость продажи</span>
+                    <input type="text" class="input" placeholder="Введите стоимость продажи" v-model="descript_admin" />
+                </div>
+                <div class="block" style="margin-top: 0">
+                    <span>Количество позиций товара</span>
+                    <input type="text" class="input" placeholder="Введите количество позиций товара" v-model="descript_admin" />
+                </div>
+                <div class="block" style="margin-top: 0">
+                    <span>Штрихкод товара</span>
+                    <input type="text" class="input" placeholder="Введите штрихкод" v-model="descript_admin" />
+                </div>
+                <div class="block">
+                    <span>Запретить скидки на товар</span>
+                    <select class="input" v-model="selectedDiscount">
+                        <option v-for="u in allowDiscount" :value="u.value">{{ u.name }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" @click="saveAddModal">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </template>
 
 <script>
@@ -40,10 +84,51 @@ export default {
     data() {
         return {
             product_name: '',
-            goods: null
+            goods: null,
+            modal: null,
+            allowDiscount: [
+                {name: 'Да', value: true},
+                {name: 'Нет', value: false}
+            ],
+            selectedDiscount: null,
+            product: {}
         }
     },
     methods: {
+        enter(e) {
+            if (e.keyCode === 13) {
+                this.find();
+            }
+        },
+        editModal(i) {
+            this.modal.show();
+            if (isNaN(i)) { // Добавить
+                this.product = {};
+            }
+            else { //Изменить
+                this.product = this.goods[i];
+            }
+        },
+        saveAddModal() {
+            this.modal.hide();
+        },
+        async find() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("search", this.product_name);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/shop/find", requestOptions);
+            this.goods = await response.json();
+        },
         async getAll() {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -63,6 +148,9 @@ export default {
         }
     },
     mounted() {
+        var editWarehouseModal = document.getElementById('editWarehouseModal')
+        this.modal = bootstrap.Modal.getOrCreateInstance(editWarehouseModal);
+
         this.getAll();
     }
 }
@@ -86,6 +174,30 @@ export default {
     width: 400px;
     display: flex;
     justify-content: end;
+}
+.modal-content {
+    background: var(--light-blue-bg-color);
+    color: var(--standart-gray);
+}
+.modal-footer {
+    justify-content: flex-start;
+}
+.block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+.input {
+    height: 35px;
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 6px;
+    color: var(--standart-gray);
+    border: none;
+    padding-top: 2px;
+    width: 465px;
+    border-radius: 8px;
 }
 .bottom {
     display: flex;

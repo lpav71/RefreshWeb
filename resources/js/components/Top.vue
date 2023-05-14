@@ -1,7 +1,7 @@
 <template>
     <div class="account">
         <form action="finduser" method="get">
-            <div class="left-user-account"><i class="fas fa-search fs-5 lupa"></i><input type="text" class="user-search" placeholder="Поиск пользователя">
+            <div class="left-user-account"><i class="fas fa-search fs-5 lupa"></i><input type="text" name="searchUser" class="user-search" placeholder="Поиск пользователя">
             <div class="user-search-button" @click="addClient"><i class="fas fa-user-plus fs-3 icon-user-plus"></i></div>
         </div>
         </form>
@@ -11,7 +11,7 @@
                 <div class="notification"><span class="count-notif" style="color: var(--standart-color);font-size: 9px;">10</span></div>
             </div>
             <div class="user-select-button">
-                <div class="avatar"><img style="width: 42px;height: 42px;" src="img/logo_test.jpg"></div>
+                <div class="avatar"><img style="width: 42px;height: 42px;" src="img/logo_test.jpg" alt=""></div>
                 <select v-model="user_data" class="user-change" @change="promo">
                     <option value="name" selected="selected">{{ name }}</option>
                     <option value="promo">Промокоды</option>

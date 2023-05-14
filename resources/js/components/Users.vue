@@ -136,7 +136,7 @@
 
 <script>
 export default {
-    props: ['club_id'],
+    props: ['club_id', 'f_user'],
     data() {
         return {
             payText: 'Оплата',
@@ -262,6 +262,9 @@ export default {
             this.messages.push(JSON.stringify(data));
         }.bind(this));
         // ~PUSHER ---------------------------------------------
+        if (this.$props.f_user != null) {
+            this.findUsers = JSON.parse(this.$props.f_user);
+        }
         var widgetModal = document.getElementById('topBalanceModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(widgetModal);
     }

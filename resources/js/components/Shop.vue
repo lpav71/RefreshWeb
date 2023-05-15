@@ -236,7 +236,8 @@ export default {
             };
 
             var response = await fetch("api/shop/get", requestOptions);
-            this.goods = await response.json();
+            var result = await response.json();
+            this.goods = result[0];
         }
     },
     mounted() {
@@ -262,7 +263,10 @@ export default {
 }
 .bottom2 {
     display: flex;
-
+    flex-wrap: wrap;
+    overflow: auto;
+    max-height: 861px;
+    justify-content: space-between;
 }
 .div_1 {
     height: 74px;
@@ -703,7 +707,8 @@ export default {
 .goods {
     width: 156px;
     height: 250px;
-    margin-right: 20px;
+    margin-right: 13px;
+    margin-bottom: 28px;
 }
 
 .goods_img {

@@ -12,11 +12,18 @@ class ShopController extends Controller
 {
     public function getAll(Request $request)
     {
-        $store = Store::where('store.club_id', $request->club_id)->where('product_type.club_id', $request->club_id)->join('product_type', function($join)
-        {
-            $join->on('store.types', 'product_type.types');
-        })->get();
-        return($store);
+        $store = Store::select('store.id as storeid', '*')
+            ->where('store.club_id', $request->club_id)
+            ->where('product_type.club_id', $request->club_id)
+            ->join('product_type', function($join) {
+                $join->on('store.types', 'product_type.types');
+            })
+            ->orderBy('storeid')
+            ->get();
+
+        $productType = ProductType::where('club_id', $request->club_id)->get();
+        $outData = array($store, $productType);
+        return($outData);
     }
     public function find(Request $request)
     {
@@ -28,5 +35,41 @@ class ShopController extends Controller
     {
         $client = Client::where('login', $request->login)->first();
         return $client;
+    }
+    public function addEdit(Request $request)
+    {
+        $product = $request->product;
+        $price = $request->price;
+        $num = $request->num;
+        $barcode = $request->barcode;
+        $discount = $request->discount;
+        $types = $request->types;
+        $club_id = $request->club_id;
+        $icon = $request->icon;
+        $id = $request->storeid;
+        if ($id == null) {
+            $store = new Store();
+            $store->product = $product;
+            $store->price = $price;
+            $store->num = $num;
+            $store->barcode = $barcode;
+            $store->discount = $discount;
+            $store->types = $types;
+            $store->club_id = $club_id;
+            $store->icon = $icon;
+            $store->save();
+        }
+        else {
+            $store = Store::find($id);
+            $store->product = $product;
+            $store->price = $price;
+            $store->num = $num;
+            $store->barcode = $barcode;
+            $store->discount = $discount;
+            $store->types = $types;
+            $store->icon = $icon;
+            $store->save();
+        }
+        return $store;
     }
 }

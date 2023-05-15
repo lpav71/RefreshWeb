@@ -48,24 +48,34 @@
                 </div>
                 <div class="block" style="margin-top: 0">
                     <span>Стоимость закупки</span>
-                    <input type="text" class="input" placeholder="Введите стоимость закупки" v-model="descript_admin" />
+                    <input type="text" class="input" placeholder="Введите стоимость закупки" />
                 </div>
                 <div class="block" style="margin-top: 0">
                     <span>Стоимость продажи</span>
-                    <input type="text" class="input" placeholder="Введите стоимость продажи" v-model="descript_admin" />
+                    <input type="text" class="input" placeholder="Введите стоимость продажи" v-model="product.price" />
                 </div>
                 <div class="block" style="margin-top: 0">
                     <span>Количество позиций товара</span>
-                    <input type="text" class="input" placeholder="Введите количество позиций товара" v-model="descript_admin" />
+                    <input type="text" class="input" placeholder="Введите количество позиций товара" v-model="product.num" />
+                </div>
+                <div class="block" style="margin-top: 0">
+                    <span>Ссылка на картинку</span>
+                    <input type="text" class="input" placeholder="Введите ссылку" v-model="product.icon"/>
                 </div>
                 <div class="block" style="margin-top: 0">
                     <span>Штрихкод товара</span>
-                    <input type="text" class="input" placeholder="Введите штрихкод" v-model="descript_admin" />
+                    <input type="text" class="input" placeholder="Введите штрихкод" v-model="product.barcode" />
                 </div>
                 <div class="block">
                     <span>Запретить скидки на товар</span>
-                    <select class="input" v-model="selectedDiscount">
+                    <select class="input" v-model="product.discount">
                         <option v-for="u in allowDiscount" :value="u.value">{{ u.name }}</option>
+                    </select>
+                </div>
+                <div class="block">
+                    <span>Список категорий товаров</span>
+                    <select class="input" v-model="product.types">
+                        <option v-for="u in product_types" :value="u.types">{{ u.name }}</option>
                     </select>
                 </div>
             </div>
@@ -85,13 +95,14 @@ export default {
         return {
             product_name: '',
             goods: null,
+            outData: null,
             modal: null,
             allowDiscount: [
                 {name: 'Да', value: true},
                 {name: 'Нет', value: false}
             ],
-            selectedDiscount: null,
-            product: {}
+            product: {},
+            product_types: {}
         }
     },
     methods: {
@@ -109,8 +120,28 @@ export default {
                 this.product = this.goods[i];
             }
         },
+        //Добавление или изменение товара
+        async addEditGoods(product) {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            var raw = JSON.stringify(product);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/store/addedit", requestOptions);
+            //var result = await response.json();
+            this.getAll();
+        },
         saveAddModal() {
             this.modal.hide();
+            this.product.club_id = this.$props.club_id;
+            this.addEditGoods(this.product);
         },
         async find() {
             var myHeaders = new Headers();
@@ -144,7 +175,9 @@ export default {
             };
 
             var response = await fetch("api/shop/get", requestOptions);
-            this.goods = await response.json();
+            this.outData = await response.json();
+            this.goods = this.outData[0];
+            this.product_types = this.outData[1];
         }
     },
     mounted() {
@@ -200,7 +233,6 @@ export default {
     border-radius: 8px;
 }
 .bottom {
-    display: flex;
     width: 1793px;
     height: 855px;
     background: var(--light-blue-bg-color);
@@ -212,6 +244,7 @@ export default {
     overflow: auto;
     flex-wrap: wrap;
     display: flex;
+    max-height: 809px;
 }
 .butt {
     background: var(--disable);

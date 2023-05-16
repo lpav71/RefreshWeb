@@ -144,7 +144,7 @@ export default {
             messages: [],
             searchUser: "",
             findUsers: [],
-            modal: null,
+            modal: {},
             login: "",
             pay: '',
             chek: '',
@@ -214,12 +214,12 @@ export default {
                 redirect: 'follow'
             };
 
-            var response = await fetch("api/findOpenShift", requestOptions);
+            var response = await fetch("api/findopenshift", requestOptions);
             var result = await response.json();
             var forConsole = JSON.stringify(result);
             console.log(forConsole);
             var statusShift = result.shiftStatus;
-            statusShift = 'open';
+            //statusShift = 'open';
             if (statusShift === 'open') {
                 this.modal.show();
             }
@@ -262,11 +262,12 @@ export default {
             this.messages.push(JSON.stringify(data));
         }.bind(this));
         // ~PUSHER ---------------------------------------------
-        if (this.$props.f_user != null) {
+        if (this.$props.f_user != "") {
             this.findUsers = JSON.parse(this.$props.f_user);
         }
-        var widgetModal = document.getElementById('topBalanceModal')
-        this.modal = bootstrap.Modal.getOrCreateInstance(widgetModal);
+        var topBalanceModal = document.getElementById('topBalanceModal')
+        this.modal = bootstrap.Modal.getOrCreateInstance(topBalanceModal);
+        console.log(this.modal);
     }
 }
 </script>

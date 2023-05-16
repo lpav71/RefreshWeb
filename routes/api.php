@@ -23,7 +23,7 @@ Route::post('getMapPosition', [\App\Http\Controllers\api\MapController::class, '
 Route::post('saveNewPosition', [\App\Http\Controllers\api\MapController::class, 'saveNewPosition'])->name('saveNewPosition');
 Route::post('findusers', [App\Http\Controllers\api\UserController::class, 'UsersFind'])->name('UsersFind');
 Route::post('getSmena', [App\Http\Controllers\api\FinanceController::class, 'getSmena'])->name('getSmena');
-Route::post('findOpenShift', [App\Http\Controllers\api\FinanceController::class, 'findOpenShift'])->name('findOpenShift');
+Route::post('findopenshift', [App\Http\Controllers\api\FinanceController::class, 'findOpenShift'])->name('findOpenShift');
 Route::post('getGames', [App\Http\Controllers\api\GameController::class, 'getGames'])->name('getGames');
 Route::post('changeStatus', [App\Http\Controllers\api\GameController::class, 'changeStatus'])->name('changeStatus');
 Route::post('searchGame', [App\Http\Controllers\api\GameController::class, 'searchGame'])->name('searchGame');

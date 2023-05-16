@@ -60,7 +60,7 @@ class BookingController extends Controller
         $time_start = Carbon::parse($time_start)->setTime(0, 0, 0);
         $time_stop = Carbon::parse($time_start)->setTime(23, 59, 0);
 
-        $maps = DB::table('map')
+        /*$maps = DB::table('map')
             ->leftJoin('booking as b', 'map.id_comp', '=', 'b.map_comp_id')
             ->join('clients as c', 'map.user_id', '=', 'c.id')
             ->where('map.club_id', $club_id)
@@ -78,7 +78,19 @@ class BookingController extends Controller
             left join booking d on clients.id=d.user_id
             WHERE map.id_comp = d.map_comp_id
             GROUP BY d.map_comp_id
-        ) AS fulldata"))->get();
+        ) AS fulldata"))->get();*/
+        $maps = DB::table('map')
+            ->select(DB::raw("json_agg(row(b.time_start, b.time_stop, c.login)) as fulldata"), 'map.id_comp')
+            ->leftJoin('booking as b', 'b.map_comp_id', '=', 'map.id_comp')
+            ->leftJoin('clients as c', 'b.user_id', '=', 'c.id')
+            ->where('b.club_id', $club_id)
+            ->where(function ($query) use ($time_stop, $time_start) {
+                $query->where('b.time_start', '>=', $time_start)
+                    ->where('b.time_stop', '<=', $time_stop);
+            })
+            ->orWhereNull('b.time_start')
+            ->groupBy('map.id_comp')
+            ->get();
 
         $drawData = array();
         foreach ($maps as $map) {

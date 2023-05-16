@@ -8,8 +8,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="t in maps">
-                <td>{{ t.id_comp }}</td>
+            <tr v-for="(t, index) in maps">
+                <td>{{ t.id_comp }} index-{{ index }}</td>
                 <td v-for="t in 24">&emsp;</td>
             </tr>
             </tbody>

@@ -52,6 +52,8 @@ import UserInfoComponent from "./components/UserInfo.vue";
 app.component('userinfo', UserInfoComponent);
 import WarehouseComponent from "./components/Warehouse.vue";
 app.component('warehouse', WarehouseComponent);
+import TariffsComponent from "./components/Tariffs.vue";
+app.component('tariffs', TariffsComponent);
 
 
 /**

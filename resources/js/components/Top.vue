@@ -18,6 +18,7 @@
                     <option value="dashboard">Статистика</option>
                     <option value="task">История задач</option>
                     <option value="infouser">Информация о пользователе</option>
+                    <option value="tariffs">Тарифы и предложения</option>
                 </select>
             </div>
         </div>
@@ -106,6 +107,9 @@ export default {
             }
             if (this.user_data == 'infouser') {
                 window.open("userinfo", '_self');
+            }
+            if (this.user_data == 'tariffs') {
+                window.open("tariffs", '_self');
             }
         },
         addClient() {

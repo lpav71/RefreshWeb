@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class WarehouseController extends Controller
+class TariffsController extends Controller
 {
     public function __construct()
     {
@@ -17,6 +17,6 @@ class WarehouseController extends Controller
         $user = Auth::user();
         $club_id = $user->club_id;
 
-        return view('warehouse.index', compact('club_id'));
+        return view('tariffs.index', compact('club_id'));
     }
 }

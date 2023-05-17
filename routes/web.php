@@ -29,7 +29,7 @@ Route::get('dashboard', [\App\Http\Controllers\HomeController::class, 'dashboard
 Route::get('task', [\App\Http\Controllers\TaskController::class, 'index'])->name('task');
 Route::get('userinfo', [\App\Http\Controllers\UserInfoController::class, 'index'])->name('userinfo');
 Route::get('warehouse', [\App\Http\Controllers\WarehouseController::class, 'index'])->name('warehouse');
-
+Route::get('tariffs', [\App\Http\Controllers\TariffsController::class, 'index'])->name('tariffs');
 
 
 Route::get('test', [\App\Http\Controllers\TestController::class, 'index'])->name('testIndex');

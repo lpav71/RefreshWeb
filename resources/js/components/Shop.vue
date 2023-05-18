@@ -185,6 +185,7 @@ export default {
             }.bind(this));
             if (!dublicat) {
                 this.cartElement.name = name;
+                this.cartElement.id = this.goods[i].storeid;
                 if (this.goods[i].price != 0) {
                     this.cartElement.price = Number(this.goods[i].price);
                     this.cartElement.price_bonus = 0;

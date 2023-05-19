@@ -176,10 +176,11 @@ export default {
             };
             console.log(JSON.stringify(outData));
             this.messages = [];
+/*
             this.payText = 'Ждите';
             this.payTextDisabled = true;
             this.timer = setInterval(this.listenMessage, 1000);
-
+*/
         },
         listenMessage() {
             if (this.messages[0] !== undefined) {

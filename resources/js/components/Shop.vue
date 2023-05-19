@@ -125,6 +125,7 @@ export default {
         payJson() {
             console.log(JSON.stringify(this.cart));
             this.modal.hide();
+            this.cart = [];
         },
         clearClient() {
             this.findClient = {};

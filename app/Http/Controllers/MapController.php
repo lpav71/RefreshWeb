@@ -19,7 +19,7 @@ class MapController extends Controller
     {
         $user = Auth::user();
         $club_id = $user->club_id;
-        $comps = Map::where('club_id', $club_id)->get();
+        $comps = Map::where('club_id', $club_id)->OrderBy('id_comp')->get();
         return view('map.index', compact('club_id', 'comps'));
     }
 }

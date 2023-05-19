@@ -292,6 +292,7 @@ export default {
 
 .topBalance {
     background: var(--light-green);
+    font-size: 15px;
 }
 
 .div_1 {
@@ -642,7 +643,7 @@ nav{
     width: 100%;
     color: white;
     padding: 5px;
-    font-size: 11px;
+    font-size: 17px;
     border-radius: 10px;
 }
 .home table thead tr th {

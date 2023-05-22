@@ -264,8 +264,6 @@ export default {
     justify-content: flex-start;
 }
 .bottom2 {
-    display: flex;
-    flex-wrap: wrap;
     overflow: auto;
     max-height: 861px;
     justify-content: space-between;
@@ -709,8 +707,9 @@ export default {
 .goods {
     width: 156px;
     height: 250px;
-    margin-right: 13px;
+    margin-right: 25px;
     margin-bottom: 28px;
+    display: inline-block;
 }
 
 .goods_img {

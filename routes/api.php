@@ -56,8 +56,8 @@ Route::post('tasks/save-new-status', [\App\Http\Controllers\api\TaskController::
 Route::post('tasks/all', [\App\Http\Controllers\api\TaskController::class, 'allTasks']);
 Route::post('booking/draw', [\App\Http\Controllers\api\BookingController::class, 'draw']);
 Route::post('store/addedit', [\App\Http\Controllers\api\ShopController::class, 'addEdit']);
-
-
+Route::post('price/get0', [\App\Http\Controllers\api\TariffController::class, 'getTariff0']);
+Route::post('price/get1', [\App\Http\Controllers\api\TariffController::class, 'getTariff1']);
 
 
 

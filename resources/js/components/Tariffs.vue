@@ -11,16 +11,35 @@
     </div>
     <div class="bottom">
         <div class="in-bottom">
-            <div class="goods" v-for="(g, index) in goods">
-                <div class="goods_img"><img :src="g.icon" height="200" alt=""></div>
-                <div class="goods_text">
-                    <div>{{ g.name }}</div><br><div>{{ g.product }} {{ g.product_param }}</div>
-                </div>
-                <div class="goods-btn">
-                    <span>{{ g.num }}</span>
-                    <button class="goods_cart" @click="editModal(index)" type="button"><i class="fa fa-edit fa-lg"></i></button>
+
+            <div class="tariff-name">Поминутный</div>
+            <div class="t0">
+                <div class="goods" v-for="(g, index) in tariffs0">
+                    <div class="goods_img"><img :src="g.icon" height="200" alt=""></div>
+                    <div class="goods_text">
+                        <div>{{ g.time_start }} {{ g.time_stop }}</div><br><div>{{ g.price }}р/мин</div>
+                    </div>
+                    <div class="goods-btn">
+                        <span>{{ g.name }}</span>
+                        <button class="goods_cart" @click="editModal(index)" type="button"><i class="fa fa-edit fa-lg"></i></button>
+                    </div>
                 </div>
             </div>
+
+            <div class="tariff-name">Пакетное предложение</div>
+            <div class="t1">
+                <div class="goods" v-for="(g, index) in tariffs1">
+                    <div class="goods_img"><img :src="g.icon" height="200" alt=""></div>
+                    <div class="goods_text">
+                        <div>{{ g.time_start }} {{ g.time_stop }}</div><br><div>{{ g.price }}р/мин</div>
+                    </div>
+                    <div class="goods-btn">
+                        <span>{{ g.name }}</span>
+                        <button class="goods_cart" @click="editModal(index)" type="button"><i class="fa fa-edit fa-lg"></i></button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -32,74 +51,29 @@ export default {
     props: ['club_id'],
     data() {
         return {
-            product_name: '',
-            goods: null,
-            outData: null,
-            modal: null,
-            allowDiscount: [
-                {name: 'Да', value: true},
-                {name: 'Нет', value: false}
-            ],
-            product: {},
-            product_types: {}
+            tariffs0: {},
+            tariffs1: {}
         }
     },
     methods: {
-        enter(e) {
-            if (e.keyCode === 13) {
-                this.find();
-            }
-        },
-        editModal(i) {
-            this.modal.show();
-            if (isNaN(i)) { // Добавить
-                this.product = {};
-            }
-            else { //Изменить
-                this.product = this.goods[i];
-            }
-        },
-        //Добавление или изменение товара
-        async addEditGoods(product) {
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
+       async get0() {
+           var myHeaders = new Headers();
+           myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-            var raw = JSON.stringify(product);
+           var urlencoded = new URLSearchParams();
+           urlencoded.append("club_id", this.$props.club_id);
 
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-            };
+           var requestOptions = {
+               method: 'POST',
+               headers: myHeaders,
+               body: urlencoded,
+               redirect: 'follow'
+           };
 
-            var response = await fetch("api/store/addedit", requestOptions);
-            //var result = await response.json();
-            this.getAll();
-        },
-        saveAddModal() {
-            this.modal.hide();
-            this.product.club_id = this.$props.club_id;
-            this.addEditGoods(this.product);
-        },
-        async find() {
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-            var urlencoded = new URLSearchParams();
-            urlencoded.append("search", this.product_name);
-
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: urlencoded,
-                redirect: 'follow'
-            };
-
-            var response = await fetch("api/shop/find", requestOptions);
-            this.goods = await response.json();
-        },
-        async getAll() {
+           var response = await fetch("api/price/get0", requestOptions);
+           this.tariffs0 = await response.json();
+       },
+        async get1() {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -113,14 +87,13 @@ export default {
                 redirect: 'follow'
             };
 
-            var response = await fetch("api/shop/get", requestOptions);
-            this.outData = await response.json();
-            this.goods = this.outData[0];
-            this.product_types = this.outData[1];
+            var response = await fetch("api/price/get1", requestOptions);
+            this.tariffs1 = await response.json();
         }
     },
     mounted() {
-        this.getAll();
+        this.get0();
+        this.get1();
     }
 }
 </script>
@@ -144,29 +117,11 @@ export default {
     display: flex;
     justify-content: end;
 }
-.modal-content {
-    background: var(--light-blue-bg-color);
-    color: var(--standart-gray);
-}
-.modal-footer {
-    justify-content: flex-start;
-}
-.block {
+.t0, .t1 {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 20px;
 }
-.input {
-    height: 35px;
-    background: #172D39;
-    padding: 5px 15px 5px 15px;
-    margin-top: 6px;
-    color: var(--standart-gray);
-    border: none;
-    padding-top: 2px;
-    width: 465px;
-    border-radius: 8px;
+.tariff-name {
+    padding: 20px 0 20px 0;
 }
 .bottom {
     width: 1793px;
@@ -181,6 +136,7 @@ export default {
     flex-wrap: wrap;
     display: flex;
     max-height: 809px;
+    flex-direction: column;
 }
 .butt {
     background: var(--disable);

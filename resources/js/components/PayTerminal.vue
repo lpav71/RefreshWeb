@@ -172,15 +172,15 @@ export default {
     width: 1060px;
 }
 .home .header {
-    width: 400px;
+    width: 516px;
     display: flex;
-    justify-content: end;
+    justify-content: start;
 }
 .bottom {
     width: 1793px;
     height: 855px;
     background: var(--light-blue-bg-color);
-    margin-top: 20px;
+    margin-top: 10px;
     border-radius: 20px;
     padding: 20px;
 }

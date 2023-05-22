@@ -12,29 +12,43 @@
     <div class="bottom">
         <div class="in-bottom">
 
-            <div class="tariff-name">Поминутный</div>
+            <div class="tariff-name">
+                <span style="margin-right: 10px">Поминутный</span>
+                <i class="far fa-clock icon"></i>
+                <select class="div_4">
+                    <option value="" disabled selected>Выберите тариф</option>
+                    <option v-for="t in 3">Value</option>
+                </select>
+            </div>
             <div class="t0">
                 <div class="goods" v-for="(g, index) in tariffs0">
-                    <div class="goods_img"><img :src="g.icon" height="200" alt=""></div>
+                    <div class="goods_img"><img src="images/tariff.png" height="200" alt=""></div>
                     <div class="goods_text">
-                        <div>{{ g.time_start }} {{ g.time_stop }}</div><br><div>{{ g.price }}р/мин</div>
+                        <div class="time-data">{{ g.time_start }} {{ g.time_stop }}</div><div class="time-data">&emsp;{{ g.price }}р/мин</div>
                     </div>
                     <div class="goods-btn">
-                        <span>{{ g.name }}</span>
+                        <span style="font-size: 15px">{{ g.name }}&emsp;</span>
                         <button class="goods_cart" @click="editModal(index)" type="button"><i class="fa fa-edit fa-lg"></i></button>
                     </div>
                 </div>
             </div>
 
-            <div class="tariff-name">Пакетное предложение</div>
-            <div class="t1">
+            <div class="tariff-name">
+                <span style="margin-right: 10px">Пакетное предложение</span>
+                <i class="far fa-clock icon"></i>
+                <select class="div_4">
+                    <option value="" disabled selected>Выберите тариф</option>
+                    <option v-for="t in 3">Value</option>
+                </select>
+            </div>
+            <div class="t0">
                 <div class="goods" v-for="(g, index) in tariffs1">
-                    <div class="goods_img"><img :src="g.icon" height="200" alt=""></div>
+                    <div class="goods_img"><img src="images/tariff.png" height="200" alt=""></div>
                     <div class="goods_text">
-                        <div>{{ g.time_start }} {{ g.time_stop }}</div><br><div>{{ g.price }}р/мин</div>
+                        <div class="time-data">{{ g.time_start }} {{ g.time_stop }}</div><div class="time-data">&emsp;{{ g.price }}р/мин</div>
                     </div>
                     <div class="goods-btn">
-                        <span>{{ g.name }}</span>
+                        <span style="font-size: 15px">{{ g.name }}&emsp;</span>
                         <button class="goods_cart" @click="editModal(index)" type="button"><i class="fa fa-edit fa-lg"></i></button>
                     </div>
                 </div>
@@ -120,8 +134,27 @@ export default {
 .t0, .t1 {
     display: flex;
 }
+.time-data {
+    display: inline-block;
+    font-size: inherit;
+}
 .tariff-name {
     padding: 20px 0 20px 0;
+}
+.icon {
+    color: var(--light-green)
+}
+.div_4 {
+    height: 35px;
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 1px;
+    margin-left: 10px;
+    color: var(--standart-gray);
+    border: none;
+    width: 190px;
+    border-radius: 8px 26px;
+    font-size: inherit;
 }
 .bottom {
     width: 1793px;
@@ -148,37 +181,12 @@ export default {
     padding-right: 20px;
     padding-left: 20px;
 }
-.lupa {
-    position: relative;
-    left: 48px;
-    opacity: 0.50;
-    top: 0;
-}
 .top {
     width: 1490px;
     height: 42px;
     display: flex;
     justify-content: start;
     align-items: center;
-}
-.input_shop {
-    margin-left: 20px;
-    background: var(--standart-black);
-    height: 42px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 10px 20px;
-    gap: 10px;
-    width: 376px;
-    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.12);
-    border-radius: 10px;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-    border: none;
-    color: var(--standart-color);
-    padding-left: 50px;
 }
 .goods {
     width: 178px;
@@ -188,6 +196,7 @@ export default {
     padding: 11px;
     border-radius: 12px;
     margin-bottom: 15px;
+    font-size: 14px;
 }
 
 .goods_img {
@@ -203,19 +212,16 @@ export default {
 .goods_text {
     width: 156px;
     height: 22px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    flex-direction: column;
     line-height: 8px;
     margin-top: 7px;
+    font-size: inherit;
 }
 
 .goods-btn {
     width: 154px;
     height: 25px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     font-size: 10px;
     margin-top: 4px;

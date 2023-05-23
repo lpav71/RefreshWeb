@@ -59,26 +59,29 @@ class BookingController extends Controller
         $time_start = $request->time_start;
         $time_start = Carbon::parse($time_start)->setTime(0, 0, 0);
         $time_stop = Carbon::parse($time_start)->setTime(23, 59, 0);
+        //$time_start->setDateTime(2022, 04, 30, 0, 0, 0);
+        //$time_stop->setDateTime(2022, 04, 30, 0, 0, 0);
 
         $maps = DB::table('map')
-            ->leftJoin('booking as b', 'map.id_comp', '=', 'b.map_comp_id')
-            ->join('clients as c', 'map.user_id', '=', 'c.id')
-            ->where('map.club_id', $club_id)
-            ->where('b.time_start', '>=', $time_start)
-            ->orWhere('time_stop', '<', $time_stop)
-            ->orWhereNull('b.time_start')
-            ->orWhereNull('b.time_stop')
-            ->groupBy('id_comp')
-            ->orderBy('id_comp', 'asc')
-            ->select(DB::raw("id_comp,
+            ->select('id_comp', DB::raw("
         (
-            SELECT json_agg(row(d.time_start, d.time_stop, clients.login, clients.id)
-            ORDER BY d.time_start ASC)
-            FROM clients
-            left join booking d on clients.id=d.user_id
-            WHERE map.id_comp = d.map_comp_id
-            GROUP BY d.map_comp_id
-        ) AS fulldata"))->get();
+            SELECT json_agg(row(b.time_start, b.time_stop, b.user_id) ORDER BY b.time_start ASC)
+            FROM booking bb
+            LEFT JOIN clients c2 ON c2.id = bb.user_id
+            WHERE map.id_comp = bb.map_comp_id AND bb.club_id=$club_id
+            GROUP BY map_comp_id
+        ) AS fulldata
+    "))
+            ->leftJoin('booking as b', 'map.id_comp', '=', 'b.map_comp_id')
+            ->leftJoin('booking as c', 'map.user_id', '=', 'c.id')
+            ->where([
+                ['map.club_id', '=', $club_id],
+                ['b.time_start', '>', $time_start],
+                ['b.time_start', '<', $time_stop],
+            ])
+            ->groupBy('id_comp', 'map.id_comp')
+            ->orderBy('id_comp', 'asc')
+            ->get();
 
 
         $drawData = array();

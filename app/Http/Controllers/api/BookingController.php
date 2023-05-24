@@ -59,8 +59,6 @@ class BookingController extends Controller
         $time_start = $request->time_start;
         $time_start = Carbon::parse($time_start)->setTime(0, 0, 0);
         $time_stop = Carbon::parse($time_start)->setTime(23, 59, 0);
-        //$time_start->setDateTime(2022, 04, 30, 0, 0, 0);
-        //$time_stop->setDateTime(2022, 04, 30, 0, 0, 0);
 
         $maps = DB::table('map')
             ->select('id_comp', DB::raw("

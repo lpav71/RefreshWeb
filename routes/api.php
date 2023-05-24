@@ -43,6 +43,7 @@ Route::post('closepay',[\App\Http\Controllers\api\FinanceController::class,'clos
 Route::post('shop/get', [\App\Http\Controllers\api\ShopController::class, 'getAll']);
 Route::post('shop/find', [\App\Http\Controllers\api\ShopController::class, 'find']);
 Route::post('client/register', [\App\Http\Controllers\api\ClientController::class, 'register']);
+Route::post('client/all', [\App\Http\Controllers\api\ClientController::class, 'getClients']);
 Route::post('shop/find/client', [\App\Http\Controllers\api\ShopController::class, 'searchClient']);
 Route::post('booking/all', [\App\Http\Controllers\api\BookingController::class, 'getAllClients']);
 Route::post('booking/cancel', [\App\Http\Controllers\api\BookingController::class, 'cancelBooking']);

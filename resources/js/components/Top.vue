@@ -1,9 +1,16 @@
 <template>
     <div class="account">
         <form action="finduser" method="get">
-            <div class="left-user-account"><i class="fas fa-search fs-5 lupa"></i><input type="text" name="searchUser" class="user-search" placeholder="Поиск пользователя">
+            <div class="left-user-account"><i class="fas fa-search fs-5 lupa"></i>
+                <input type="text" name="searchUser" @input="searchClients" v-model="searchQuery" class="user-search" placeholder="Поиск пользователя">
             <div class="user-search-button" @click="addClient"><i class="fas fa-user-plus fs-3 icon-user-plus"></i></div>
+            <div class="popup" v-show="findWindow" ref="findBlock">
+                <ul>
+                    <li v-for="(f, i) in filteredClients" @click="selectFindClient(i)">{{ f.login }}</li>
+                </ul>
+            </div>
         </div>
+        <button ref="send" type="submit" style="display: none"></button>
         </form>
         <div class="right-user-account">
             <div class="user-search-button"><i class="fas fa-comment fs-3 icon-user-plus"></i></div>
@@ -92,7 +99,11 @@ export default {
             address: null,
             email: null,
             vkId: null,
-            user_data: 'name'
+            user_data: 'name',
+            clients: [],
+            filteredClients: [],
+            searchQuery: '',
+            findWindow: false
         }
     },
     methods: {
@@ -115,6 +126,12 @@ export default {
             if (this.user_data == 'pay_terminal') {
                 window.open("pay_terminal", '_self');
             }
+        },
+        selectFindClient(i) {
+            this.searchQuery = this.filteredClients[i].login;
+            setTimeout(function (){
+                this.$refs.send.click();
+            }.bind(this),200);
         },
         addClient() {
             this.login = null;
@@ -161,11 +178,46 @@ export default {
             else {
                 alert('!!! Ошибка записи !!!');
             }
+        },
+        async getClients() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/client/all", requestOptions);
+            this.clients = await response.json();
+        },
+        searchClients() {
+            this.filteredClients = this.clients.filter(client => {
+                this.findWindow = this.filteredClients.length > 1;
+                if (this.searchQuery.length < 2) this.findWindow = false;
+                return client.login.toLowerCase().includes(this.searchQuery.toLowerCase())
+            });
+
+        },
+        handleClickOutside(event) {
+            if (!this.$refs.findBlock.contains(event.target)) {
+                this.findWindow = false
+            }
         }
     },
     mounted() {
         var regModal = document.getElementById('regModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(regModal);
+        this.getClients();
+        document.addEventListener('click', this.handleClickOutside)
+    },
+    beforeUnmount() {
+        document.removeEventListener('click', this.handleClickOutside)
     }
 }
 </script>
@@ -176,6 +228,18 @@ export default {
 }
 .modal-footer {
     justify-content: flex-start;
+}
+ul li {
+    list-style-type: none;
+    cursor: pointer;
+}
+.popup {
+    width: 376px;
+    background: var(--light-blue-bg-color);
+    position: absolute;
+    top: 80px;
+    left: 12px;
+    border-radius: 10px;
 }
 .reg {
     background: var(--dark-green-b);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Club;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
@@ -74,5 +75,13 @@ class ClientController extends Controller
         $info = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         curl_close($curl);
         return $info;
+    }
+
+    public function getClients(Request $request)
+    {
+        $clientData = DB::table('clients')
+            ->where('club_id', $request->club_id)
+            ->get();
+        return $clientData;
     }
 }

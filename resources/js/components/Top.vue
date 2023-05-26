@@ -250,12 +250,6 @@ ul li {
     height: 546px;
 }
 
-.div_1 {
-    height: 74px;
-    display: flex;
-    flex-direction: column;
-}
-
 .div_2 {
     height: 353px;
     display: flex;
@@ -283,12 +277,6 @@ ul li {
     flex-direction: column;
 }
 
-.input_1 {
-    background: #172D39;
-    border: none;
-    padding: 5px;
-}
-
 .div_4 {
     height: 35px;
     background: #172D39;
@@ -311,14 +299,6 @@ ul li {
     padding-top: 2px;
     width: 190px;
     border-radius: 8px;
-}
-
-.div_5 {
-    width: 300px;
-    padding: 12px;
-    height: 191px;
-    display: flex;
-    flex-direction: column;
 }
 
 .check-1 + label {
@@ -348,11 +328,6 @@ ul li {
     border-color: #0b76ef;
     background-color: #0b76ef;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
-}
-
-.label-1 {
-    font-size: 15px;
-    width: 500px;
 }
 
 .check-2 + label {
@@ -391,17 +366,6 @@ ul li {
     color: var(--standart-gray);
 }
 
-.text_1 {
-    background: #172D39;
-    padding: 5px 15px 5px 15px;
-    margin-top: 1px;
-    color: var(--standart-gray);
-    border: none;
-    padding-top: 0px;
-    width: 190px;
-    border-radius: 8px;
-}
-
 .div_login {
     width: 500px;
     display: flex;
@@ -421,9 +385,6 @@ ul li {
 .btn {
 }
 
-.bt {
-    background: var(--light-green);
-}
 .account {
     position: relative;
     display: flex;

@@ -4,7 +4,12 @@
             <div style="display: flex;flex-direction: column;align-items: center;width: 250px;height: 220px;justify-content: space-between;"><span>Выберите пользователя</span>
                 <div style="margin-top: -33px;">
                     <i class="fas fa-search lupa2"></i>
-                    <input class="select_user" type="text" v-model="client" @keydown="searchClient" placeholder="Поиск логина" />
+                    <input class="select_user" type="text" @keydown="searchClientToKey" @input="searchClients" v-model="searchQuery" placeholder="Поиск логина" />
+                </div>
+                <div class="popup" v-show="findWindow" ref="findBlock">
+                    <ul>
+                        <li v-for="(f, i) in filteredClients" @click="selectFindClient(i)">{{ f.login }}</li>
+                    </ul>
                 </div>
                 <div class="user_name">
                     <img src="images/shop/ava.svg" style="width: 22px;margin-top: 10px;margin-left: 10px;" />
@@ -113,9 +118,12 @@ export default {
             cartElement: {},
             rubs: 0,
             bonuses: 0,
-            client: '',
             findClient: {},
-            modal: null
+            modal: null,
+            clients: [],
+            filteredClients: [],
+            searchQuery: '',
+            findWindow: false
         }
     },
     methods: {
@@ -131,17 +139,53 @@ export default {
             this.findClient = {};
             this.client = '';
         },
-        searchClient(e) {
+        searchClientToKey(e) {
             if (e.keyCode === 13) {
                 this.search();
             }
+        },
+        searchClients() {
+            this.filteredClients = this.clients.filter(client => {
+                this.findWindow = this.filteredClients.length > 1;
+                if (this.searchQuery.length < 2) this.findWindow = false;
+                return client.login.toLowerCase().includes(this.searchQuery.toLowerCase())
+            });
+
+        },
+        handleClickOutside(event) {
+            if (!this.$refs.findBlock.contains(event.target)) {
+                this.findWindow = false
+            }
+        },
+        selectFindClient(i) {
+            this.searchQuery = this.filteredClients[i].login;
+            setTimeout(function (){
+                this.search();
+            }.bind(this),200);
+        },
+        async getClients() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/client/all", requestOptions);
+            this.clients = await response.json();
         },
         async search() {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
             var urlencoded = new URLSearchParams();
-            urlencoded.append("login", this.client);
+            urlencoded.append("login", this.searchQuery);
 
             var requestOptions = {
                 method: 'POST',
@@ -151,6 +195,7 @@ export default {
             };
 
             var response = await fetch("api/shop/find/client", requestOptions);
+            this.findWindow = false;
             try {
                 var result = await response.json();
                 this.findClient = result;
@@ -247,6 +292,7 @@ export default {
         this.modal = bootstrap.Modal.getOrCreateInstance(payModal);
 
         this.getAll();
+        this.getClients();
     }
 }
 </script>
@@ -263,15 +309,22 @@ export default {
 .modal-footer {
     justify-content: flex-start;
 }
+.popup {
+    width: 250px;
+    background: var(--light-blue-bg-color);
+    position: absolute;
+    top: 216px;
+    left: 127px;
+    border-radius: 10px;
+}
+ul li {
+    list-style-type: none;
+    cursor: pointer;
+}
 .bottom2 {
     overflow: auto;
     max-height: 861px;
     justify-content: space-between;
-}
-.div_1 {
-    height: 74px;
-    display: flex;
-    flex-direction: column;
 }
 .save {
     background: var(--disable);
@@ -306,12 +359,6 @@ export default {
     flex-direction: column;
 }
 
-.input_1 {
-    background: #172D39;
-    border: none;
-    padding: 5px;
-}
-
 .div_4 {
     height: 35px;
     background: #172D39;
@@ -334,14 +381,6 @@ export default {
     padding-top: 2px;
     width: 444px;
     border-radius: 8px;
-}
-
-.div_5 {
-    width: 300px;
-    padding: 12px;
-    height: 191px;
-    display: flex;
-    flex-direction: column;
 }
 
 .check-1 + label {
@@ -371,11 +410,6 @@ export default {
     border-color: #0b76ef;
     background-color: #0b76ef;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
-}
-
-.label-1 {
-    font-size: 15px;
-    width: 500px;
 }
 
 .check-2 + label {
@@ -414,27 +448,6 @@ export default {
     color: var(--standart-gray);
 }
 
-.text_1 {
-    background: #172D39;
-    padding: 5px 15px 5px 15px;
-    margin-top: 1px;
-    color: var(--standart-gray);
-    border: none;
-    padding-top: 0px;
-    width: 190px;
-    border-radius: 8px;
-}
-
-.div_login {
-    width: 500px;
-    display: flex;
-    justify-content: start;
-    border-bottom: 1px solid #172d39;
-    align-items: center;
-    height: 50px;
-    padding-left: 34px;
-}
-
 .div_data {
     display: flex;
     font-size: 13px;
@@ -447,12 +460,6 @@ export default {
 }
 
 .btn {
-}
-
-.bt {
-    margin-top: 23px;
-    margin-left: 32px;
-    background: var(--light-green);
 }
 
 .formcheck_1 {

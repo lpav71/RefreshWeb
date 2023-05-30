@@ -39,7 +39,7 @@ class BookingController extends Controller
                 '=',
                 'price.id'
             )
-            ->select(DB::raw('booking.id, clients.phone, clients.email, price.name as tariff, zone.name as zone, booking.map_comp_id, clients.login, to_char(booking.time_start, \'HH24:MI\') as time_start, to_char(booking.time_stop, \'HH24:MI\') as time_stop'))
+            ->select(DB::raw('booking.id, clients.phone, clients.email, price.name as tariff, zone.name as zone, booking.map_comp_id, clients.login, to_char(booking.time_start, \'HH24:MI\') as time_start, to_char(booking.time_stop, \'DD.MM.YYYY\') as date, to_char(booking.time_stop, \'HH24:MI\') as time_stop'))
             ->get();
         return $booking;
     }

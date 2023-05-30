@@ -78,6 +78,10 @@
                         <option v-for="u in product_types" :value="u.types">{{ u.name }}</option>
                     </select>
                 </div>
+                <div class="block-2">
+                    <input type="checkbox" class="form-check-input" v-model="product.showInClient">
+                    <label class="form-check-label"> - Показывать в клиентском ПО</label>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" @click="saveAddModal">Сохранить</button>
@@ -220,6 +224,12 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     margin-top: 20px;
+}
+.block-2 {
+    margin-top: 20px;
+}
+.block-2 label {
+    margin: 3px 0 0 7px;
 }
 .input {
     height: 35px;

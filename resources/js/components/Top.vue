@@ -223,6 +223,36 @@ export default {
 </script>
 
 <style scoped>
+
+.user-search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: 376px;
+    height: 54px;
+    background: linear-gradient(180deg, #284F62 0%, #183F52 100%);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+    border: none;
+    color: var(--standart-color);
+    padding: 10px 20px 10px 50px;
+    margin-left: -6px;
+}
+.account {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 1820px;
+    height: 94px;
+    top: 1px;
+    justify-content: space-between;
+    padding: 20px 15px 20px 0;
+}
 .modal-body {
     padding: 0;
 }

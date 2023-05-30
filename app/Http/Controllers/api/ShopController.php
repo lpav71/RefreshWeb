@@ -46,6 +46,7 @@ class ShopController extends Controller
         $types = $request->types;
         $club_id = $request->club_id;
         $icon = $request->icon;
+        $shell_show = $request->showInClient;
         $id = $request->storeid;
         if ($id == null) {
             $store = new Store();
@@ -57,6 +58,7 @@ class ShopController extends Controller
             $store->types = $types;
             $store->club_id = $club_id;
             $store->icon = $icon;
+            $store->shell_show = $shell_show;
             $store->save();
         }
         else {
@@ -68,6 +70,7 @@ class ShopController extends Controller
             $store->discount = $discount;
             $store->types = $types;
             $store->icon = $icon;
+            $store->shell_show = $shell_show;
             $store->save();
         }
         return $store;

@@ -20,8 +20,8 @@
             <div @mousemove="move" @mouseup="mmup">
                 <div class="all-buttons">
                     <div style="display: flex;align-items: center;"><i class="fab fa-delicious fs-2" style="color: var(--standart-color);"></i><span class="panel-manager">Панель управления</span>
-                        <div class="buttons-dark"><span style="color: var(--standart-color);">Общая карта</span></div>
-                        <div v-for="(zone, index) in zones" :class="[{'button-active': zones[index].active, 'buttons': true}]" @click="changeZone(index)"><span>{{ zone.name }}</span></div>
+                        <button class="btn btn-success buttons"><span style="color: var(--standart-color);" @click="generalMap">Общая карта</span></button>
+                        <button v-for="(zone, index) in zones" class="btn btn-success buttons" :class="[{'button-active': zones[index].active}]" @click="changeZone(index)"><span>{{ zone.name }}</span></button>
                     </div>
                     <div style="display: flex;align-items: center;">
                         <div class="buttons" @click="addZone" style="width: 150px;height: 34px;">Добавить зону</div>
@@ -44,7 +44,7 @@
                 <div style="width: 149px;height: 44px;display: flex;justify-content: center;align-items: center;"><i class="far fa-clock" style="color: var(--standart-gray);font-size: 21px;"></i>
                     <div style="width: 130px;height: 40px;display: flex;flex-direction: column;"><span style="color: var(--standart-gray);text-align: center;font-size: 15px;font-weight: bold;">{{ shiftStatus }}</span><span style="color: var(--standart-gray);text-align: center;font-size: 15px;">{{ time }}</span></div>
                 </div>
-                <div class="button-shift-close" @click="switchShift"><span style="font-size: 15px;font-weight: bold;">{{ shiftOpenClose }}</span></div>
+                <button class="btn btn-success button-shift-close" @click="switchShift"><span style="font-size: 13px;font-weight: bold;">{{ shiftOpenClose }}</span></button>
             </div>
             <div class="cash">
                 <div class="nal-card"><span style="color: var(--standart-gray);">Наличные/карта</span>
@@ -209,6 +209,11 @@ export default {
         }
     },
     methods: {
+        generalMap() {
+            this.zones.forEach(function (item){
+                item.active = false;
+            });
+        },
         addZone() {
             this.addZoneModal.show();
         },
@@ -543,6 +548,186 @@ export default {
 </script>
 
 <style scoped>
+
+.button-active {
+    background: var(--standart-green) !important;
+}
+.buttons-dark {
+    width: 131px;
+    height: 42px;
+    background: var(--dark-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--standart-color);
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    opacity: 0.50;
+    cursor: pointer;
+}
+.buttons {
+    width: 131px;
+    height: 42px;
+    background: var(--light-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--standart-color);
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 30px;
+    cursor: pointer;
+    border: none;
+}
+.center-plus-right {
+    width: 1820px;
+    height: 986px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+.graphic {
+    height: 272px;
+    width: 952px;
+    background: var(--light-blue-bg-color);
+    border-radius: 20px;
+}
+.active-bron {
+     width: 465px;
+     background: var(--light-blue-bg-color);
+     border-radius: 20px;
+     display: flex;
+     align-items: center;
+     flex-direction: column;
+ }
+.shift-close {
+    height: 84px;
+    background: var(--light-blue-bg-color);
+    border-radius: 20px;
+}
+.cash {
+     height: 318px;
+     background: var(--light-blue-bg-color);
+     border-radius: 20px;
+     margin-top: 20px;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+ }
+.tasks {
+    height: 503px;
+    background: var(--light-blue-bg-color);
+    border-radius: 20px;
+    margin-top: 20px;
+}
+.manager {
+    height: 561px;
+    margin-top: 20px;
+    background: var(--light-blue-bg-color);
+    border-radius: 20px;
+}
+.all-buttons {
+    height: 42px;
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.panel-manager {
+    color: var(--standart-color);
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.nal-card {
+    margin-top: 20px;
+}
+.task {
+    height: 42px;
+    background: var(--standart-black);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 5px;
+    margin-top: 9px;
+    cursor: pointer;
+}
+.intask {
+    width: 98px;
+    height: 32px;
+    background: var(--standart-red);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tasks-text {
+    color: var(--standart-gray);
+}
+.task-1 {
+    display: flex;
+    align-items: center;
+}
+.active-bron2 {
+    width: 210px;
+    height: 64px;
+    background: var(--standart-black);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.active-bron2-left {
+    width: 66px;
+    height: 42px;
+    background: var(--light-green);
+    border-radius: 5px 30px;
+    margin-left: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.active-bron2-right {
+    width: 101px;
+    height: 44px;
+    border-style: dotted;
+    margin-right: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.active-bron2-text {
+    color: var(--light-green);
+    font-weight: bold;
+    font-size: 13px;
+}
+.tasks-text-2 {
+    font-size: 12px;
+    color: var(--standart-gray);
+}
+.time {
+    color: var(--standart-color);
+    font-weight: bold;
+    font-size: 18px;
+}
+.active-bron-buttons {
+    width: 442px;
+    height: 227px;
+    margin-top: -5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    overflow: auto;
+    padding-right: 5px;
+}
+.task-list {
+    height: 440px;
+    width: 250px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .waiting {
     display: block;

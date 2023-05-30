@@ -742,9 +742,6 @@ export default {
     padding: 7px;
     color: gray;
 }
-.modal-footer {
-    justify-content: flex-start;
-}
 .main_modal {
     width: 800px;
     height: 314px;
@@ -753,13 +750,7 @@ export default {
     flex-direction: column;
     align-items: center;
 }
-.modal-body {
-    padding: 0;
-}
-.modal-content {
-    background: var(--light-blue-bg-color);
-    color: var(--standart-gray);
-}
+
 .info_modal {
     width: 760px;
     background: var(--dark-blue-bg-color);

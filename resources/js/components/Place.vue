@@ -9,7 +9,7 @@
                     <div class="active-bron-buttons">
                         <div class="active-bron2" v-for="(c, i) in clientList">
                             <div class="active-bron2" @click="bModal(i)">
-                                <div class="active-bron2-left"><span class="time">{{ c.time_start }}</span></div>
+                                <div class="active-bron2-left"><span class="time">{{ c.time_stop }}</span></div>
                                 <div class="active-bron2-right"><span class="active-bron2-text">{{ c.login }}</span><span class="tasks-text-2">{{ c.map_comp_id }} компьютер</span></div>
                             </div>
                         </div>

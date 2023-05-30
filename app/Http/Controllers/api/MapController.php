@@ -26,7 +26,7 @@ class MapController extends Controller
         {
             $join->on('zone.club_id','=','map.club_id');
             $join->on('zone.num', '=', 'map.zone');
-        })->where('map.club_id', '=', $request->club_id)->orderBy('id_comp', 'asc')->get()->toArray();
+        })->where('map.club_id', '=', $request->club_id)->orderBy('id_comp')->get()->toArray();
         $zone = Zone::where('club_id', $request->club_id)->get()->toArray();
         $map = Map::where(['club_id'=>$request->club_id])->orderBy('id_comp')->get()->toArray();
         $outData = array(

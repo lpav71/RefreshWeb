@@ -32,7 +32,7 @@
                 </div>
                 <div class="manager outbox">
                     <div v-for="(position, index) in positions" class="box" @mousedown="mdown($event, index)"
-                         :style="{top: position.top + 'px', left: position.left + 'px', width: boxWidth + 'px', height: boxHeight + 'px', background: boxColor}">
+                         :style="{top: position.top + 'px', left: position.left + 'px', width: boxWidth + 'px', height: boxHeight + 'px', background: boxColor, 'border-color': position.mainborder}">
                         {{ index + 1 }}
                         <div class="inbox" :style="{'background-color': position.bg}"></div>
                     </div>
@@ -213,6 +213,9 @@ export default {
             this.zones.forEach(function (item){
                 item.active = false;
             });
+            for(var i=0; i<this.positions.length; i++) {
+                this.positions[i].mainborder = this.boxColor;
+            }
         },
         addZone() {
             this.addZoneModal.show();
@@ -358,7 +361,15 @@ export default {
                 item.active = false;
             });
             this.zones[i].active = !this.zones[i].active;
-            this.zone = i;
+            this.zone = this.zones[i].num;
+
+            this.positions.forEach(function (item){
+                if (item.zone == this.zone){
+                    item.mainborder = 'yellow';
+                }
+                else
+                    item.mainborder = this.boxColor;
+            }.bind(this));
         },
         move(e) {
             if (dragObject) {
@@ -476,12 +487,36 @@ export default {
 
            var response = await fetch("api/tasks/tasks", requestOptions);
            this.tasks = await response.json();
+        },
+        async getMapPosition() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var club_id = JSON.parse(this.$props.club).id;
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var responce = await fetch("api/getMapPosition", requestOptions);
+            var result = await responce.json();
+            result.map.forEach(function (item){
+                var bg = item.ping === 0 ? '#FE3434' : '#01B253';
+                this.element = {top: item.pos_y, left: item.pos_x, offsetLeft: 0, zone: item.zone, ping: item.ping, bg: bg, mainborder: this.boxColor}; //offsetLeft используется для вычисления смещения при изменении размера окна
+                this.positions.push(this.element);
+                this.element = {};
+            }.bind(this));
+            this.zones = result.zone;
         }
     },
     created()  {
         window.addEventListener("resize", this.resizeHandler);
     },
-
     destroyed()  {
         window.removeEventListener("resize", this.resizeHandler);
     },
@@ -508,36 +543,7 @@ export default {
         this.otstupTop = document.querySelector('.outbox').offsetTop;
         this.lowout = this.otstupTop + document.querySelector('.outbox').clientHeight; //Низ окна outbox
 
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-        var club_id = JSON.parse(this.$props.club).id;
-        var urlencoded = new URLSearchParams();
-        urlencoded.append("club_id", club_id);
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: urlencoded,
-            redirect: 'follow'
-        };
-
-        fetch("api/getMapPosition", requestOptions)
-            .then(response => response.json())
-            .then(result => {
-                result.map.forEach(function (item, index){
-                    var bg = item.ping === 0 ? '#FE3434' : '#01B253';
-                    this.element = {top: item.pos_y, left: item.pos_x, offsetLeft: 0, zone: item.zone, ping: item.ping, bg: bg}; //offsetLeft используется для вычисления смещения при изменении размера окна
-                    this.positions.push(this.element);
-                    this.element = {};
-                }.bind(this));
-                this.zones = result.zone;
-                /*result.mapZone.forEach(function (item){
-                    item.active = false;
-                    this.zones.push(item);
-                }.bind(this));*/
-            })
-            .catch(error => console.log('error', error));
+        this.getMapPosition();
         this.getSmena();
         this.getClients();
         this.getTasks();
@@ -577,6 +583,7 @@ export default {
     border-top-right-radius: 30px;
     cursor: pointer;
     border: none;
+    transition: all 0.5s ease;
 }
 .center-plus-right {
     width: 1820px;

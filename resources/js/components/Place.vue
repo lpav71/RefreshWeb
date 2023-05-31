@@ -32,7 +32,7 @@
                 </div>
                 <div class="manager outbox">
                     <div v-for="(position, index) in positions" class="box" @mousedown="mdown($event, index)"
-                         :style="{top: position.top + 'px', left: position.left + 'px', width: boxWidth + 'px', height: boxHeight + 'px', background: boxColor, 'border-color': position.mainborder}">
+                         :style="{top: position.top + 'px', left: position.left + 'px', width: boxWidth + 'px', height: boxHeight + 'px', background: boxColor, border: '2px solid ' + position.mainborder}">
                         {{ index + 1 }}
                         <div class="inbox" :style="{'background-color': position.bg}"></div>
                     </div>

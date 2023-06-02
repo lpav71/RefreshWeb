@@ -41,7 +41,7 @@
                 <h5 class="modal-title" id="editWarehouseModalLabel">Добавить товар</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding-left: 15px;">
                 <div class="block" style="margin-top: 0">
                     <span>Наименование товара</span>
                     <input type="text" class="input" placeholder="Введите наименование товара" v-model="product.product" />

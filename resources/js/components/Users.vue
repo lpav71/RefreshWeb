@@ -93,7 +93,7 @@
                     <h5 class="modal-title" id="topBalanceModalLabel" style="color: white">Пополнение баланса пользователя <span style="color: #0d6efd">{{ login }}</span> </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="padding-left: 15px;">
 
                     <div class="main">
                         <div class="div_1"><span>Сумма</span><input class="input_1 rounded" v-model.number="summa" type="number" maxlength="10" /></div>
@@ -398,9 +398,6 @@ export default {
 /* ------------------------------------------- */
 .menu_bottom svg {
     margin-top: 20px;
-}
-.modal-content {
-    background: var(--light-blue-bg-color);
 }
 nav {
     display: flex;

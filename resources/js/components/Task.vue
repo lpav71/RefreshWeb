@@ -50,7 +50,7 @@
                     <h5 class="modal-title" id="addTaskModalLabel">Добавить задание</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="padding: 17px;">
                     <div class="block" style="margin-top: 0">
                         <span>Описание</span>
                         <input type="text" class="input" placeholder="Протереть столы" v-model="descript_admin" />
@@ -92,7 +92,7 @@
                     <h5 class="modal-title" id="changeStatusModalLabel">Смена статуса</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="padding-left: 15px;">
                     <span>Перевести текущее задание в статус: {{ newStatus.description }}</span>
                 </div>
                 <div class="modal-footer">

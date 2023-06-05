@@ -163,7 +163,6 @@ export default {
             urlencoded.append("address", this.address);
             urlencoded.append("email", this.email);
             urlencoded.append("vkId", this.vkId);
-            urlencoded.append("userId", this.$props.user_id);
 
             var requestOptions = {
                 method: 'POST',
@@ -176,9 +175,6 @@ export default {
             var result = await response.text();
             if(result == 200) {
                 this.modal.hide();
-            }
-            if (response.status === 404){
-                alert('!!! Данная функция вам недоступна !!!');
             }
             else {
                 alert('!!! Ошибка записи !!!');

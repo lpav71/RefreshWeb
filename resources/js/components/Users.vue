@@ -151,7 +151,7 @@ export default {
             currentUser: {},
             summa: 0,
             comment: '',
-            timer: null,
+            //timer: null,
             permissions: {}
         }
     },
@@ -208,7 +208,7 @@ export default {
                     this.modal.hide();
                     this.payText = 'Оплата';
                     this.payTextDisabled = false;
-                    clearInterval(this.timer);
+                    //clearInterval(this.timer);
                 }
                 this.messages = [];
             }
@@ -271,7 +271,7 @@ export default {
     mounted() {
         // PUSHER ---------------------------------------------
         // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
+        /*Pusher.logToConsole = true;
 
         var pusher = new Pusher('6a5d1d953f639e0236dc', {
             cluster: 'mt1'
@@ -280,7 +280,7 @@ export default {
         var channel = pusher.subscribe('my-channel');
         channel.bind('my-event', function(data) {
             this.messages.push(JSON.stringify(data));
-        }.bind(this));
+        }.bind(this));*/
         // ~PUSHER ---------------------------------------------
         if (this.$props.f_user != "") {
             this.findUsers = JSON.parse(this.$props.f_user);

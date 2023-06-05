@@ -23,6 +23,7 @@ class UserController extends Controller
         $fullName = $name . " " . $surname;
         $club_id = $user->club_id;
         $searchUser = $request->searchUser;
+        $user_id = $user->id;
         if ($searchUser != null)
         {
             $fUserData = UserCommon::UsersFind($searchUser);
@@ -31,6 +32,6 @@ class UserController extends Controller
         else {
             $fUser = "";
         }
-        return view('User.FindShow', compact('fullName', 'club_id', 'fUser'));
+        return view('User.FindShow', compact('fullName', 'club_id', 'fUser', 'user_id'));
     }
 }

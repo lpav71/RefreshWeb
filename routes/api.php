@@ -3,21 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('saveMapPosition', [\App\Http\Controllers\api\MapController::class, 'saveMapPosition'])->name('saveMapPosition');
 Route::post('getMapPosition', [\App\Http\Controllers\api\MapController::class, 'getMapPosition'])->name('getMapPosition');
 Route::post('saveNewPosition', [\App\Http\Controllers\api\MapController::class, 'saveNewPosition'])->name('saveNewPosition');
@@ -59,6 +44,7 @@ Route::post('booking/draw', [\App\Http\Controllers\api\BookingController::class,
 Route::post('store/addedit', [\App\Http\Controllers\api\ShopController::class, 'addEdit']);
 Route::post('price/get0', [\App\Http\Controllers\api\TariffController::class, 'getTariff0']);
 Route::post('price/get1', [\App\Http\Controllers\api\TariffController::class, 'getTariff1']);
+Route::post('user/getpermissions', [\App\Http\Controllers\api\UserController::class, 'getPermisions']);
 
 
 

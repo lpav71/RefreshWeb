@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Http\Common\UserCommon;
 use App\Http\Controllers\Controller;
 use App\Models\Club;
 use Illuminate\Http\Request;
@@ -22,59 +23,66 @@ class ClientController extends Controller
         $email = $request->email;
         $vkId = $request->vkId;
         $club_id = $request->club_id;
+        $user_id = $request->userId;
 
-        $apiKey = Club::where('id', $club_id)->first()->api_key;
+        $permissions = UserCommon::getPermissions($user_id, $club_id);
+        if ($permissions->new_user) {
+            $apiKey = Club::where('id', $club_id)->first()->api_key;
 
-        $fields = array(
-            "login" => $login,
-            "password" => $pass,
-            "role" => "user",
-            "phone" => $phone,
-            "email" => $email,
-            "icon" => "",
-            "fullName" => $firstName." ".$lastName." ".$patronymic,
-            "amount" => 0,
-            "bonus" => 0,
-            "totalTime" => 0,
-            "statusActive" => true,
-            "telegramId" => "string",
-            "vkId" => $vkId,
-            "bDay" => $bday,
-            "verify" => true,
-            "verifyDt" => null,
-            "name" => $firstName,
-            "surName" => $lastName,
-            "middleName" => $patronymic,
-            "apiKey" => $apiKey
-        );
-        $fieldsJson = json_encode($fields);
-        $curl = curl_init();
+            $fields = array(
+                "login" => $login,
+                "password" => $pass,
+                "role" => "user",
+                "phone" => $phone,
+                "email" => $email,
+                "icon" => "",
+                "fullName" => $firstName." ".$lastName." ".$patronymic,
+                "amount" => 0,
+                "bonus" => 0,
+                "totalTime" => 0,
+                "statusActive" => true,
+                "telegramId" => "string",
+                "vkId" => $vkId,
+                "bDay" => $bday,
+                "verify" => true,
+                "verifyDt" => null,
+                "name" => $firstName,
+                "surName" => $lastName,
+                "middleName" => $patronymic,
+                "apiKey" => $apiKey
+            );
+            $fieldsJson = json_encode($fields);
+            $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://194.87.144.7:6150/api/clients/register',
-            //CURLOPT_URL => 'https://localhost:7161/api/clients/register',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => $fieldsJson,
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-            ),
-            CURLOPT_SSL_VERIFYHOST => 0,
-            CURLOPT_SSL_VERIFYPEER => 0
-        ));
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://194.87.144.7:6150/api/clients/register',
+                //CURLOPT_URL => 'https://localhost:7161/api/clients/register',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => $fieldsJson,
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+                CURLOPT_SSL_VERIFYHOST => 0,
+                CURLOPT_SSL_VERIFYPEER => 0
+            ));
 
-        $response = curl_exec($curl);
-        if (curl_errno($curl)) {
-            $error_msg = curl_error($curl);
+            $response = curl_exec($curl);
+            if (curl_errno($curl)) {
+                $error_msg = curl_error($curl);
+            }
+            $info = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            curl_close($curl);
+            return $info;
         }
-        $info = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-        return $info;
+        else {
+            return response()->json(['error' => 'Данная функция вам недоступна'], 404);
+        }
     }
 
     public function getClients(Request $request)

@@ -99,13 +99,13 @@
                         <div class="div_1"><span>Сумма</span><input class="input_1 rounded" v-model.number="summa" type="number" maxlength="10" /></div>
                         <div class="div_2">
                             <div class="div_3"><span>Способы оплаты</span>
-                                <div class="div_4">
+                                <div class="div_4" v-show="permissions.balance_money">
                                     <div class="form-check form-check-reverse text-start"><input id="formCheck-1" class="form-check-input check-1" type="radio" name="payment" v-model="pay" value="cash" style="opacity: 0;position: absolute;z-index: -1;" /><label class="form-check-label label-1" for="formCheck-1">Наличные</label></div>
                                 </div>
-                                <div class="div_4">
+                                <div class="div_4" v-show="permissions.balance_money">
                                     <div class="form-check form-check-reverse text-start"><input id="formCheck-3" class="form-check-input check-1" type="radio" name="payment" v-model="pay" value="card" style="opacity: 0;position: absolute;z-index: -1;" /><label class="form-check-label label-1" for="formCheck-3">Карта</label></div>
                                 </div>
-                                <div class="div_4">
+                                <div class="div_4" v-show="permissions.balance_bonus">
                                     <div class="form-check form-check-reverse text-start"><input id="formCheck-2" class="form-check-input check-1" type="radio" name="payment" v-model="pay" value="bonus" style="opacity: 0;position: absolute;z-index: -1;" /><label class="form-check-label label-1" for="formCheck-2">Бонусная валюта</label></div>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@
 
 <script>
 export default {
-    props: ['club_id', 'f_user'],
+    props: ['club_id', 'f_user', 'user_id'],
     data() {
         return {
             payText: 'Оплата',
@@ -151,7 +151,8 @@ export default {
             currentUser: {},
             summa: 0,
             comment: '',
-            timer: null
+            timer: null,
+            permissions: {}
         }
     },
     methods: {
@@ -159,6 +160,24 @@ export default {
             if (e.keyCode === 13) {
                 this.search();
             }
+        },
+        async getPermissions() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+            urlencoded.append("user_id", this.$props.user_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/user/getpermissions", requestOptions);
+            this.permissions = await response.json();
         },
         payment() {
             var outData = {
@@ -269,6 +288,8 @@ export default {
         var topBalanceModal = document.getElementById('topBalanceModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(topBalanceModal);
         console.log(this.modal);
+
+        this.getPermissions();
     }
 }
 </script>

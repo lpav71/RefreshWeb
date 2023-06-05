@@ -3,7 +3,7 @@
         <form action="finduser" method="get">
             <div class="left-user-account"><i class="fas fa-search fs-5 lupa"></i>
                 <input type="text" name="searchUser" @input="searchClients" v-model="searchQuery" class="user-search" placeholder="Поиск пользователя">
-            <div class="user-search-button" @click="addClient"><i class="fas fa-user-plus fs-3 icon-user-plus"></i></div>
+            <div v-show="permissions.new_user" class="user-search-button" @click="addClient"><i class="fas fa-user-plus fs-3 icon-user-plus"></i></div>
             <div class="popup" v-show="findWindow" ref="findBlock">
                 <ul>
                     <li v-for="(f, i) in filteredClients" @click="selectFindClient(i)">{{ f.login }}</li>
@@ -85,7 +85,7 @@
 
 <script>
 export default {
-    props: ['name', 'club_id'],
+    props: ['name', 'club_id', 'user_id'],
     data() {
         return {
             modal: null,
@@ -103,7 +103,8 @@ export default {
             clients: [],
             filteredClients: [],
             searchQuery: '',
-            findWindow: false
+            findWindow: false,
+            permissions: {}
         }
     },
     methods: {
@@ -162,6 +163,7 @@ export default {
             urlencoded.append("address", this.address);
             urlencoded.append("email", this.email);
             urlencoded.append("vkId", this.vkId);
+            urlencoded.append("userId", this.$props.user_id);
 
             var requestOptions = {
                 method: 'POST',
@@ -175,9 +177,30 @@ export default {
             if(result == 200) {
                 this.modal.hide();
             }
+            if (response.status === 404){
+                alert('!!! Данная функция вам недоступна !!!');
+            }
             else {
                 alert('!!! Ошибка записи !!!');
             }
+        },
+        async getPermissions() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+            urlencoded.append("user_id", this.$props.user_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/user/getpermissions", requestOptions);
+            this.permissions = await response.json();
         },
         async getClients() {
             var myHeaders = new Headers();
@@ -214,6 +237,7 @@ export default {
         var regModal = document.getElementById('regModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(regModal);
         this.getClients();
+        this.getPermissions();
         document.addEventListener('click', this.handleClickOutside)
     },
     beforeUnmount() {

@@ -84,6 +84,7 @@
                     $surname = $user->surname; //Фамилия
                     $fullName = $name . " " . $surname;
                     $club_id = $user->club_id;
+                    $user_id = $user->id;
                 }
                 else {
                     $fullName = "";
@@ -93,7 +94,7 @@
             <div style="display: flex">
                 <left-menu></left-menu>
                 <div>
-                    <top name="{{ $fullName }}" club_id="{{ $club_id }}"></top>
+                    <top name="{{ $fullName }}" club_id="{{ $club_id }}" user_id="{{ $user_id }}"></top>
                     @yield('content')
                 </div>
             </div>

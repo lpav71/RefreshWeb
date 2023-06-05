@@ -16,4 +16,9 @@ class UserController extends Controller
         $users = UserCommon::UsersFind($searchUser);
         return $users;
     }
+
+    public function getPermisions(Request $request) {
+        $permissions = UserCommon::getPermissions($request->user_id, $request->club_id);
+        return $permissions;
+    }
 }

@@ -44,7 +44,7 @@
                 <div style="width: 149px;height: 44px;display: flex;justify-content: center;align-items: center;"><i class="far fa-clock" style="color: var(--standart-gray);font-size: 21px;"></i>
                     <div style="width: 130px;height: 40px;display: flex;flex-direction: column;"><span style="color: var(--standart-gray);text-align: center;font-size: 15px;font-weight: bold;">{{ shiftStatus }}</span><span style="color: var(--standart-gray);text-align: center;font-size: 15px;">{{ time }}</span></div>
                 </div>
-                <button class="btn btn-success button-shift-close" @click="switchShift"><span style="font-size: 13px;font-weight: bold;">{{ shiftOpenClose }}</span></button>
+                <button v-show="permissions.balance_money || permissions.balance_bonus" class="btn btn-success button-shift-close" @click="switchShift"><span style="font-size: 13px;font-weight: bold;">{{ shiftOpenClose }}</span></button>
             </div>
             <div class="cash">
                 <div class="nal-card"><span style="color: var(--standart-gray);">Наличные/карта</span>
@@ -205,10 +205,29 @@ export default {
             currentClient: {},
             zoneName: '',
             uData: {},
-            tasks: null
+            tasks: null,
+            permissions: {}
         }
     },
     methods: {
+        async getPermissions() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.uData.club_id);
+            urlencoded.append("user_id", this.uData.id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/user/getpermissions", requestOptions);
+            this.permissions = await response.json();
+        },
         generalMap() {
             this.zones.forEach(function (item){
                 item.active = false;
@@ -547,6 +566,7 @@ export default {
         this.getSmena();
         this.getClients();
         this.getTasks();
+        this.getPermissions();
         console.log(this.$props.club);
         console.log(this.$props.userData);
     }

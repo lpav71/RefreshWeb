@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div id="DIV_192">
-                        <button id="BUTTON_193" @click="edit_game">
+                        <button v-show="permissions.create_game" id="BUTTON_193" @click="edit_game">
                             <img src="images/plus.svg" id="IMG_194" alt='' /> Добавить вручную
                         </button>
                     </div>
@@ -153,7 +153,7 @@
 <script>
 
 export default {
-    props: ['club_id'],
+    props: ['club_id', 'user_id'],
     data() {
         return {
             messages: [],
@@ -174,10 +174,29 @@ export default {
                 {name: 'Да', value: true},
                 {name: 'Нет', value: false}
             ],
-            selectetedLicenses: null
+            selectetedLicenses: null,
+            permissions: {}
         }
     },
     methods: {
+        async getPermissions() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+            urlencoded.append("user_id", this.$props.user_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/user/getpermissions", requestOptions);
+            this.permissions = await response.json();
+        },
         async addGames() {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -363,6 +382,7 @@ export default {
         this.modal = bootstrap.Modal.getOrCreateInstance(editGameModal);
 
         this.getGames();
+        this.getPermissions();
 
         setInterval(this.openModal, 2000);
     }

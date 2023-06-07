@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <games club_id="{{ $club_id }}"></games>
+    <games club_id="{{ $club_id }}" user_id="{{ $user_id }}"></games>
 @endsection
 
 <script>

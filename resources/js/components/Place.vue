@@ -24,8 +24,8 @@
                         <button v-for="(zone, index) in zones" class="btn btn-success buttons" :class="[{'button-active': zones[index].active}]" @click="changeZone(index)"><span>{{ zone.name }}</span></button>
                     </div>
                     <div style="display: flex;align-items: center;">
-                        <div class="buttons" @click="addZone" style="width: 150px;height: 34px;">Добавить зону</div>
-                        <div class="buttons" @click="addBox" style="width: 57px;height: 34px;"><i class="fas fa-plus fs-5"></i></div>
+                        <div v-show="permissions.create_zone" class="buttons" @click="addZone" style="width: 150px;height: 34px;">Добавить зону</div>
+                        <div v-show="permissions.create_pc" class="buttons" @click="addBox" style="width: 57px;height: 34px;"><i class="fas fa-plus fs-5"></i></div>
                         <div class="buttons-dark" style="width: 57px;height: 34px;"><i class="fas fa-lock fs-5"></i></div>
                         <div class="buttons-dark" style="width: 185px;height: 42px;"><span>Клиентская карта</span></div>
                     </div>

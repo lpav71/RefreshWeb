@@ -17,7 +17,8 @@ class GameController extends Controller
     {
         $user = Auth::user();
         $club_id = $user->club_id;
-        return view ('game.index', compact('club_id'));
+        $user_id = $user->id;
+        return view ('game.index', compact('club_id', 'user_id'));
     }
 
 

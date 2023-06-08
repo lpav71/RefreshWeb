@@ -45,6 +45,7 @@ Route::post('store/addedit', [\App\Http\Controllers\api\ShopController::class, '
 Route::post('price/get0', [\App\Http\Controllers\api\TariffController::class, 'getTariff0']);
 Route::post('price/get1', [\App\Http\Controllers\api\TariffController::class, 'getTariff1']);
 Route::post('user/getpermissions', [\App\Http\Controllers\api\UserController::class, 'getPermisions']);
+Route::post('position/getuser', [\App\Http\Controllers\api\PositionController::class, 'getUsers']);
 
 
 

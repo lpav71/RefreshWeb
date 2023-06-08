@@ -27,6 +27,7 @@
                     <option value="infouser">Информация о пользователе</option>
                     <option value="tariffs">Тарифы и предложения</option>
                     <option value="pay_terminal">Настройки ККМ</option>
+                    <option value="position">Сотрудники и роли</option>
                 </select>
             </div>
         </div>
@@ -126,6 +127,9 @@ export default {
             }
             if (this.user_data == 'pay_terminal') {
                 window.open("pay_terminal", '_self');
+            }
+            if (this.user_data == 'position') {
+                window.open("position", '_self');
             }
         },
         selectFindClient(i) {

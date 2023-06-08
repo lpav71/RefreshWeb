@@ -31,9 +31,9 @@ Route::get('userinfo', [\App\Http\Controllers\UserInfoController::class, 'index'
 Route::get('warehouse', [\App\Http\Controllers\WarehouseController::class, 'index'])->name('warehouse');
 Route::get('tariffs', [\App\Http\Controllers\TariffsController::class, 'index'])->name('tariffs');
 Route::get('pay_terminal', [\App\Http\Controllers\PayTermialController::class, 'index'])->name('pay_terminal');
+Route::get('position', [\App\Http\Controllers\PositionController::class, 'index'])->name('position');
+
 
 
 Route::get('test', [\App\Http\Controllers\TestController::class, 'index'])->name('testIndex');
 
-
-//Route::post('save', [\App\Http\Controllers\MapController::class, 'saveMapPosition'])->name('saveMapPosition');

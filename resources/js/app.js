@@ -56,6 +56,9 @@ import TariffsComponent from "./components/Tariffs.vue";
 app.component('tariffs', TariffsComponent);
 import PayTerminalComponent from "./components/PayTerminal.vue";
 app.component('pay-terminal', PayTerminalComponent);
+import PositionComponent from "./components/Position.vue";
+app.component('position', PositionComponent);
+
 
 
 /**

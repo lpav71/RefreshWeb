@@ -8,9 +8,9 @@
     <div class="bottom">
         <div class="side">
             <button @click="editModal" class="btn butt" type="button">Добавить роль</button>
-            <template v-for="i in 5">
+            <template v-for="p in positions">
                 <div class="div_4 span-1">
-                    <span>Тип ПТ</span>
+                    <span>{{ p.position_name }}</span>
                 </div>
             </template>
         </div>
@@ -19,7 +19,7 @@
                 <div class="one_user" v-for="u in users">
                     <div class="foto"><img :src="u.icon" width="50" height="50" alt=""></div>
                     <div class="fio">
-                        <span>{{ u.surname }} {{ u.name_auth }}</span><br><span class="c_position">Управляющий</span>
+                        <span>{{ u.surname }} {{ u.name_auth }}</span><br><span class="c_position">{{ u.position_name }}</span>
                     </div>
                     <div class="invitation">
                         <span>Приглашён</span><br><span class="c_position">Васей Пупкиным</span>
@@ -37,7 +37,8 @@ export default {
     props: ['club_id'],
     data() {
         return {
-            users: null
+            users: null,
+            positions: null
         }
     },
     methods: {
@@ -55,12 +56,30 @@ export default {
                 redirect: 'follow'
             };
 
-            var response = await fetch("http://localhost:8080/api/position/getuser", requestOptions);
+            var response = await fetch("api/position/getuser", requestOptions);
             this.users = await response.json();
+        },
+        async getPositions() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/position/get", requestOptions);
+            this.positions = await response.json();
         }
     },
     mounted() {
         this.getUsers();
+        this.getPositions();
     }
 }
 </script>

@@ -32,7 +32,7 @@ Route::get('warehouse', [\App\Http\Controllers\WarehouseController::class, 'inde
 Route::get('tariffs', [\App\Http\Controllers\TariffsController::class, 'index'])->name('tariffs');
 Route::get('pay_terminal', [\App\Http\Controllers\PayTermialController::class, 'index'])->name('pay_terminal');
 Route::get('position', [\App\Http\Controllers\PositionController::class, 'index'])->name('position');
-
+Route::get('licenses', [\App\Http\Controllers\LicensesController::class, 'index'])->name('licenses');
 
 
 Route::get('test', [\App\Http\Controllers\TestController::class, 'index'])->name('testIndex');

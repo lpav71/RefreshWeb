@@ -58,6 +58,8 @@ import PayTerminalComponent from "./components/PayTerminal.vue";
 app.component('pay-terminal', PayTerminalComponent);
 import PositionComponent from "./components/Position.vue";
 app.component('position', PositionComponent);
+import LicensesComponent from "./components/Licenses.vue";
+app.component('licenses', LicensesComponent);
 
 
 

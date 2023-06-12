@@ -29,7 +29,8 @@
                             <input type="checkbox" id="INPUT_191" checked="checked" />
                         </div>
                     </div>
-                    <div id="DIV_192">
+                    <div class="right_block">
+                        <button class="btn add_steam" @click="add_steam_account">&emsp;Добавить steam аккаунт&emsp;</button>&emsp;
                         <button v-show="permissions.create_game" id="BUTTON_193" @click="edit_game">
                             <img src="images/plus.svg" id="IMG_194" alt='' /> Добавить вручную
                         </button>
@@ -148,6 +149,28 @@
         </div>
     </div>
 
+    <!-- Модальное окно -->
+    <div class="modal fade" id="addSteamAccountModal" tabindex="-1" aria-labelledby="addSteamAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSteamAccountModalLabel">Добавление steam аккаунта</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="main_modal2">
+                        <div><input v-model="gameName" class="input_1" type="text" placeholder="Название игры" /></div>
+                        <div><input v-model="steamId" class="input_1" type="text" placeholder="Steam ID" /></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn bt">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -175,10 +198,16 @@ export default {
                 {name: 'Нет', value: false}
             ],
             selectetedLicenses: null,
-            permissions: {}
+            permissions: {},
+            steamAccountModal: null,
+            gameName: '',
+            steamId: ''
         }
     },
     methods: {
+        add_steam_account() {
+            this.steamAccountModal.show();
+        },
         async getPermissions() {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -381,6 +410,9 @@ export default {
         var editGameModal = document.getElementById('editGameModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(editGameModal);
 
+        var addSteamAccountModal = document.getElementById('addSteamAccountModal')
+        this.steamAccountModal = bootstrap.Modal.getOrCreateInstance(addSteamAccountModal);
+
         this.getGames();
         this.getPermissions();
 
@@ -394,6 +426,37 @@ export default {
 .main {
     width: 800px;
     height: 583px;
+}
+.main_modal2 {
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px;
+}
+.bt {
+    background: var(--regular);
+    color: var(--standart-gray);
+}
+.input_1 {
+    height: 35px;
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 1px;
+    color: var(--standart-gray);
+    border: none;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 12px;
+}
+.right_block {
+    display: flex;
+}
+.add_steam {
+    background: var(--regular);
+    color: var(--table-color);
+    border-radius: 5px 30px 5px 30px;
+    font-size: 16px;
 }
 .scroll {
     height: 862px;
@@ -1711,73 +1774,6 @@ export default {
     text-size-adjust: 100%;
     font: 16px / 22px Russia, sans-serif;
 }/*#INPUT_191:before*/
-
-#DIV_192 {
-    align-items: center;
-    block-size: 42px;
-    border-block-end-color: rgb(33, 37, 41);
-    border-block-start-color: rgb(33, 37, 41);
-    border-inline-end-color: rgb(33, 37, 41);
-    border-inline-start-color: rgb(33, 37, 41);
-    box-sizing: border-box;
-    caret-color: rgb(33, 37, 41);
-    color: rgb(33, 37, 41);
-    column-gap: 10px;
-    column-rule-color: rgb(33, 37, 41);
-    display: flex;
-    height: 42px;
-    inline-size: 206px;
-    min-block-size: auto;
-    min-height: auto;
-    min-inline-size: auto;
-    min-width: auto;
-    perspective-origin: 103px 21px;
-    row-gap: 10px;
-    text-decoration: none solid rgb(33, 37, 41);
-    text-emphasis-color: rgb(33, 37, 41);
-    text-size-adjust: 100%;
-    transform-origin: 103px 21px;
-    width: 206px;
-    border: 0 none rgb(33, 37, 41);
-    font: 16px / 24px Russia, sans-serif;
-    outline: rgb(33, 37, 41) none 0;
-}/*#DIV_192*/
-
-#DIV_192:after {
-    border-block-end-color: rgb(33, 37, 41);
-    border-block-start-color: rgb(33, 37, 41);
-    border-inline-end-color: rgb(33, 37, 41);
-    border-inline-start-color: rgb(33, 37, 41);
-    box-sizing: border-box;
-    caret-color: rgb(33, 37, 41);
-    color: rgb(33, 37, 41);
-    column-rule-color: rgb(33, 37, 41);
-    display: block;
-    text-decoration: none solid rgb(33, 37, 41);
-    text-emphasis-color: rgb(33, 37, 41);
-    text-size-adjust: 100%;
-    border: 0 none rgb(33, 37, 41);
-    font: 16px / 24px Russia, sans-serif;
-    outline: rgb(33, 37, 41) none 0;
-}/*#DIV_192:after*/
-
-#DIV_192:before {
-    border-block-end-color: rgb(33, 37, 41);
-    border-block-start-color: rgb(33, 37, 41);
-    border-inline-end-color: rgb(33, 37, 41);
-    border-inline-start-color: rgb(33, 37, 41);
-    box-sizing: border-box;
-    caret-color: rgb(33, 37, 41);
-    color: rgb(33, 37, 41);
-    column-rule-color: rgb(33, 37, 41);
-    display: block;
-    text-decoration: none solid rgb(33, 37, 41);
-    text-emphasis-color: rgb(33, 37, 41);
-    text-size-adjust: 100%;
-    border: 0 none rgb(33, 37, 41);
-    font: 16px / 24px Russia, sans-serif;
-    outline: rgb(33, 37, 41) none 0;
-}/*#DIV_192:before*/
 
 #BUTTON_193 {
     align-items: center;

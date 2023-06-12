@@ -47,7 +47,7 @@ Route::post('price/get1', [\App\Http\Controllers\api\TariffController::class, 'g
 Route::post('user/getpermissions', [\App\Http\Controllers\api\UserController::class, 'getPermisions']);
 Route::post('position/getuser', [\App\Http\Controllers\api\PositionController::class, 'getUsers']);
 Route::post('position/get', [\App\Http\Controllers\api\PositionController::class, 'getPositions']);
-
+Route::post('licenses', [\App\Http\Controllers\api\LicensesController::class, 'licenses']);
 
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');

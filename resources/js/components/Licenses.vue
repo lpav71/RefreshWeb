@@ -20,15 +20,16 @@
                     <th>Групы ПК</th>
                     <th>Группы пользователей</th>
                     <th>Количество лицензий</th>
+                    <th>Свободно лицензий</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr v-for="l in licenses">
+                    <td>{{ l.game }}</td>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ l.account }}</td>
                     <td></td>
                 </tr>
                 </tbody>
@@ -43,7 +44,8 @@ export default {
     props: ['club_id', 'user_id'],
     data() {
         return {
-            permissions: {}
+            permissions: {},
+            licenses: []
         }
     },
     methods: {
@@ -64,10 +66,20 @@ export default {
 
             var response = await fetch("api/user/getpermissions", requestOptions);
             this.permissions = await response.json();
+        },
+        async getLicenses() {
+            var requestOptions = {
+                method: 'POST',
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/licenses", requestOptions);
+            this.licenses = await response.json();
         }
     },
     mounted() {
         this.getPermissions();
+        this.getLicenses();
     }
 }
 </script>

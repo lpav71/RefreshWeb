@@ -48,6 +48,12 @@ Route::post('user/getpermissions', [\App\Http\Controllers\api\UserController::cl
 Route::post('position/getuser', [\App\Http\Controllers\api\PositionController::class, 'getUsers']);
 Route::post('position/get', [\App\Http\Controllers\api\PositionController::class, 'getPositions']);
 Route::post('licenses', [\App\Http\Controllers\api\LicensesController::class, 'licenses']);
+Route::post('category/save', [\App\Http\Controllers\api\LicensesController::class, 'categorySave']);
+
+
+
+
+
 
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');

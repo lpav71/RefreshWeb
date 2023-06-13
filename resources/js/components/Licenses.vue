@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="header_bottom_right">
-                <button class="right_button_bottom">Добавить категорию</button>
+                <button class="btn right_button_bottom" @click="addCategory">Добавить категорию</button>
             </div>
         </div>
         <div class="fon">
@@ -37,6 +37,32 @@
         </div>
     </div>
 
+    <!-- Модальное окно -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCategoryModalLabel">Добавление steam аккаунта</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="block" style="margin-top: 0">
+                        <span>Категория</span>
+                        <input type="text" class="input" placeholder="Введите наименование категории" v-model="category" />
+                    </div>
+                    <div class="block">
+                        <span>Steam_ID</span>
+                        <input type="text" class="input" placeholder="Введите steam аккаунт" v-model="steam_id" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn bt" @click="categorySave">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -45,10 +71,41 @@ export default {
     data() {
         return {
             permissions: {},
-            licenses: []
+            licenses: [],
+            modal: null,
+            category: '',
+            steam_id: ''
         }
     },
     methods: {
+        addCategory() {
+            this.category = '';
+            this.steam_id = '';
+            this.modal.show();
+        },
+        async categorySave() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("category", this.category);
+            urlencoded.append("steam_id", this.steam_id);
+            urlencoded.append("club_id", this.$props.club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/category/save", requestOptions);
+            if (!response.ok) {
+                alert("Ошибка!!!")
+            }
+            this.modal.hide();
+            this.getLicenses();
+        },
         async getPermissions() {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -78,6 +135,9 @@ export default {
         }
     },
     mounted() {
+        var addCategoryModal = document.getElementById('addCategoryModal')
+        this.modal = bootstrap.Modal.getOrCreateInstance(addCategoryModal);
+
         this.getPermissions();
         this.getLicenses();
     }
@@ -85,7 +145,28 @@ export default {
 </script>
 
 <style scoped>
-
+.block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 12px;
+}
+.bt {
+    background: var(--light-green);
+}
+.input {
+    height: 35px;
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 6px;
+    color: var(--standart-gray);
+    border: none;
+    width: 465px;
+    border-radius: 8px;
+}
+.modal-body {
+    padding: 15px;
+}
 .fon {
     height: 885px;
     background: var(--light-blue-bg-color);

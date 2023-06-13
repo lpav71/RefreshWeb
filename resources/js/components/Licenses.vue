@@ -84,6 +84,7 @@ export default {
             this.modal.show();
         },
         async categorySave() {
+            this.modal.hide();
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -103,7 +104,6 @@ export default {
             if (!response.ok) {
                 alert("Ошибка!!!")
             }
-            this.modal.hide();
             this.getLicenses();
         },
         async getPermissions() {

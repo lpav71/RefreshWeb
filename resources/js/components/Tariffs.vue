@@ -161,8 +161,8 @@ export default {
             this.additionalBlock.push(newAdditionaBlock);
         },
         decriment() {
-            if(this.additionalBlock > 0)
-                this.additionalBlock--;
+            if(this.additionalBlock.length > 0)
+                this.additionalBlock.splice(this.additionalBlock.length-1, 1)
         },
         async get0() {
            var myHeaders = new Headers();

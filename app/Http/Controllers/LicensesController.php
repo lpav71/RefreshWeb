@@ -16,7 +16,8 @@ class LicensesController extends Controller
     {
         $user = Auth::user();
         $club_id = $user->club_id;
+        $user_id = $user->id;
 
-        return view('licenses.index', compact('club_id'));
+        return view('licenses.index', compact('club_id', 'user_id'));
     }
 }

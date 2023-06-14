@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="right">
-            <button @click="editModal" class="butt" type="button">Добавить</button>
+            <button @click="addModalShow" class="butt" type="button">Добавить</button>
         </div>
     </div>
     <div class="bottom">
@@ -58,6 +58,81 @@
     </div>
 </div>
 
+    <!-- Модальное окно -->
+    <div class="modal fade" id="addTariffModal" tabindex="-1" aria-labelledby="addTariffModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTariffModalLabel">Новый тариф</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="block" style="margin-top: 0">
+                        <span>Тариф</span>
+                        <input type="text" class="input w1" placeholder="Введите наименование" v-model="category" />
+                    </div>
+                    <div class="bottom2">
+                        <div class="left-right">
+                            <div class="block" style="margin-top: 0">
+                                <span>День недели</span>
+                                <select class="input w2">
+                                    <option>item1</option>
+                                </select>
+                            </div>
+                            <div class="block" style="margin-top: 0">
+                                <span>Время жизни</span>
+                                <input type="text" class="input w2" v-model="category" />
+                            </div>
+                        </div>
+                        <div class="left-right">
+                            <div class="block" style="margin-top: 0">
+                                <span>Зона</span>
+                                <select class="input w2">
+                                    <option>item1</option>
+                                </select>
+                            </div>
+                            <button class="btn bt" @click="encriment"> + </button>
+                            <button class="btn bt" @click="decriment"> - </button>
+                        </div>
+                    </div>
+                    <template v-for="(a, index) in additionalBlock">
+                        <div class="bottom2">
+                            <div class="left-right">
+                                <div class="block" style="margin-top: 0">
+                                    <span>Начало</span>
+                                    <input type="text" class="input w2" v-model="a.start" />
+                                </div>
+                                <div class="block" style="margin-top: 0">
+                                    <span>Продолжительность</span>
+                                    <input type="text" class="input w2" v-model="a.duration" />
+                                </div>
+                            </div>
+                            <div class="left-right">
+                                <div class="block" style="margin-top: 0">
+                                    <span>Завершение</span>
+                                    <input type="text" class="input w2" v-model="a.stop" />
+                                </div>
+                                <div class="bottom3">
+                                    <div class="block" style="margin-top: 0">
+                                        <span>Фикс. время</span>
+                                        <input type="text" class="input w3" v-model="a.fixtime" />
+                                    </div>
+                                    <div class="block" style="margin-top: 0">
+                                        <span>Стоимость</span>
+                                        <input type="text" class="input w3" v-model="a.cost" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-green">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -66,11 +141,30 @@ export default {
     data() {
         return {
             tariffs0: {},
-            tariffs1: {}
+            tariffs1: {},
+            modal: null,
+            additionalBlock: []
         }
     },
     methods: {
-       async get0() {
+        addModalShow() {
+            this.modal.show();
+        },
+        encriment() {
+            var newAdditionaBlock = {
+                start: '',
+                duration: '',
+                stop: '',
+                fixtime: '',
+                cost: ''
+            };
+            this.additionalBlock.push(newAdditionaBlock);
+        },
+        decriment() {
+            if(this.additionalBlock > 0)
+                this.additionalBlock--;
+        },
+        async get0() {
            var myHeaders = new Headers();
            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -86,7 +180,7 @@ export default {
 
            var response = await fetch("api/price/get0", requestOptions);
            this.tariffs0 = await response.json();
-       },
+        },
         async get1() {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -106,6 +200,9 @@ export default {
         }
     },
     mounted() {
+        var addTariffModal = document.getElementById('addTariffModal')
+        this.modal = bootstrap.Modal.getOrCreateInstance(addTariffModal);
+
         this.get0();
         this.get1();
     }
@@ -113,6 +210,54 @@ export default {
 </script>
 
 <style scoped>
+.left-right {
+    width: 49%;
+}
+.bottom2{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.bottom3 {
+    display: flex;
+    justify-content: space-between;
+}
+.modal-body {
+    padding: 15px;
+}
+.btn-green {
+    background: var(--light-green);
+}
+.block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 12px;
+}
+.bt {
+    background: var(--light-green);
+    border-radius: 5px 15px 5px 15px;
+    margin-top: 26px;
+    margin-right: 20px;
+}
+.w1 {
+    width: 465px;
+}
+.w2 {
+    width: 227px;
+}
+.w3 {
+    width: 112px;
+}
+.input {
+    height: 35px;
+    background: #172D39;
+    padding: 5px 15px 5px 15px;
+    margin-top: 6px;
+    color: var(--standart-gray);
+    border: none;
+    border-radius: 8px;
+}
 .home {
     width: 1793px;
     height: 947px;

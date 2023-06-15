@@ -69,26 +69,32 @@
                 <div class="modal-body">
                     <div class="block" style="margin-top: 0">
                         <span>Тариф</span>
-                        <input type="text" class="input w1" placeholder="Введите наименование" v-model="category" />
+                        <input type="text" class="input w1" placeholder="Введите наименование" v-model="name" />
                     </div>
                     <div class="bottom2">
                         <div class="left-right">
                             <div class="block" style="margin-top: 0">
                                 <span>День недели</span>
-                                <select class="input w2">
-                                    <option>item1</option>
+                                <select class="input w2" v-model="week_day">
+                                    <option value="1">Понедельник</option>
+                                    <option value="2">Вторник</option>
+                                    <option value="3">Среда</option>
+                                    <option value="4">Четверг</option>
+                                    <option value="5">Пятница</option>
+                                    <option value="6">Суббота</option>
+                                    <option value="7">Воскресенье</option>
                                 </select>
                             </div>
                             <div class="block" style="margin-top: 0">
                                 <span>Время жизни</span>
-                                <input type="text" class="input w2" v-model="category" />
+                                <input type="text" class="input w2" v-model="booking_alive" />
                             </div>
                         </div>
                         <div class="left-right">
                             <div class="block" style="margin-top: 0">
                                 <span>Зона</span>
-                                <select class="input w2">
-                                    <option>item1</option>
+                                <select class="input w2" v-model="id_zone">
+                                    <option v-for="z in zone" :value="z.num">{{ z.name }}</option>
                                 </select>
                             </div>
                             <button class="btn bt" @click="encriment"> + </button>
@@ -100,7 +106,7 @@
                             <div class="left-right">
                                 <div class="block" style="margin-top: 0">
                                     <span>Начало</span>
-                                    <input type="text" class="input w2" v-model="a.start" />
+                                    <input type="text" class="input w2" v-model="a.time_start" />
                                 </div>
                                 <div class="block" style="margin-top: 0">
                                     <span>Продолжительность</span>
@@ -110,16 +116,16 @@
                             <div class="left-right">
                                 <div class="block" style="margin-top: 0">
                                     <span>Завершение</span>
-                                    <input type="text" class="input w2" v-model="a.stop" />
+                                    <input type="text" class="input w2" v-model="a.time_stop" />
                                 </div>
                                 <div class="bottom3">
                                     <div class="block" style="margin-top: 0">
                                         <span>Фикс. время</span>
-                                        <input type="text" class="input w3" v-model="a.fixtime" />
+                                        <input type="text" class="input w3" v-model="a.time_fixed" />
                                     </div>
                                     <div class="block" style="margin-top: 0">
                                         <span>Стоимость</span>
-                                        <input type="text" class="input w3" v-model="a.cost" />
+                                        <input type="text" class="input w3" v-model="a.price" />
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +133,7 @@
                     </template>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-green">Сохранить изменения</button>
+                    <button type="button" class="btn btn-green" @click="save">Сохранить изменения</button>
                 </div>
             </div>
         </div>
@@ -142,21 +148,56 @@ export default {
         return {
             tariffs0: {},
             tariffs1: {},
+            name: '',
+            week_day: '',
+            id_zone: '',
+            booking_alive: '',
             modal: null,
-            additionalBlock: []
+            additionalBlock: [],
+            zone: []
         }
     },
     methods: {
+        async save() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+            urlencoded.append("name", this.name);
+            urlencoded.append("week_day", this.week_day);
+            urlencoded.append("id_zone", this.id_zone);
+            urlencoded.append("booking_alive", this.booking_alive);
+            urlencoded.append("add_block", JSON.stringify( this.additionalBlock));
+
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/tariff/save", requestOptions);
+            if (response.ok) {
+                this.modal.hide();
+                this.get0();
+                this.get1();
+            }
+            else {
+                alert ('Ошибка !!!')
+            }
+        },
         addModalShow() {
             this.modal.show();
         },
         encriment() {
             var newAdditionaBlock = {
-                start: '',
+                time_start: '',
                 duration: '',
-                stop: '',
-                fixtime: '',
-                cost: ''
+                time_stop: '',
+                time_fixed: '',
+                price: ''
             };
             this.additionalBlock.push(newAdditionaBlock);
         },
@@ -197,6 +238,23 @@ export default {
 
             var response = await fetch("api/price/get1", requestOptions);
             this.tariffs1 = await response.json();
+        },
+        async getZone() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/tariff/zone", requestOptions);
+            this.zone = await response.json();
         }
     },
     mounted() {
@@ -205,6 +263,7 @@ export default {
 
         this.get0();
         this.get1();
+        this.getZone();
     }
 }
 </script>

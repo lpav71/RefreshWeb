@@ -189,6 +189,11 @@ export default {
             }
         },
         addModalShow() {
+            this.name = '';
+            this.booking_alive = '';
+            this.week_day = '';
+            this.id_zone = '';
+            this.additionalBlock = [];
             this.modal.show();
         },
         encriment() {

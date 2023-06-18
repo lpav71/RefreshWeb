@@ -50,9 +50,9 @@ class TariffController extends Controller
                 'message' => 'Ошибка: неверный запрос',
             ], 400);
         }
-
+        $error = false;
         try {
-            DB::transaction(function () use ($name, $club_id, $week_day, $id_zone, $booking_alive, $add_block) {
+            DB::transaction(function () use (&$error, $name, $club_id, $week_day, $id_zone, $booking_alive, $add_block) {
                 foreach ($add_block as $block) {
                     $price = new Price();
                     $price->club_id = $club_id;
@@ -82,31 +82,32 @@ class TariffController extends Controller
                     else {
                         $price->tariff_type = 1;
                     }
+                    try {
+                        $price->save();
+                        // продолжение работы программы после сохранения
 
-                    $price->save();
-                    DB::commit();
-
-                    $transactionSuccess = DB::getConnection()->transactionLevel() === 0;
-                    if ($transactionSuccess) {
-                        // Транзакция успешно выполнена
-                        return response()->json([
-                            'message' => 'Успех',
-                        ], 200);
-                    } else {
-                        // Транзакция завершилась неудачно
-                        return response()->json([
-                            'message' => 'Ошибка: неверный запрос',
-                        ], 400);
+                    } catch (\Exception $e) {
+                        $error = true;
                     }
                 }
-                return null;
+                DB::commit();
             });
         }
         catch (Exception $e) {
             DB::rollBack();
             // Обработка исключения
         }
-        return $all;
+        if ($error){
+            return response()->json([
+                'message' => 'Ошибка: неверный запрос',
+            ], 400);
+        }
+        else
+        {
+            return response()->json([
+                'message' => 'Успех',
+            ]);
+        }
     }
     public function zone(Request $request)
     {

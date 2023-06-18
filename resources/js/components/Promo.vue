@@ -44,7 +44,7 @@
 
 <script>
 export default {
-    props: ['club_id', 'promocodes'],
+    props: ['club_id'],
     data() {
         return {
             promocodes: [],
@@ -87,22 +87,38 @@ export default {
             this.data_start = '';
             this.data_stop = '';
             this.num = 0;
-            alert('Добавлено');
-            location.reload();
+            this.getPromo();
+        },
+        async getPromo(){
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/promo/get", requestOptions);
+            this.promocodes = await response.json();
+            this.promocodes.forEach(function (item, index) {
+                if (item.status == true) {
+                    this.promocodes[index].status_active = 'Активен';
+                    this.promocodes[index].status_color = 'green';
+                }
+                else {
+                    this.promocodes[index].status_active = 'Просрочен';
+                    this.promocodes[index].status_color = '#cc5a5a';
+                }
+            }.bind(this))
         }
     },
     mounted() {
-        this.promocodes = JSON.parse(this.$props.promocodes);
-        this.promocodes.forEach(function (item, index) {
-            if (item.status == true) {
-                this.promocodes[index].status_active = 'Активен';
-                this.promocodes[index].status_color = 'green';
-            }
-            else {
-                this.promocodes[index].status_active = 'Просрочен';
-                this.promocodes[index].status_color = '#cc5a5a';
-            }
-        }.bind(this))
+        this.getPromo();
     }
 }
 </script>

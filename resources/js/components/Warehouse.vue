@@ -90,6 +90,8 @@
     </div>
 </div>
 
+<message ref="message"></message>
+
 </template>
 
 <script>
@@ -139,7 +141,9 @@ export default {
             };
 
             var response = await fetch("api/store/addedit", requestOptions);
-            //var result = await response.json();
+            if(!response.ok){
+                this.$refs.message.modal.show();
+            }
             this.getAll();
         },
         saveAddModal() {

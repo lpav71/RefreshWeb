@@ -161,6 +161,7 @@ export default {
     },
     methods: {
         async save() {
+            this.modal.hide();
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -182,7 +183,6 @@ export default {
 
             var response = await fetch("api/tariff/save", requestOptions);
             if (response.ok) {
-                this.modal.hide();
                 this.get0();
                 this.get1();
             }

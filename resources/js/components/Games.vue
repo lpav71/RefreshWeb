@@ -142,7 +142,6 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                     <button type="button" class="btn btn-primary" style="background: var(--dark-green); border: none" @click="save_game">Сохранить</button>
                 </div>
             </div>
@@ -170,6 +169,8 @@
             </div>
         </div>
     </div>
+
+    <message ref="message"></message>
 
 </template>
 
@@ -254,10 +255,10 @@ export default {
             await fetch("api/map/findpc", requestOptions);
         },
         async save_game(){
+            this.modal.hide();
             if (this.mode === 'add') {
                 // Режим добавления
                 this.addGames();
-                this.modal.hide();
             }
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -281,9 +282,12 @@ export default {
                 redirect: 'follow'
             };
 
-            await fetch("api/games/savegame", requestOptions);
-            this.modal.hide();
-            this.getGames();
+            var response = await fetch("api/games/savegame", requestOptions);
+            if (!response.ok) {
+                this.$refs.message.modal.show();
+            }
+            else
+                this.getGames();
         },
         async getZone() {
             var myHeaders = new Headers();

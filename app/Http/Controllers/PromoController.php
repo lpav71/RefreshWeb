@@ -17,7 +17,7 @@ class PromoController extends Controller
     {
         $user = Auth::user();
         $club_id = $user->club_id;
-        $promocodes = Promo::where('club_id', $club_id)->get();
-        return view('promo.index', compact('club_id', 'promocodes'));
+
+        return view('promo.index', compact('club_id'));
     }
 }

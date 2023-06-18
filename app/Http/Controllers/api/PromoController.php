@@ -21,4 +21,8 @@ class PromoController extends Controller
         $promo->status = true;
         $promo->save();
     }
+    public function get(Request $request) {
+        $promocodes = Promo::where('club_id', $request->club_id)->get();
+        return $promocodes;
+    }
 }

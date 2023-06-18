@@ -102,6 +102,8 @@
         </div>
     </div>
 
+    <message ref="message"></message>
+
 </template>
 
 <script>
@@ -174,6 +176,7 @@ export default {
             this.modal.show();
         },
         async saveAddModal() {
+            this.modal.hide();
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
             var urlencoded = new URLSearchParams();
@@ -193,9 +196,13 @@ export default {
             };
 
             var response = await fetch("api/tasks/save", requestOptions);
-            var r = await response.json();
-            this.modal.hide();
-            this.alltasks();
+            if (!response.ok) {
+                this.$refs.message.modal.show();
+            }
+            else {
+                var r = await response.json();
+                this.alltasks();
+            }
         },
         async getUsers() {
             var myHeaders = new Headers();

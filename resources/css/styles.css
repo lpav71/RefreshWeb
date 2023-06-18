@@ -1,6 +1,7 @@
 :root {
     --dark-blue-bg-color: linear-gradient(180deg, #172D39 0%, #122834 100%);
     --light-blue-bg-color: linear-gradient(180deg, #284F62 0%, #183F52 100%);
+    --danger-bg-color: linear-gradient(180deg, #622828 0%, #521818 100%);
     --dark-green-b: #284F62;
     --dark-green: #4DA6AA;
     --light-green: #6FC8CC;

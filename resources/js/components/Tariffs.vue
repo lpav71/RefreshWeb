@@ -139,6 +139,8 @@
         </div>
     </div>
 
+    <message ref="message"></message>
+
 </template>
 
 <script>
@@ -185,7 +187,7 @@ export default {
                 this.get1();
             }
             else {
-                alert ('Ошибка !!!')
+                this.$refs.message.modal.show();
             }
         },
         addModalShow() {

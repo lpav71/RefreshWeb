@@ -62,7 +62,8 @@ import LicensesComponent from "./components/Licenses.vue";
 app.component('licenses', LicensesComponent);
 import MessageComponent from "./components/Message.vue";
 app.component('message', MessageComponent);
-
+import ContextComponent from "./components/ContextMenu.vue";
+app.component('context', ContextComponent);
 
 /**
  * The following block of code may be used to automatically register your

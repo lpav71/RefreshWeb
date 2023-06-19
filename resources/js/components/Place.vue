@@ -26,8 +26,8 @@
                     <div style="display: flex;align-items: center;">
                         <div v-show="permissions.create_zone" class="buttons" @click="addZone" style="width: 150px;height: 34px;">Добавить зону</div>
                         <div v-show="permissions.create_pc" class="buttons" @click="addBox" style="width: 57px;height: 34px;"><i class="fas fa-plus fs-5"></i></div>
-                        <div class="buttons-dark" style="width: 57px;height: 34px;"><i class="fas fa-lock fs-5"></i></div>
-                        <div class="buttons-dark" style="width: 185px;height: 42px;"><span>Клиентская карта</span></div>
+                        <div class="buttons" @click="lockButton" style="width: 57px;height: 34px;"><i :class=lock></i></div>
+                        <div class="buttons" style="width: 185px;height: 42px;"><span>Клиентская карта</span></div>
                     </div>
                 </div>
                 <div class="manager outbox">
@@ -36,6 +36,7 @@
                         {{ index + 1 }}
                         <div class="inbox" :style="{'background-color': position.bg}"></div>
                     </div>
+                    <context ref="context" @item-selected="onItemSelected"></context>
                 </div>
             </div>
         </div>
@@ -206,7 +207,11 @@ export default {
             zoneName: '',
             uData: {},
             tasks: null,
-            permissions: {}
+            permissions: {},
+            permissionMove: true,
+            lock: 'fas fa-unlock fs-5',
+            index: null,
+            mapTable: []
         }
     },
     methods: {
@@ -227,6 +232,13 @@ export default {
 
             var response = await fetch("api/user/getpermissions", requestOptions);
             this.permissions = await response.json();
+        },
+        lockButton() {
+            this.permissionMove = !this.permissionMove;
+            if(this.permissionMove)
+                this.lock = 'fas fa-unlock fs-5';
+            if(!this.permissionMove)
+                this.lock = 'fas fa-lock fs-5';
         },
         generalMap() {
             this.zones.forEach(function (item){
@@ -390,6 +402,49 @@ export default {
                     item.mainborder = this.boxColor;
             }.bind(this));
         },
+
+        //Событие выбора в контекстном меню
+        onItemSelected(item) {
+            this.index = item;
+            this.$refs.context.hide();
+            var index = this.$refs.context.element;
+            switch (item) {
+                case 0:
+                    var outData = {
+                        pc: 'poweron',
+                        mac: this.mapTable[index].mac,
+                        ip: this.mapTable[index].ip
+                    }
+                    var result = JSON.stringify(outData);
+                    console.log(result);
+                    break;
+
+                case 1:
+                    var outData2 = {
+                        pc: 'poweroff',
+                        mac: this.mapTable[index].mac,
+                        ip: this.mapTable[index].ip
+                    }
+                    var result2 = JSON.stringify(outData2);
+                    console.log(result2);
+                    break;
+
+                case 2:
+                    var outData3 = {
+                        pc: 'reboot',
+                        mac: this.mapTable[index].mac,
+                        ip: this.mapTable[index].ip
+                    }
+                    var result3 = JSON.stringify(outData3);
+                    console.log(result3);
+                    break;
+
+                default:
+                    console.log('Неизвестный фрукт');
+                    break;
+            }
+        },
+
         move(e) {
             if (dragObject) {
                 //Смещение объекта по сетке 10
@@ -408,12 +463,24 @@ export default {
             }
         },
         mdown(e, index) {
+            if (this.permissionMove) {
                 globalIndex = index;
                 //Разрешить смещение
                 dragObject = true;
                 //Получаем координаты мыши внутри смещаемого объекта
                 offsetX = e.offsetX;
                 offsetY = e.offsetY;
+            }
+            else {
+                if (!this.$refs.context.showMenu) {
+                    this.$refs.context.event = e;
+                    this.$refs.context.menu = ["Включить", "Выключить", "Перезагрузить"];
+                    this.$refs.context.element = index;
+                    this.$refs.context.show();
+                }
+                else
+                    this.$refs.context.hide();
+            }
         },
         mmup(e) {
             dragObject = false;
@@ -524,6 +591,7 @@ export default {
 
             var responce = await fetch("api/getMapPosition", requestOptions);
             var result = await responce.json();
+            this.mapTable = result.map;
             result.map.forEach(function (item){
                 var bg = item.ping === 0 ? '#FE3434' : '#01B253';
                 this.element = {top: item.pos_y, left: item.pos_x, offsetLeft: 0, zone: item.zone, ping: item.ping, bg: bg, mainborder: this.boxColor}; //offsetLeft используется для вычисления смещения при изменении размера окна
@@ -645,6 +713,7 @@ export default {
     background: var(--light-blue-bg-color);
     border-radius: 20px;
     margin-top: 20px;
+    overflow: auto;
 }
 .manager {
     height: 561px;

@@ -1,4 +1,4 @@
-<template @click="hide">
+<template>
 <transition name="fade" mode="out-in">
     <div class="context-menu" v-show="showMenu" :style="{left: left + 'px', top: top + 'px', width: width + 'rem'}">
         <ul>
@@ -76,7 +76,4 @@ export default {
     opacity: 0;
     transform: scale(0.8);
 }
-
-
-
 </style>

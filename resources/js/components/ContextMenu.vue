@@ -56,21 +56,6 @@ export default {
     border-radius: 10px;
 }
 
-/*.fade-enter-active {*/
-/*    transition: all 0.5s;*/
-/*}*/
-/*.fade-leave-active {*/
-/*    transition: all 0.5s;*/
-/*}*/
-/*.fade-enter {*/
-/*    opacity: 0;*/
-/*    transform: scale(0);*/
-/*}*/
-/*.fade-leave-to {*/
-/*    opacity: 0;*/
-/*    transform: scale(0);*/
-/*}*/
-
 .fade-enter-active, .fade-leave-active {
     transition: all 0.5s;
 }

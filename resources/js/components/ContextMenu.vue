@@ -49,8 +49,21 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .context-menu {
+    ul {
+        li{
+            padding: 5px;
+            border-radius: 5px;
+        }
+        li:hover{
+            background: var(--light-blue-bg-color);
+            color: var(--standart-gray);
+        }
+        list-style: none;
+        padding: 11px;
+        cursor: pointer;
+    }
     background: var(--light-blue-menu-color);
     position: relative;
     border-radius: 10px;
@@ -64,16 +77,6 @@ export default {
     transform: scale(0.8);
 }
 
-ul {
-    list-style: none;
-    padding: 11px;
-    cursor: pointer;
-}
-li{
-    padding: 5px;
-    border-radius: 5px;
-}
-li:hover{
-    background: #66cee6;
-}
+
+
 </style>

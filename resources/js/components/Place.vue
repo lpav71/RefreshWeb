@@ -162,6 +162,24 @@
         </div>
     </div>
 
+    <!-- Модальное окно -->
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">Сообщение</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea spellcheck="false" v-model="messageText"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn" @click="sendMessage">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -211,7 +229,10 @@ export default {
             permissionMove: true,
             lock: 'fas fa-unlock fs-5',
             index: null,
-            mapTable: []
+            mapTable: [],
+            messageModal: null,
+            messageText: '',
+            messageIp: ''
         }
     },
     methods: {
@@ -439,10 +460,26 @@ export default {
                     console.log(result3);
                     break;
 
+                case 3:
+                    this.messageIp = this.mapTable[index].ip;
+                    this.messageText = '';
+                    this.messageModal.show();
+                    break;
+
                 default:
                     console.log('Неизвестный фрукт');
                     break;
             }
+        },
+
+        sendMessage() {
+            this.messageModal.hide();
+            var outData = {
+                message: this.messageText,
+                ip: this.messageIp
+            }
+            var result = JSON.stringify(outData);
+            console.log(result);
         },
 
         move(e) {
@@ -474,7 +511,7 @@ export default {
             else {
                 if (!this.$refs.context.showMenu) {
                     this.$refs.context.event = e;
-                    this.$refs.context.menu = ["Включить", "Выключить", "Перезагрузить"];
+                    this.$refs.context.menu = ["Включить", "Выключить", "Перезагрузить", "Отправить сообщение"];
                     this.$refs.context.element = index;
                     this.$refs.context.show();
                 }
@@ -617,6 +654,9 @@ export default {
         var addZoneModal = document.getElementById('addZoneModal')
         this.addZoneModal = bootstrap.Modal.getOrCreateInstance(addZoneModal);
 
+        var messageModal = document.getElementById('messageModal')
+        this.messageModal = bootstrap.Modal.getOrCreateInstance(messageModal);
+
         shiftModal.addEventListener('hidden.bs.modal', event => {
             clearTimeout(this.timerId);
         });
@@ -641,8 +681,25 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
+.modal-body {
+    padding: 15px;
+}
+#messageModal {
+    textarea {
+        width: 100%;
+        height: 150px;
+        background: var(--dark-blue-bg-color);
+        border: none;
+        border-radius: 7px;
+        padding: 7px;
+        color: var(--standart-gray);
+    }
+    .btn {
+        background: var(--dark-green);
+    }
+}
 .button-active {
     background: var(--standart-green) !important;
 }

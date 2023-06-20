@@ -1,9 +1,11 @@
 <template @click="hide">
-<div class="context-menu" v-show="showMenu" :style="{left: left + 'px', top: top + 'px', width: width + 'rem'}">
-    <ul>
-        <li @click="selectItem(i)" v-for="(m,i) in menu">{{ m }}</li>
-    </ul>
-</div>
+<transition name="fade" mode="out-in">
+    <div class="context-menu" v-show="showMenu" :style="{left: left + 'px', top: top + 'px', width: width + 'rem'}">
+        <ul>
+            <li @click="selectItem(i)" v-for="(m,i) in menu" :key="i">{{ m }}</li>
+        </ul>
+    </div>
+</transition>
 </template>
 
 <script>
@@ -53,6 +55,30 @@ export default {
     position: relative;
     border-radius: 10px;
 }
+
+/*.fade-enter-active {*/
+/*    transition: all 0.5s;*/
+/*}*/
+/*.fade-leave-active {*/
+/*    transition: all 0.5s;*/
+/*}*/
+/*.fade-enter {*/
+/*    opacity: 0;*/
+/*    transform: scale(0);*/
+/*}*/
+/*.fade-leave-to {*/
+/*    opacity: 0;*/
+/*    transform: scale(0);*/
+/*}*/
+
+.fade-enter-active, .fade-leave-active {
+    transition: all 0.5s;
+}
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+    transform: scale(0.8);
+}
+
 ul {
     list-style: none;
     padding: 11px;

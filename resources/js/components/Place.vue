@@ -32,9 +32,16 @@
                 </div>
                 <div class="manager outbox">
                     <div v-for="(position, index) in positions" class="box" @mousedown="mdown($event, index)"
-                         :style="{top: position.top + 'px', left: position.left + 'px', width: boxWidth + 'px', height: boxHeight + 'px', background: boxColor, border: '2px solid ' + position.mainborder}">
+                         :style="{
+                        top: position.top + 'px',
+                        left: position.left + 'px', width: boxWidth + 'px',
+                        height: boxHeight + 'px',
+                        background: boxColor,
+                        border: '2px solid ' + position.mainborder
+                    }">
                         {{ index + 1 }}
                         <div class="inbox" :style="{'background-color': position.bg}"></div>
+                        <div class="user-not-null" :style="{'background-color': position.userIdNotNullColor}"></div>
                     </div>
                     <context ref="context" @item-selected="onItemSelected"></context>
                 </div>
@@ -511,6 +518,8 @@ export default {
             else {
                 if (!this.$refs.context.showMenu) {
                     this.$refs.context.event = e;
+                    var user_id = this.positions[index].user_id;
+                    this.$refs.context.headerText = "ID " + user_id;
                     this.$refs.context.menu = ["Включить", "Выключить", "Перезагрузить", "Отправить сообщение"];
                     this.$refs.context.element = index;
                     this.$refs.context.show();
@@ -611,6 +620,31 @@ export default {
            var response = await fetch("api/tasks/tasks", requestOptions);
            this.tasks = await response.json();
         },
+        async mapUserId() {
+            var club_id = JSON.parse(this.$props.club).id;
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/map/user-id", requestOptions);
+            var result = await response.json();
+            this.positions.forEach(function (item, index) {
+                item.user_id = result[index].user_id;
+                if (item.user_id !=null){
+                    item.userIdNotNullColor = '#FE3434';
+                    item.userIdNotNull = true;
+                }
+            });
+        },
         async getMapPosition() {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -629,9 +663,25 @@ export default {
             var responce = await fetch("api/getMapPosition", requestOptions);
             var result = await responce.json();
             this.mapTable = result.map;
+            var userIdNotNull = false;
             result.map.forEach(function (item){
                 var bg = item.ping === 0 ? '#FE3434' : '#01B253';
-                this.element = {top: item.pos_y, left: item.pos_x, offsetLeft: 0, zone: item.zone, ping: item.ping, bg: bg, mainborder: this.boxColor}; //offsetLeft используется для вычисления смещения при изменении размера окна
+                if (item.user_id !=null){
+                    var userIdNotNullColor = '#FE3434';
+                    userIdNotNull = true;
+                }
+                this.element = {
+                    user_id: item.user_id,
+                    top: item.pos_y,
+                    left: item.pos_x,
+                    offsetLeft: 0,      //offsetLeft используется для вычисления смещения при изменении размера окна
+                    zone: item.zone,
+                    ping: item.ping,
+                    bg: bg,
+                    mainborder: this.boxColor,
+                    userIdNotNullColor: userIdNotNullColor,
+                    userIdNotNull: userIdNotNull
+                };
                 this.positions.push(this.element);
                 this.element = {};
             }.bind(this));
@@ -671,6 +721,8 @@ export default {
         this.lowout = this.otstupTop + document.querySelector('.outbox').clientHeight; //Низ окна outbox
 
         this.getMapPosition();
+        setInterval(this.mapUserId, 60000);
+
         this.getSmena();
         this.getClients();
         this.getTasks();
@@ -939,9 +991,17 @@ export default {
     width: 5px;
     height: 5px;
     border-radius: 3px;
-    position: relative;
+    position: absolute;
     left: 24px;
-    top: -3px;
+    top: 24px;
+}
+.user-not-null {
+    width: 5px;
+    height: 10px;
+    border-radius: 3px;
+    position: absolute;
+    left: 24px;
+    top: 10px;
 }
 .shiftModal {
     background: var(--dark-green-b);
@@ -956,7 +1016,6 @@ export default {
 }
 .box {
     border-radius: 10px;
-    border: 1px solid lightslategray;
     position: absolute;
     text-align: center;
     font-size: 19px;

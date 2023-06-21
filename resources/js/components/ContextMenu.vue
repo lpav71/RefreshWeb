@@ -1,6 +1,7 @@
 <template>
 <transition name="fade" mode="out-in">
     <div class="context-menu" v-show="showMenu" :style="{left: left + 'px', top: top + 'px', width: width + 'rem'}">
+        <div class="header" v-show="showHeader" :style="{width: width + 'rem'}">{{ headerText }}</div>
         <ul>
             <li @click="selectItem(i)" v-for="(m,i) in menu" :key="i">{{ m }}</li>
         </ul>
@@ -21,7 +22,9 @@ export default {
             width: 20,
             index: null,
             element: null,
-            event: null
+            event: null,
+            headerText: '',
+            showHeader: false
         }
     },
     methods: {
@@ -35,6 +38,10 @@ export default {
             var topBoundary = this.event.pageY - this.event.offsetY;
             this.left = rightBoundary - 76;
             this.top = topBoundary - 500;
+            if (this.headerText == 'ID null')
+                this.showHeader = false;
+            else
+                this.showHeader = true;
             this.showMenu = true;
         },
         hide() {
@@ -51,6 +58,20 @@ export default {
 
 <style scoped lang="scss">
 .context-menu {
+    background: var(--light-blue-menu-color);
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    .header {
+        background: linear-gradient(180deg, #43738a 0%, #24566f 100%);
+        height: 30px;
+        position: relative;
+        top: 0;
+        left: 0;
+        text-align: center;
+        padding-top: 4px;
+        color: var(--standart-gray);
+    }
     ul {
         li{
             padding: 5px;
@@ -60,13 +81,11 @@ export default {
             background: var(--light-blue-bg-color);
             color: var(--standart-gray);
         }
+
         list-style: none;
         padding: 11px;
         cursor: pointer;
     }
-    background: var(--light-blue-menu-color);
-    position: relative;
-    border-radius: 10px;
 }
 
 .fade-enter-active, .fade-leave-active {

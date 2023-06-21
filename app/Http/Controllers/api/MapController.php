@@ -59,4 +59,9 @@ class MapController extends Controller
         $game->insert($comps);
         return $comps;
     }
+    public function mapUserId(Request $request)
+    {
+        $map = Map::where(['club_id'=>$request->club_id])->orderBy('id_comp')->get();
+        return $map;
+    }
 }

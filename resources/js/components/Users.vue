@@ -78,6 +78,8 @@
                     <td>хороший</td>
                     <td>
                         <button class="btn btn-sm topBalance" @click="topBalance(index, user.login)">Пополнить баланс</button>
+                        <button class="btn btn-sm topBalance" @click="calendarButton(index)"><img src="img/calendar.svg" alt=""></button>
+                        <button class="btn btn-sm topBalance"><img src="img/cash.svg" alt=""></button>
                     </td>
                 </tr>
                 </tbody>
@@ -93,7 +95,7 @@
                     <h5 class="modal-title" id="topBalanceModalLabel" style="color: white">Пополнение баланса пользователя <span style="color: #0d6efd">{{ login }}</span> </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
-                <div class="modal-body" style="padding-left: 15px;">
+                <div class="modal-body">
 
                     <div class="main">
                         <div class="div_1"><span>Сумма</span><input class="input_1 rounded" v-model.number="summa" type="number" maxlength="10" /></div>
@@ -132,6 +134,52 @@
         </div>
     </div>
 
+    <!-- Модальное окно -->
+    <div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel">Резервации</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+<!--                    заголовки полей\столбцов: клиент ID, ПК №, начало сессии, конец сессии, продолжительность, статус, тип тарифа, название тарифа, стоимость-->
+                    <table class="reservation-table">
+                        <thead>
+                            <tr>
+                                <th>Клиент ID</th>
+                                <th>ПК №</th>
+                                <th>Начало сессии</th>
+                                <th>Конец сессии</th>
+                                <th>Продолжительность</th>
+                                <th>Статус</th>
+                                <th>Тип тарифа</th>
+                                <th>Название тарифа</th>
+                                <th>Стоимость</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="r in reservation">
+                                <td>{{ r.user_id }}</td>
+                                <td>{{ r.map_comp_id }}</td>
+                                <td>{{ r.time_start }}</td>
+                                <td>{{ r.time_stop }}</td>
+                                <td>{{ r.duration }}</td>
+                                <td>{{ r.session_pause }}</td>
+                                <td>{{ r.tariff_type }}</td>
+                                <td>{{ r.name }}</td>
+                                <td>{{ r.price }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -152,10 +200,32 @@ export default {
             summa: 0,
             comment: '',
             //timer: null,
-            permissions: {}
+            permissions: {},
+            reservationModal: null,
+            reservation: [],
+            f_user: {}
         }
     },
     methods: {
+        async calendarButton(i) {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("client_id", this.f_user[i].id);
+            urlencoded.append("type", "3");
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/reservations", requestOptions);
+            this.reservation = await response.json();
+            this.reservationModal.show();
+        },
         enter(e) {
             if (e.keyCode === 13) {
                 this.search();
@@ -285,8 +355,13 @@ export default {
         if (this.$props.f_user != "") {
             this.findUsers = JSON.parse(this.$props.f_user);
         }
+        this.f_user = JSON.parse(this.$props.f_user);
         var topBalanceModal = document.getElementById('topBalanceModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(topBalanceModal);
+
+        var reservationModal = document.getElementById('reservationModal')
+        this.reservationModal = bootstrap.Modal.getOrCreateInstance(reservationModal);
+
         console.log(this.modal);
 
         this.getPermissions();
@@ -294,8 +369,30 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+$paddingTable: 10px;
+.reservation-table {
+    width: 100%;
+    thead {
+        tr {
+            th {
+                padding: $paddingTable;
+                border-bottom: 1px solid white;
+            }
+        }
+    }
+    tbody {
+        tr {
+            td {
+                padding: $paddingTable;
+            }
+            border-bottom: 1px solid white;
+        }
+    }
+}
+.modal-body {
+    padding: 15px;
+}
 .main {
     width: 470px;
     height: 350px;
@@ -314,6 +411,7 @@ export default {
 .topBalance {
     background: var(--light-green);
     font-size: 15px;
+    margin-right: 10px;
 }
 
 .div_1 {

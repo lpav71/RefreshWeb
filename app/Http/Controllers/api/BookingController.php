@@ -144,5 +144,16 @@ class BookingController extends Controller
 
         return $newDrawData;
     }
+    public function reservations(Request $request)
+    {
+        $notification = DB::table('notification as t1')
+            ->select('t1.user_id', 't2.map_comp_id', 't2.time_start', 't2.time_stop', 't2.duration', 't2.session_pause', 't3.tariff_type', 't3.name', 't3.price')
+            ->join('booking as t2', 't1.description', '=', DB::raw('CAST(t2.id as text)'))
+            ->join('price as t3', 't2.price_id', '=', 't3.id')
+            ->where('t1.user_id', '=', $request->client_id)
+            ->where('type', '=', 3)
+            ->get();
+        return $notification;
+    }
 }
 

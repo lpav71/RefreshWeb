@@ -38,10 +38,7 @@ export default {
             var topBoundary = this.event.pageY - this.event.offsetY;
             this.left = rightBoundary - 76;
             this.top = topBoundary - 500;
-            if (this.headerText == 'ID null')
-                this.showHeader = false;
-            else
-                this.showHeader = true;
+            this.showHeader = this.headerText != 'ID null';
             this.showMenu = true;
         },
         hide() {

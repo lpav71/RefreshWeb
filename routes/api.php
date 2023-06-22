@@ -53,7 +53,7 @@ Route::post('category/save', [\App\Http\Controllers\api\LicensesController::clas
 Route::post('tariff/save', [\App\Http\Controllers\api\TariffController::class, 'save']);
 Route::post('tariff/zone', [\App\Http\Controllers\api\TariffController::class, 'zone']);
 Route::post('map/user-id', [\App\Http\Controllers\api\MapController::class, 'mapUserId']);
-
+Route::post('reservations', [\App\Http\Controllers\api\BookingController::class, 'reservations']);
 
 
 

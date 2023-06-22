@@ -203,7 +203,6 @@ export default {
             permissions: {},
             reservationModal: null,
             reservation: [],
-            f_user: {}
         }
     },
     methods: {
@@ -212,7 +211,7 @@ export default {
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
             var urlencoded = new URLSearchParams();
-            urlencoded.append("client_id", this.f_user[i].id);
+            urlencoded.append("client_id", this.findUsers[i].id);
             urlencoded.append("type", "3");
 
             var requestOptions = {
@@ -355,7 +354,6 @@ export default {
         if (this.$props.f_user != "") {
             this.findUsers = JSON.parse(this.$props.f_user);
         }
-        this.f_user = JSON.parse(this.$props.f_user);
         var topBalanceModal = document.getElementById('topBalanceModal')
         this.modal = bootstrap.Modal.getOrCreateInstance(topBalanceModal);
 

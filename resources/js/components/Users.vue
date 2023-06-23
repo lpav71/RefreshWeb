@@ -79,7 +79,7 @@
                     <td>
                         <button class="btn btn-sm topBalance" @click="topBalance(index, user.login)">Пополнить баланс</button>
                         <button class="btn btn-sm topBalance" @click="calendarButton(index)"><img src="img/calendar.svg" alt=""></button>
-                        <button class="btn btn-sm topBalance"><img src="img/cash.svg" alt=""></button>
+                        <button class="btn btn-sm topBalance" @click="cashButton(index)"><img src="img/cash.svg" alt=""></button>
                     </td>
                 </tr>
                 </tbody>
@@ -143,7 +143,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
-<!--                    заголовки полей\столбцов: клиент ID, ПК №, начало сессии, конец сессии, продолжительность, статус, тип тарифа, название тарифа, стоимость-->
                     <table class="reservation-table">
                         <thead>
                             <tr>
@@ -180,6 +179,48 @@
         </div>
     </div>
 
+    <!-- Модальное окно -->
+    <div class="modal fade" id="cashModal" tabindex="-1" aria-labelledby="cashModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cashModalLabel">Движение средств</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <!--                    клиент ID, комментарий, тип операции, сумма, администратор, операция, дата и время операции-->
+                    <table class="reservation-table">
+                        <thead>
+                        <tr>
+                            <th>Клиент ID</th>
+                            <th>Комментарий</th>
+                            <th>Тип операции</th>
+                            <th>Сумма</th>
+                            <th>Администратор</th>
+                            <th>Операция</th>
+                            <th>Дата и время операции</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="r in cash">
+                            <td>{{ r.user_id }}</td>
+                            <td>{{ r.description }}</td>
+                            <td>{{ r.type }}</td>
+                            <td>{{ r.value }}</td>
+                            <td>{{ r.name }}</td>
+                            <td>{{ r.operation_id }}</td>
+                            <td>{{ r.date_d }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
@@ -203,9 +244,30 @@ export default {
             permissions: {},
             reservationModal: null,
             reservation: [],
+            cashModal: null,
+            cash: []
         }
     },
     methods: {
+        async cashButton(i) {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("client_id", "104");
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/user/cash", requestOptions);
+            this.cash = await response.json();
+            this.cashModal.show();
+            console.log(this.cash);
+        },
         async calendarButton(i) {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -359,6 +421,9 @@ export default {
 
         var reservationModal = document.getElementById('reservationModal')
         this.reservationModal = bootstrap.Modal.getOrCreateInstance(reservationModal);
+
+        var cashModal = document.getElementById('cashModal')
+        this.cashModal = bootstrap.Modal.getOrCreateInstance(cashModal);
 
         console.log(this.modal);
 

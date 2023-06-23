@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Map;
+use App\Models\Notification;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -154,6 +155,16 @@ class BookingController extends Controller
             ->where('type', '=', 3)
             ->get();
         return $notification;
+    }
+    public function userCash(Request $request)
+    {
+        $notifications = DB::table('notification')
+            ->select('notification.user_id', 'notification.description', 'notification.type', 'notification.value', 'users.name', 'notification.operation_id', 'notification.date_d')
+            ->join('users', 'notification.admin_id', '=', 'users.id')
+            ->where('notification.user_id', $request->client_id)
+            ->whereIn('notification.type', [4, 6, 7, 8, 9, 10, 17])
+            ->get();
+        return $notifications;
     }
 }
 

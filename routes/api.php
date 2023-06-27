@@ -12,7 +12,7 @@ Route::post('findopenshift', [App\Http\Controllers\api\FinanceController::class,
 Route::post('getGames', [App\Http\Controllers\api\GameController::class, 'getGames'])->name('getGames');
 Route::post('changeStatus', [App\Http\Controllers\api\GameController::class, 'changeStatus'])->name('changeStatus');
 Route::post('searchGame', [App\Http\Controllers\api\GameController::class, 'searchGame'])->name('searchGame');
-Route::post('getAllFinance',[\App\Http\Controllers\api\FinanceController::class,'getAllFinance'])->name('getAllFinance');
+Route::post('finance/all',[\App\Http\Controllers\api\FinanceController::class,'getAllFinance']);
 Route::post('shift/close',[\App\Http\Controllers\WebHooks\ShiftController::class, 'close'])->name('shift.close');
 Route::post('shift/open',[\App\Http\Controllers\WebHooks\ShiftController::class, 'open'])->name('shift.open');
 Route::post('verifyopenshift',[\App\Http\Controllers\api\FinanceController::class,'verifyOpenShift'])->name('verifyOpenShift');
@@ -55,6 +55,7 @@ Route::post('tariff/zone', [\App\Http\Controllers\api\TariffController::class, '
 Route::post('map/user-id', [\App\Http\Controllers\api\MapController::class, 'mapUserId']);
 Route::post('reservations', [\App\Http\Controllers\api\BookingController::class, 'reservations']);
 Route::post('user/cash', [\App\Http\Controllers\api\BookingController::class, 'userCash']);
+Route::post('finance/data', [\App\Http\Controllers\api\FinanceController::class, 'financeModalData']);
 
 
 

@@ -42,7 +42,9 @@ body {
     background: var(--light-blue-bg-color);
     color: var(--standart-gray);
 }
-
+.bt {
+    background: var(--light-blue-menu-color);
+}
 .modal-footer {
     justify-content: flex-start;
 }

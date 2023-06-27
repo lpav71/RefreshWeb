@@ -16,9 +16,7 @@ class FinanceController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $name = $user->name_auth; //Имя
-        $surname = $user->surname; //Фамилия
-        $fullName = $name . " " . $surname;
-        return view('finance.index', compact('fullName'));
+        $club_id = $user->club_id;
+        return view('finance.index', compact('club_id'));
     }
 }

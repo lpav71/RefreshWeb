@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Events\MyEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Cashbox;
 use App\Models\Club;
 use App\Models\Control;
 use App\Models\Finance;
@@ -15,11 +16,11 @@ class FinanceController extends Controller
     public function getSmena(Request $request)
     {
         $clubId = $request->club_id;
-        $finance = DB::table('finance')->select(DB::raw('cash, nocash, shop_cash, shop_nocash, to_char(open_shift, \'DD.MM.YYYY HH24:MI\') As time'))->where('status','true')->where('club_id', $clubId)->get();
+        $finance = DB::table('finance')->select(DB::raw('cash, nocash, shop_cash, shop_nocash, to_char(open_shift, \'DD.MM.YYYY HH24:MI\') As time'))->where('status', 'true')->where('club_id', $clubId)->get();
         $shift = 'open';
-        if (count($finance) == 0){
+        if (count($finance) == 0) {
             $finance = DB::table('finance')->select(DB::raw('cash, nocash, shop_cash, shop_nocash, to_char(close_shift, \'DD.MM.YYYY HH24:MI\') As time'))
-                ->where('status','false')->where('club_id', $clubId)
+                ->where('status', 'false')->where('club_id', $clubId)
                 ->orderBy('close_shift', 'desc')
                 ->get();
             $shift = 'close';
@@ -40,8 +41,7 @@ class FinanceController extends Controller
             $outData = array(
                 'shiftStatus' => 'open'
             );
-        }
-        else {
+        } else {
             $outData = array(
                 'shiftStatus' => 'close'
             );
@@ -49,21 +49,22 @@ class FinanceController extends Controller
         return $outData;
     }
 
-    public function getAllFinance()
+    public function getAllFinance(Request $request)
     {
         $finance = DB::table('finance')->select(DB::raw('admin_name,shift, open_shift, close_shift, cash, cash_num, nocash, nocash_num, bonus, bonus_num,
-         return_cash, return_cash_num, return_nocash, return_nocash_num, shop_cash,shop_cash_num, shop_nocash, shop_nocash_num, status, to_char(open_shift, \'DD.MM.YYYY HH24:MI\') As open_shift, to_char(close_shift, \'DD.MM.YYYY HH24:MI\') As close_shift'))->where('club_id', 1)->get();
+         return_cash, return_cash_num, return_nocash, return_nocash_num, shop_cash,shop_cash_num, shop_nocash, shop_nocash_num, status, to_char(open_shift, \'DD.MM.YYYY HH24:MI\') As open_shift, to_char(close_shift, \'DD.MM.YYYY HH24:MI\') As close_shift'))
+            ->where('club_id', $request->club_id)
+            ->get();
         foreach ($finance as $fin) {
-            if ($fin->status)
-            {
+            if ($fin->status) {
                 $fin->status = 'Смена открыта';
-            }
-            else {
+            } else {
                 $fin->status = 'Смена закрыта';
             }
         }
         return $finance;
     }
+
     public function verifyOpenShift(Request $request)
     {
         $control = Control::where('user_id', $request->user_id)->get();
@@ -74,12 +75,12 @@ class FinanceController extends Controller
                 $ctrl->shift_open = 'close';
                 $ctrl->save();
                 return 'open';
-            }
-            else
+            } else
                 return 'close';
         }
         return 'close';
     }
+
     public function verifyCloseShift(Request $request)
     {
         $control = Control::where('user_id', $request->user_id)->get();
@@ -90,12 +91,12 @@ class FinanceController extends Controller
                 $ctrl->shift_close = 'close';
                 $ctrl->save();
                 return 'open';
-            }
-            else
+            } else
                 return 'close';
         }
         return 'close';
     }
+
     public function sendMassage()
     {
         event(new MyEvent('hello world'));
@@ -111,5 +112,18 @@ class FinanceController extends Controller
             );
             event(new MyEvent($data));
         }
+    }
+
+    public function financeModalData(Request $request)
+    {
+        $cashboxData = Cashbox::select('cashbox.id', 'user_id', 'users.name as admin', 'finance.shift', 'cashbox.amount', 'type_operation.name', DB::raw("to_char(dt_operation, 'DD.MM.YYYY HH24:MI') as dt_operation"))
+            ->join('users', 'cashbox.admin_id', '=', 'users.id')
+            ->join('type_operation', 'cashbox.type_operation', '=', 'type_operation.id')
+            ->join('finance', 'cashbox.shift', '=', 'finance.shift')
+            ->where('finance.club_id', $request->club_id)
+            ->where('cashbox.shift', $request->shift_num)
+            ->get();
+
+        return $cashboxData;
     }
 }

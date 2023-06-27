@@ -77,9 +77,9 @@
                     <td>500</td>
                     <td>хороший</td>
                     <td>
-                        <button class="btn btn-sm topBalance" @click="topBalance(index, user.login)">Пополнить баланс</button>
-                        <button class="btn btn-sm topBalance" @click="calendarButton(index)"><img src="img/calendar.svg" alt=""></button>
-                        <button class="btn btn-sm topBalance" @click="cashButton(index)"><img src="img/cash.svg" alt=""></button>
+                        <button class="btn bt" @click="topBalance(index, user.login)">Пополнить баланс</button>
+                        <button class="btn bt" @click="calendarButton(index)"><img src="img/calendar.svg" alt=""></button>
+                        <button class="btn bt" @click="cashButton(index)"><img src="img/cash.svg" alt=""></button>
                     </td>
                 </tr>
                 </tbody>
@@ -316,7 +316,8 @@ export default {
                     "userid": this.currentUser.id,
                     "paytype": this.pay,
                     "check": this.chek,
-                    "comment": this.comment
+                    "comment": this.comment,
+                    "admin_id": this.$props.user_id
                 },
                 "prodlist": [{
                     "amount": this.summa,
@@ -452,6 +453,9 @@ $paddingTable: 10px;
             border-bottom: 1px solid white;
         }
     }
+}
+.bt {
+    margin-right: 10px;
 }
 .modal-body {
     padding: 15px;

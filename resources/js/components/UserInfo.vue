@@ -59,8 +59,8 @@
             <div class="right4">
                 <span class="r4_span">История смен</span>
                 <div class="scrl">
-                    <div class="in1" v-for="t in 8">
-                        <div class="in2">08.05.2023 15:25</div><span class="r4_span2">Закрытие смены</span>
+                    <div class="in1" v-for="s in shiftsView">
+                        <div class="in2">{{ s.shift }}</div><span class="r4_span2">{{ s.status }}</span>
                     </div>
                 </div>
             </div>
@@ -75,14 +75,45 @@ export default {
     props: ['user'],
     data() {
         return {
-            userData: {}
+            userData: {},
+            allShifts: [],
+            shiftsView: []
         }
     },
     methods: {
+        async shifts() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("user_id", this.userData.id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+             var response = await fetch("api/userinfo/shifts", requestOptions);
+             this.allShifts = await response.json();
+             this.allShifts.forEach(function (item, index){
+                 let outArray = {};
+                 if (item.close_shift == null) {
+                     outArray.shift = item.open_shift;
+                     outArray.status = 'Открытие смены'
+                 }
+                 else {
+                     outArray.shift = item.close_shift;
+                     outArray.status = 'Закрытие смены'
+                 }
+                 this.shiftsView.push(outArray);
+             }.bind(this))
+        }
     },
     mounted() {
         this.userData = JSON.parse(this.$props.user);
+        this.shifts();
     }
 }
 </script>

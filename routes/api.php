@@ -56,7 +56,7 @@ Route::post('map/user-id', [\App\Http\Controllers\api\MapController::class, 'map
 Route::post('reservations', [\App\Http\Controllers\api\BookingController::class, 'reservations']);
 Route::post('user/cash', [\App\Http\Controllers\api\BookingController::class, 'userCash']);
 Route::post('finance/data', [\App\Http\Controllers\api\FinanceController::class, 'financeModalData']);
-
+Route::post('userinfo/shifts', [\App\Http\Controllers\api\UserInfoController::class, 'shifts']);
 
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');

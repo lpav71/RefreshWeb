@@ -38,26 +38,26 @@
             </div>
             <div style="display: flex;flex-direction: column;align-items: center;padding: 0px;width: 250px;height: 158px;margin-top: 45px;"><span>Применить промокод</span><input class="user_name" type="text" placeholder="refresh 2023" style="text-align: center;" /><span>Итого</span>
                 <div class="user_name">
-                    <img src="images/shop/rub.png" width="16" height="16" style="margin-top: 12px;margin-left: 17px;" />
+                    <img src="images/shop/rub.png" width="16" height="16" style="margin-top: 12px;margin-left: 17px;"  alt=""/>
                     <span class="rub_summa">{{ rubs }}</span>
-                    <img src="images/shop/coin.png" width="16" height="16" style="margin-top: 10px;margin-left: 97px;" />
+                    <img src="images/shop/coin.png" width="16" height="16" style="margin-top: 10px;margin-left: 97px;"  alt=""/>
                     <span class="rub_summa" style="color: #FFCD00;">{{ bonuses }}</span>
                 </div>
             </div>
             <button class="btn btn-danger" type="button" style="width: 250px;" @click="pay">Оплатить</button>
         </div>
         <div class="right">
-            <div class="top"><img src="images/shop/2.svg" /><span style="margin-left: 14px;">Магазин</span><i class="fas fa-search lupa"></i><input @keydown="enter" v-model="product_name" class="input_shop" type="text" placeholder="Поиск товаров" /><button class="butt" type="button">Все</button><button class="butt" type="button">Товары</button><button class="butt" type="button">Пакетные предложения</button><button class="butt" type="button">Услуги</button></div>
+            <div class="top"><img src="images/shop/2.svg"  alt=""/><span style="margin-left: 14px;">Магазин</span><i class="fas fa-search lupa"></i><input @keydown="enter" v-model="product_name" class="input_shop" type="text" placeholder="Поиск товаров" /><button class="butt" type="button">Все</button><button class="butt" type="button">Товары</button><button class="butt" type="button">Пакетные предложения</button><button class="butt" type="button">Услуги</button></div>
             <div class="bottom2" style="border-radius: 20px;padding: 30px;">
                 <div class="goods" v-for="(g, index) in goods">
-                    <div class="goods_img"><img :src="g.icon" height="200" /></div>
+                    <div class="goods_img"><img :src="g.icon" height="200"  alt=""/></div>
                     <div class="goods_text">
                         <div>{{ g.name }}</div><br><div>{{ g.product }} {{ g.product_param }}</div>
                     </div>
                     <div class="goods-btn">
                         <div class="goods_price">
-                            <div v-if="g.price != 0"><img src="images/shop/rub.png" width="20" /><span>{{ g.price }}</span></div>
-                            <div v-if="g.price_bonus != 0"><img src="images/shop/coin.png" width="20" /><span>{{ g.price_bonus }}</span></div>
+                            <div v-if="g.price != 0"><img src="images/shop/rub.png" width="20"  alt=""/><span>{{ g.price }}</span></div>
+                            <div v-if="g.price_bonus != 0"><img src="images/shop/coin.png" width="20"  alt=""/><span>{{ g.price_bonus }}</span></div>
                         </div>
                         <button class="goods_cart" @click="toCart(index)" type="button"><i class="fa fa-cart-plus fa-lg"></i></button>
                     </div>
@@ -221,30 +221,36 @@ export default {
             }.bind(this))
         },
         toCart(i) {
-            var name = this.goods[i].product + ' ' + this.goods[i].product_param;
-            var dublicat = false;
-            this.cart.forEach(function (item, i) {
-                if (item.name === name) {
-                    this.cart[i].qty++;
-                    dublicat = true;
+            let warehouseQuantity = this.goods[i].num;
+            let cartQty = this.cart[i] == undefined ? 1 : this.cart[i].qty + 1;
+            if (cartQty <= warehouseQuantity) {
+                var name = this.goods[i].product + ' ' + this.goods[i].product_param;
+                var dublicat = false;
+                this.cart.forEach(function (item, i) {
+                    if (item.name === name) {
+                        this.cart[i].qty++;
+                        dublicat = true;
+                    }
+                }.bind(this));
+                if (!dublicat) {
+                    this.cartElement.name = name;
+                    this.cartElement.id = this.goods[i].storeid;
+                    if (this.goods[i].price != 0) {
+                        this.cartElement.price = Number(this.goods[i].price);
+                        this.cartElement.price_bonus = 0;
+                    }
+                    else {
+                        this.cartElement.price_bonus = Number(this.goods[i].price_bonus);
+                        this.cartElement.price = 0;
+                    }
+                    this.cartElement.qty = 1;
+                    this.cart.push(this.cartElement);
+                    this.cartElement = {};
                 }
-            }.bind(this));
-            if (!dublicat) {
-                this.cartElement.name = name;
-                this.cartElement.id = this.goods[i].storeid;
-                if (this.goods[i].price != 0) {
-                    this.cartElement.price = Number(this.goods[i].price);
-                    this.cartElement.price_bonus = 0;
-                }
-                else {
-                    this.cartElement.price_bonus = Number(this.goods[i].price_bonus);
-                    this.cartElement.price = 0;
-                }
-                this.cartElement.qty = 1;
-                this.cart.push(this.cartElement);
-                this.cartElement = {};
+                this.calcSum();
             }
-            this.calcSum();
+            console.log(warehouseQuantity, cartQty);
+
         },
         enter(e) {
             if (e.keyCode === 13) {

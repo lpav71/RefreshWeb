@@ -33,6 +33,9 @@ Route::get('tariffs', [\App\Http\Controllers\TariffsController::class, 'index'])
 Route::get('pay_terminal', [\App\Http\Controllers\PayTermialController::class, 'index'])->name('pay_terminal');
 Route::get('position', [\App\Http\Controllers\PositionController::class, 'index'])->name('position');
 Route::get('licenses', [\App\Http\Controllers\LicensesController::class, 'index'])->name('licenses');
+Route::get('design', [\App\Http\Controllers\DesignController::class, 'index'])->name('design');
+
+
 
 
 Route::get('test', [\App\Http\Controllers\TestController::class, 'index'])->name('testIndex');

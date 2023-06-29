@@ -64,6 +64,9 @@ import MessageComponent from "./components/Message.vue";
 app.component('message', MessageComponent);
 import ContextComponent from "./components/ContextMenu.vue";
 app.component('context', ContextComponent);
+import DesignComponent from "./components/Design.vue";
+app.component('design', DesignComponent);
+
 
 /**
  * The following block of code may be used to automatically register your

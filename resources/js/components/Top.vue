@@ -29,6 +29,7 @@
                     <option value="pay_terminal">Настройки ККМ</option>
                     <option value="position">Сотрудники и роли</option>
                     <option value="licenses">Лицензии</option>
+                    <option value="design">Дизайн</option>
                 </select>
             </div>
         </div>
@@ -134,6 +135,9 @@ export default {
             }
             if (this.user_data == 'licenses') {
                 window.open("licenses", '_self');
+            }
+            if (this.user_data == 'design') {
+                window.open("design", '_self');
             }
         },
         selectFindClient(i) {

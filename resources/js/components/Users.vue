@@ -223,6 +223,45 @@
         </div>
     </div>
 
+    <!-- Модальное окно -->
+    <div class="modal fade" id="userCardModal" tabindex="-1" aria-labelledby="userCardModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userCardModalLabel">Карта пользователя</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="div_1"><span>Никнейм</span><input class="input_1 rounded" type="text"></div>
+                            <div class="div_1"><span>Фамилия</span><input class="input_1 rounded" type="text"></div>
+                            <div class="div_1"><span>Имя</span><input class="input_1 rounded" type="text"></div>
+                            <div class="div_1"><span>Отчество</span><input class="input_1 rounded" type="text"></div>
+                            <div class="div_1"><span>Откуда узнали о клубе</span><input class="input_1 rounded" type="text"></div>
+                            <button type="button" class="btn regular">Расширенная регистрация</button>
+                        </div>
+                        <div class="col-4">
+                            <div class="div_1"><span>Дата рождения</span><input class="input_1 rounded" type="text"></div>
+                            <div class="div_1"><span>Номер телефона</span><input class="input_1 rounded" type="text"></div>
+                            <div class="div_1"><span>Местоположение</span><input class="input_1 rounded" type="text"></div>
+                            <div class="div_1"><span>Почта</span><input class="input_1 rounded" type="text"></div>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-block"><span>Описание</span><textarea class="input_1 rounded" style="height: 380px;"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="row"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn regular">Сброс пароля</button>
+                    <button type="button" class="btn regular">Редактировать</button>
+                    <button type="button" class="btn regular">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <context ref="context" @item-selected="onItemSelected"></context>
 </template>
 
@@ -248,7 +287,8 @@ export default {
             reservationModal: null,
             reservation: [],
             cashModal: null,
-            cash: []
+            cash: [],
+            userCardModal: null
         }
     },
     methods: {
@@ -267,8 +307,20 @@ export default {
             ];
             this.$refs.context.show();
         },
-        onItemSelected(e) {
+        onItemSelected(item) {
             this.$refs.context.hide();
+            console.log(item);
+            switch (item) {
+                case 0:
+                    this.userCardModal.show();
+                    break;
+
+
+
+                default:
+                    console.log('Неизвестный фрукт');
+                    break;
+            }
         },
         async cashButton(i) {
             var myHeaders = new Headers();
@@ -454,6 +506,9 @@ export default {
         var cashModal = document.getElementById('cashModal')
         this.cashModal = bootstrap.Modal.getOrCreateInstance(cashModal);
 
+        var userCardModal = document.getElementById('userCardModal')
+        this.userCardModal = bootstrap.Modal.getOrCreateInstance(userCardModal);
+
         console.log(this.modal);
 
         this.getPermissions();
@@ -465,6 +520,9 @@ export default {
 
 $paddingTable: 10px;
 
+.regular {
+    background: var(--regular);
+}
 .t1 {
     margin-bottom: 20px;
     background: var(--light-blue-bg-color);
@@ -515,7 +573,11 @@ $paddingTable: 10px;
     font-size: 15px;
     margin-right: 10px;
 }
-
+.text-block {
+    height: 407px;
+    display: flex;
+    flex-direction: column;
+}
 .div_1 {
     height: 74px;
     display: flex;

@@ -711,6 +711,12 @@ export default {
             clearTimeout(this.timerId);
         });
 
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                this.$refs.context.hide();
+            }
+        }.bind(this));
+
         var userData = JSON.parse(this.$props.userData);
         this.uData = userData.user;
 

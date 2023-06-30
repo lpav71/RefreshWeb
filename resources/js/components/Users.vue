@@ -70,7 +70,7 @@
             <table class="table table-borderless t2">
                 <tbody>
                 <tr v-for="(user, index) in findUsers">
-                    <td style="width: 121px">{{ user.login }}</td>
+                    <td style="width: 121px; cursor: pointer" @click="loginClick($event, index)">{{ user.login }}</td>
                     <td style="width: 80px">{{ user.name }}</td>
                     <td style="width: 126px">{{ user.surname }}</td>
                     <td style="width: 185px">{{ user.email }}</td>
@@ -223,6 +223,7 @@
         </div>
     </div>
 
+    <context ref="context" @item-selected="onItemSelected"></context>
 </template>
 
 <script>
@@ -251,6 +252,24 @@ export default {
         }
     },
     methods: {
+        loginClick(e,i) {
+            this.$refs.context.event = e;
+            this.$refs.context.menu = [
+                "Карта пользователя",
+                "Пополнить баланс",
+                "Перейти в магазин",
+                "Прост-оплата",
+                "Штраф",
+                "Смена группы",
+                "Изменить статус аккаунта",
+                "Деактивировать аккаунт",
+                "История событий"
+            ];
+            this.$refs.context.show();
+        },
+        onItemSelected(e) {
+            this.$refs.context.hide();
+        },
         async cashButton(i) {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -416,6 +435,13 @@ export default {
             this.messages.push(JSON.stringify(data));
         }.bind(this));*/
         // ~PUSHER ---------------------------------------------
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                this.$refs.context.hide();
+            }
+        }.bind(this));
+
         if (this.$props.f_user != "") {
             this.findUsers = JSON.parse(this.$props.f_user);
         }

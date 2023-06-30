@@ -34,11 +34,11 @@ export default {
             });
             const lengthOfLongestWord = longestWord.length;
             this.width = lengthOfLongestWord;
-            var rightBoundary = this.event.pageX - this.event.offsetX;
-            var topBoundary = this.event.pageY - this.event.offsetY;
-            this.left = rightBoundary - 76;
-            this.top = topBoundary - 500;
-            this.showHeader = this.headerText != 'ID null';
+            var rightBoundary = this.event.pageX;
+            var topBoundary = this.event.pageY;
+            this.left = rightBoundary;
+            this.top = topBoundary;
+            this.showHeader = (this.headerText != 'ID null' && this.headerText != '');
             this.showMenu = true;
         },
         hide() {
@@ -56,7 +56,7 @@ export default {
 <style scoped lang="scss">
 .context-menu {
     background: var(--light-blue-menu-color);
-    position: relative;
+    position: absolute;
     border-radius: 10px;
     overflow: hidden;
     .header {

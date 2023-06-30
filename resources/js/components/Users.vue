@@ -51,32 +51,34 @@
                 <button class="right_button_bottom"><img src="/images/head_bottom/arrov_top.svg" alt=""/></button>
             </div>
         </div>
-        <div class="fon">
-            <table class="table table-borderless" style="margin-top: 20px;">
+            <table class="table table-borderless t1" style="margin-top: 20px;">
                 <thead>
                 <tr>
-                    <th>Логин</th>
-                    <th>Имя</th>
-                    <th>Фамилия</th>
-                    <th>Почта</th>
-                    <th>Основной баланс</th>
-                    <th>Бонусный баланс</th>
-                    <th>Скидочная группа</th>
-                    <th>Статус аккаунта</th>
-                    <th>Действия</th>
+                    <th style="width: 121px">Логин</th>
+                    <th style="width: 80px">Имя</th>
+                    <th style="width: 126px">Фамилия</th>
+                    <th style="width: 185px">Почта</th>
+                    <th style="width: 218px">Основной баланс</th>
+                    <th style="width: 220px">Бонусный баланс</th>
+                    <th style="width: 227px">Скидочная группа</th>
+                    <th style="width: 203px">Статус аккаунта</th>
+                    <th style="width: 411px">Действия</th>
                 </tr>
                 </thead>
+            </table>
+        <div class="fon">
+            <table class="table table-borderless t2">
                 <tbody>
                 <tr v-for="(user, index) in findUsers">
-                    <td>{{ user.login }}</td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.surname }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.amount }}</td>
-                    <td>{{ user.bonus }}</td>
-                    <td>500</td>
-                    <td>хороший</td>
-                    <td>
+                    <td style="width: 121px">{{ user.login }}</td>
+                    <td style="width: 80px">{{ user.name }}</td>
+                    <td style="width: 126px">{{ user.surname }}</td>
+                    <td style="width: 185px">{{ user.email }}</td>
+                    <td style="width: 218px">{{ user.amount }}</td>
+                    <td style="width: 220px">{{ user.bonus }}</td>
+                    <td style="width: 227px">500</td>
+                    <td style="width: 203px">хороший</td>
+                    <td style="width: 411px">
                         <button class="btn bt" @click="topBalance(index, user.login)">Пополнить баланс</button>
                         <button class="btn bt" @click="calendarButton(index)"><img src="img/calendar.svg" alt=""></button>
                         <button class="btn bt" @click="cashButton(index)"><img src="img/cash.svg" alt=""></button>
@@ -333,18 +335,18 @@ export default {
             this.timer = setInterval(this.listenMessage, 1000);
 */
         },
-        listenMessage() {
-            if (this.messages[0] !== undefined) {
-                var ms = JSON.parse(this.messages[0]);
-                if (ms.message.id == this.$props.club_id && ms.message.operation === 'close') {
-                    this.modal.hide();
-                    this.payText = 'Оплата';
-                    this.payTextDisabled = false;
-                    //clearInterval(this.timer);
-                }
-                this.messages = [];
-            }
-        },
+        // listenMessage() {
+        //     if (this.messages[0] !== undefined) {
+        //         var ms = JSON.parse(this.messages[0]);
+        //         if (ms.message.id == this.$props.club_id && ms.message.operation === 'close') {
+        //             this.modal.hide();
+        //             this.payText = 'Оплата';
+        //             this.payTextDisabled = false;
+        //             //clearInterval(this.timer);
+        //         }
+        //         this.messages = [];
+        //     }
+        // },
         async topBalance(i, login) {
             this.login = login;
             this.currentUser = this.findUsers[i];
@@ -434,7 +436,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 $paddingTable: 10px;
+
+.t1 {
+    margin-bottom: 20px;
+    background: var(--light-blue-bg-color);
+    line-height: 36px;
+}
 .reservation-table {
     width: 100%;
     thead {
@@ -467,7 +476,7 @@ $paddingTable: 10px;
     color: white;
 }
 .fon {
-    height: 885px;
+    height: 805px;
     background: var(--light-blue-bg-color);
     border-radius: 10px;
 }

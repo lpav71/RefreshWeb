@@ -234,18 +234,18 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-4">
-                            <div class="div_1"><span>Никнейм</span><input class="input_1 rounded" type="text"></div>
-                            <div class="div_1"><span>Фамилия</span><input class="input_1 rounded" type="text"></div>
-                            <div class="div_1"><span>Имя</span><input class="input_1 rounded" type="text"></div>
-                            <div class="div_1"><span>Отчество</span><input class="input_1 rounded" type="text"></div>
+                            <div class="div_1"><span>Никнейм</span><input class="input_1 rounded" type="text" v-model="loginM"></div>
+                            <div class="div_1"><span>Фамилия</span><input class="input_1 rounded" type="text" v-model="surnameM"></div>
+                            <div class="div_1"><span>Имя</span><input class="input_1 rounded" type="text" v-model="nameM"></div>
+                            <div class="div_1"><span>Отчество</span><input class="input_1 rounded" type="text" v-model="middleNameM"></div>
                             <div class="div_1"><span>Откуда узнали о клубе</span><input class="input_1 rounded" type="text"></div>
                             <button type="button" class="btn regular">Расширенная регистрация</button>
                         </div>
                         <div class="col-4">
-                            <div class="div_1"><span>Дата рождения</span><input class="input_1 rounded" type="text"></div>
-                            <div class="div_1"><span>Номер телефона</span><input class="input_1 rounded" type="text"></div>
+                            <div class="div_1"><span>Дата рождения</span><input class="input_1 rounded" type="text" v-model="bdayM"></div>
+                            <div class="div_1"><span>Номер телефона</span><input class="input_1 rounded" type="text" v-model="phoneM"></div>
                             <div class="div_1"><span>Местоположение</span><input class="input_1 rounded" type="text"></div>
-                            <div class="div_1"><span>Почта</span><input class="input_1 rounded" type="text"></div>
+                            <div class="div_1"><span>Почта</span><input class="input_1 rounded" type="text" v-model="emailM"></div>
                         </div>
                         <div class="col-4">
                             <div class="text-block"><span>Описание</span><textarea class="input_1 rounded" style="height: 380px;"></textarea></div>
@@ -288,7 +288,14 @@ export default {
             reservation: [],
             cashModal: null,
             cash: [],
-            userCardModal: null
+            userCardModal: null,
+            loginM: '',
+            surnameM: '',
+            nameM: '',
+            middleNameM: '',
+            bdayM: '',
+            phoneM: '',
+            emailM: ''
         }
     },
     methods: {
@@ -305,6 +312,13 @@ export default {
                 "Деактивировать аккаунт",
                 "История событий"
             ];
+            this.loginM = this.findUsers[i].login;
+            this.surnameM = this.findUsers[i].surname;
+            this.name = this.findUsers[i].name;
+            this.middleNameM = this.findUsers[i].middle_name;
+            this.bdayM = this.findUsers[i].bday;
+            this.phoneM = this.findUsers[i].phone;
+            this.emailM = this.findUsers[i].email;
             this.$refs.context.show();
         },
         onItemSelected(item) {

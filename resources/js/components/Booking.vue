@@ -153,9 +153,10 @@ export default {
         },
     },
     mounted() {
-        this.draw();
         var bookingModal = document.getElementById('bookingModal')
         this.bookingModal = bootstrap.Modal.getOrCreateInstance(bookingModal);
+
+        this.draw();
         this.getClients();
     }
 }

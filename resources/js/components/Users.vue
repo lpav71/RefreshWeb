@@ -471,6 +471,7 @@ export default {
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
             var urlencoded = new URLSearchParams();
             urlencoded.append("user", this.searchUser);
+            urlencoded.append("club_id", this.$props.club_id);
 
             var requestOptions = {
                 method: 'POST',

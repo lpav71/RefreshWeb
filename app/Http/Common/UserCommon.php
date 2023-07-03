@@ -7,9 +7,9 @@ use App\Models\UserAccess;
 
 class UserCommon
 {
-    public static function UsersFind($searchUser)
+    public static function UsersFind($searchUser, $club_id)
     {
-        $users = Client::where('login', 'ILIKE', '%'.$searchUser.'%')->get()->toArray();
+        $users = Client::where('login', 'ILIKE', '%'.$searchUser.'%')->where('club_id', $club_id)->get()->toArray();
         return $users;
     }
 

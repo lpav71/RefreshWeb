@@ -26,7 +26,7 @@ class UserController extends Controller
         $user_id = $user->id;
         if ($searchUser != null)
         {
-            $fUserData = UserCommon::UsersFind($searchUser);
+            $fUserData = UserCommon::UsersFind($searchUser, $club_id);
             $fUser = json_encode($fUserData);
         }
         else {

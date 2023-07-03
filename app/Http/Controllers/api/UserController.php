@@ -15,7 +15,8 @@ class UserController extends Controller
     public function UsersFind(Request $request)
     {
         $searchUser = $request->user;
-        $users = UserCommon::UsersFind($searchUser);
+        $club_id = $request->club_id;
+        $users = UserCommon::UsersFind($searchUser, $club_id);
         return $users;
     }
 

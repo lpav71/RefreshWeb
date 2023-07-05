@@ -228,7 +228,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="userCardModalLabel">Карта пользователя</h5>
+                    <h5 id="userCardModalLabel">Карта пользователя</h5><h5 style="margin-left: 20px" v-if="!verifyM">Требует верификации</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
@@ -295,7 +295,8 @@ export default {
             middleNameM: '',
             bdayM: '',
             phoneM: '',
-            emailM: ''
+            emailM: '',
+            verifyM: false
         }
     },
     methods: {
@@ -319,11 +320,11 @@ export default {
             this.bdayM = this.findUsers[i].bday;
             this.phoneM = this.findUsers[i].phone;
             this.emailM = this.findUsers[i].email;
+            this.verifyM = this.findUsers[i].verify;
             this.$refs.context.show();
         },
         onItemSelected(item) {
             this.$refs.context.hide();
-            console.log(item);
             switch (item) {
                 case 0:
                     this.userCardModal.show();
@@ -535,6 +536,9 @@ export default {
 
 $paddingTable: 10px;
 
+.modal-header~h5 {
+    display: inline-block;
+}
 .regular {
     background: var(--regular);
 }

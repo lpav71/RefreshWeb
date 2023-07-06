@@ -87,6 +87,7 @@
                 </tbody>
             </table>
         </div>
+        <context ref="context" @item-selected="onItemSelected"></context>
     </div>
 
     <!-- Модальное окно -->
@@ -262,7 +263,7 @@
         </div>
     </div>
 
-    <context ref="context" @item-selected="onItemSelected"></context>
+
 </template>
 
 <script>
@@ -817,6 +818,7 @@ nav{
     margin-top: 20px;
     width: 1793px;
     margin-left: 13px;
+    position: relative;
 }
 .home .header_bottom {
     display: flex;

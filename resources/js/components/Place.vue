@@ -1,7 +1,7 @@
 <template>
     <div class="center-plus-right">
         <div style="width: 1438px;height: 965px;">
-            <div style="width: 1438px;height: 272px;display: flex;justify-content: space-between;">
+            <div v-show="clientCard" style="width: 1438px;height: 272px;display: flex;justify-content: space-between;">
                 <div class="graphic"></div>
                 <div class="active-bron">
                     <div style="width: 430px;margin-top: 10px;color: var(--standart-gray);"><i class="fas fa-book-open"></i><span style="font-size: 13px;margin-left: 11px;">Активные бронирования ПК</span></div>
@@ -17,8 +17,8 @@
 
                 </div>
             </div>
-            <div @mousemove="move" @mouseup="mmup">
-                <div class="all-buttons">
+            <div :class="{fullscreen: !clientCard}" @mousemove="move" @mouseup="mmup">
+                <div class="all-buttons" :style="{marginTop: managerMarginTop + 'px'}">
                     <div style="display: flex;align-items: center;"><i class="fab fa-delicious fs-2" style="color: var(--standart-color);"></i><span class="panel-manager">Панель управления</span>
                         <button class="btn btn-success buttons"><span style="color: var(--standart-color);" @click="generalMap">Общая карта</span></button>
                         <button v-for="(zone, index) in zones" class="btn btn-success buttons" :class="[{'button-active': zones[index].active}]" @click="changeZone(index)"><span>{{ zone.name }}</span></button>
@@ -26,11 +26,11 @@
                     <div style="display: flex;align-items: center;">
                         <div v-show="permissions.create_zone" class="buttons" @click="addZone" style="width: 150px;height: 34px;">Добавить зону</div>
                         <div v-show="permissions.create_pc" class="buttons" @click="addBox" style="width: 57px;height: 34px;"><i class="fas fa-plus fs-5"></i></div>
-                        <div class="buttons" @click="lockButton" style="width: 57px;height: 34px;"><i :class=lock></i></div>
-                        <div class="buttons" style="width: 185px;height: 42px;"><span>Клиентская карта</span></div>
+                        <div class="buttons" @click="lockButton" style="width: 57px;height: 34px;" :disabled="!clientCard"><i :class=lock></i></div>
+                        <div class="buttons" style="width: 185px;height: 42px;" @click="switchClientCard"><span>Клиентская карта</span></div>
                     </div>
                 </div>
-                <div class="manager outbox">
+                <div class="manager outbox" :style="{height: manegerHeight + 'px'}">
                     <div v-for="(position, index) in positions" class="box" @mousedown="mdown($event, index)"
                          :style="{
                         top: position.top + 'px',
@@ -47,7 +47,7 @@
                 </div>
             </div>
         </div>
-        <div style="width: 323px;height: 965px;">
+        <div v-show="clientCard" style="width: 323px;height: 965px;">
             <div class="shift-close" style="display: flex;align-items: center;justify-content: center;">
                 <div style="width: 149px;height: 44px;display: flex;justify-content: center;align-items: center;"><i class="far fa-clock" style="color: var(--standart-gray);font-size: 21px;"></i>
                     <div style="width: 130px;height: 40px;display: flex;flex-direction: column;"><span style="color: var(--standart-gray);text-align: center;font-size: 15px;font-weight: bold;">{{ shiftStatus }}</span><span style="color: var(--standart-gray);text-align: center;font-size: 15px;">{{ time }}</span></div>
@@ -239,10 +239,27 @@ export default {
             mapTable: [],
             messageModal: null,
             messageText: '',
-            messageIp: ''
+            messageIp: '',
+            clientCard: true,
+            manegerHeight: 561,
+            managerMarginTop: 20
         }
     },
     methods: {
+        switchClientCard() {
+            this.clientCard = !this.clientCard;
+            if(this.clientCard) {
+                this.manegerHeight = 561;
+                this.managerMarginTop = 20;
+            }
+            else {
+                this.manegerHeight = 870;
+                this.managerMarginTop = 0;
+                this.lock = 'fas fa-lock fs-5';
+                this.permissionMove = false;
+            }
+
+        },
         async getPermissions() {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -744,6 +761,11 @@ export default {
 .modal-body {
     padding: 15px;
 }
+.fullscreen {
+    width: 1791px;
+    left: -179px;
+    position: relative;
+}
 #messageModal {
     textarea {
         width: 100%;
@@ -794,6 +816,7 @@ export default {
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
+    position: relative;
 }
 .graphic {
     height: 272px;
@@ -831,7 +854,6 @@ export default {
     overflow: auto;
 }
 .manager {
-    height: 561px;
     margin-top: 20px;
     background: var(--light-blue-bg-color);
     border-radius: 20px;

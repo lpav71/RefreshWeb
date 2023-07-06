@@ -34,8 +34,8 @@ export default {
             });
             const lengthOfLongestWord = longestWord.length;
             this.width = lengthOfLongestWord;
-            var rightBoundary = this.event.pageX;
-            var topBoundary = this.event.pageY;
+            var rightBoundary = this.event.pageX - 100;
+            var topBoundary = this.event.pageY - 100;
             this.left = rightBoundary;
             this.top = topBoundary;
             this.showHeader = (this.headerText != 'ID null' && this.headerText != '');
@@ -49,6 +49,9 @@ export default {
         }
     },
     mounted() {
+        document.addEventListener('click', function (e) {
+            console.log(e.pageX, e.pageY);
+        })
     }
 }
 </script>

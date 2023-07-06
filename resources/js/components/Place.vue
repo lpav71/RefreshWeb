@@ -242,7 +242,7 @@ export default {
             messageIp: '',
             clientCard: true,
             manegerHeight: 561,
-            managerMarginTop: 20
+            managerMarginTop: 52
         }
     },
     methods: {
@@ -250,7 +250,7 @@ export default {
             this.clientCard = !this.clientCard;
             if(this.clientCard) {
                 this.manegerHeight = 561;
-                this.managerMarginTop = 20;
+                this.managerMarginTop = 52;
             }
             else {
                 this.manegerHeight = 870;

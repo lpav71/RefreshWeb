@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClubSteamAccount;
 use App\Models\Game;
 use Illuminate\Http\Request;
 
@@ -64,5 +65,17 @@ class GameController extends Controller
             $game->type = $request->type == 'undefined' ? null : $request->type;
         }
         $game->save();
+    }
+    public function addSteamAccount(Request $request)
+    {
+        $account = new ClubSteamAccount();
+        $account->game = $request->gameName;
+        $account->steam_id = $request->steamId;
+        $account->login_steam = $request->steamLogin;
+        $account->pass_steam = $request->steamPassword;
+        $account->club_id = $request->club_id;
+        $account->save();
+        $result = $account->id;
+        return $result;
     }
 }

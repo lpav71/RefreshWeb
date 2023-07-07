@@ -166,7 +166,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn bt">Добавить</button>
+                    <button type="button" class="btn bt" @click="save_steam_account">Добавить</button>
                 </div>
             </div>
         </div>
@@ -212,6 +212,32 @@ export default {
     methods: {
         add_steam_account() {
             this.steamAccountModal.show();
+        },
+        async save_steam_account() {
+            this.steamAccountModal.hide();
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("gameName", this.gameName);
+            urlencoded.append("steamId", this.steamId);
+            urlencoded.append("steamLogin", this.steamLogin);
+            urlencoded.append("steamPassword", this.steamPassword);
+            urlencoded.append("club_id", this.$props.club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/games/addsteam", requestOptions);
+            var result = await response.text();
+            var numResult = Number(result);
+            if (isNaN(numResult)) {
+                this.$refs.message.modal.show();
+            }
         },
         async getPermissions() {
             var myHeaders = new Headers();

@@ -150,7 +150,7 @@
 
     <!-- Модальное окно -->
     <div class="modal fade" id="addSteamAccountModal" tabindex="-1" aria-labelledby="addSteamAccountModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addSteamAccountModalLabel">Добавление steam аккаунта</h5>
@@ -160,6 +160,8 @@
                     <div class="main_modal2">
                         <div><input v-model="gameName" class="input_1" type="text" placeholder="Название игры" /></div>
                         <div><input v-model="steamId" class="input_1" type="text" placeholder="Steam ID" /></div>
+                        <div><input v-model="steamLogin" class="input_1" type="text" placeholder="Логин" /></div>
+                        <div><input v-model="steamPassword" class="input_1" type="text" placeholder="Пароль" /></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -202,7 +204,9 @@ export default {
             permissions: {},
             steamAccountModal: null,
             gameName: '',
-            steamId: ''
+            steamId: '',
+            steamLogin: '',
+            steamPassword: ''
         }
     },
     methods: {
@@ -432,7 +436,7 @@ export default {
     height: 583px;
 }
 .main_modal2 {
-    height: 130px;
+    height: 236px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;

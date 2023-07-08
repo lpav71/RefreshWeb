@@ -58,6 +58,8 @@ Route::post('user/cash', [\App\Http\Controllers\api\BookingController::class, 'u
 Route::post('finance/data', [\App\Http\Controllers\api\FinanceController::class, 'financeModalData']);
 Route::post('userinfo/shifts', [\App\Http\Controllers\api\UserInfoController::class, 'shifts']);
 Route::post('games/addsteam', [App\Http\Controllers\api\GameController::class, 'addSteamAccount']);
+Route::post('promo/codes', [\App\Http\Controllers\api\PromoController::class, 'codes']);
+
 
 Route::post('testget', [\App\Http\Controllers\TestController::class, 'get'])->name('testGet');
 

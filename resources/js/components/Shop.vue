@@ -36,7 +36,7 @@
                     <i class="far fa-window-close" style="cursor: pointer" @click="del(index)"></i>
                 </div>
             </div>
-            <div style="display: flex;flex-direction: column;align-items: center;padding: 0px;width: 250px;height: 158px;margin-top: 45px;"><span>Применить промокод</span><input class="user_name" type="text" placeholder="refresh 2023" style="text-align: center;" /><span>Итого</span>
+            <div style="display: flex;flex-direction: column;align-items: center;padding: 0px;width: 250px;height: 158px;margin-top: 45px;"><span>Применить промокод</span><input v-model="promo_code" class="user_name" type="text" placeholder="refresh 2023" style="text-align: center;" /><span>Итого</span>
                 <div class="user_name">
                     <img src="images/shop/rub.png" width="16" height="16" style="margin-top: 12px;margin-left: 17px;"  alt=""/>
                     <span class="rub_summa">{{ rubs }}</span>
@@ -104,6 +104,8 @@
         </div>
     </div>
 
+    <message ref="message"></message>
+
 </template>
 
 <script>
@@ -123,16 +125,40 @@ export default {
             clients: [],
             filteredClients: [],
             searchQuery: '',
-            findWindow: false
+            findWindow: false,
+            promo_code: ''
         }
     },
     methods: {
         pay() {
             this.modal.show();
         },
-        payJson() {
-            console.log(JSON.stringify(this.cart));
+        async payJson() {
             this.modal.hide();
+
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+            urlencoded.append("promo_code", this.promo_code);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/promo/codes", requestOptions);
+            var result = await response.json();
+            console.log(result);
+            var count = result.length;
+            if (count === 0) {
+                this.$refs.message.modal.show();
+                return;
+            }
+            console.log(JSON.stringify(this.cart));
             this.cart = [];
         },
         clearClient() {
@@ -235,6 +261,14 @@ export default {
                 if (!dublicat) {
                     this.cartElement.name = name;
                     this.cartElement.id = this.goods[i].storeid;
+
+                    if(this.goods[i].discount) {
+                        this.cartElement.discount = this.goods[i].num;
+                    }
+                    else {
+                        this.cartElement.discount = 0;
+                    }
+
                     if (this.goods[i].price != 0) {
                         this.cartElement.price = Number(this.goods[i].price);
                         this.cartElement.price_bonus = 0;
@@ -249,8 +283,6 @@ export default {
                 }
                 this.calcSum();
             }
-            console.log(warehouseQuantity, cartQty);
-
         },
         enter(e) {
             if (e.keyCode === 13) {

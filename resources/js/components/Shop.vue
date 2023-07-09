@@ -36,7 +36,10 @@
                     <i class="far fa-window-close" style="cursor: pointer" @click="del(index)"></i>
                 </div>
             </div>
-            <div style="display: flex;flex-direction: column;align-items: center;padding: 0px;width: 250px;height: 158px;margin-top: 45px;"><span>Применить промокод</span><input v-model="promo_code" class="user_name" type="text" placeholder="refresh 2023" style="text-align: center;" /><span>Итого</span>
+            <div style="display: flex;flex-direction: column;align-items: center;padding: 0;width: 250px;height: 158px;margin-top: 10px;"><span>Применить промокод</span>
+                <input v-model="promo_code" class="user_name" type="text" placeholder="refresh 2023" style="text-align: center;" />
+                <div style="display: flex;justify-content: space-between;width: 76%;align-items: center;"><a href="" @click="verify_promo_code">Проверить промокод</a><i v-if="verifyPromo" class="far fa-thumbs-up promo-ico"></i><i v-if="!verifyPromo" class="fas fa-times promo-ico"></i></div>
+                <span>Итого</span>
                 <div class="user_name">
                     <img src="images/shop/rub.png" width="16" height="16" style="margin-top: 12px;margin-left: 17px;"  alt=""/>
                     <span class="rub_summa">{{ rubs }}</span>
@@ -126,15 +129,15 @@ export default {
             filteredClients: [],
             searchQuery: '',
             findWindow: false,
-            promo_code: ''
+            promo_code: '',
+            verifyPromo: false,  //false - промокод не прошел проверку
+            fullPromoCode: {}
         }
     },
     methods: {
-        pay() {
-            this.modal.show();
-        },
-        async payJson() {
-            this.modal.hide();
+        async verify_promo_code(e) {
+            e.preventDefault();
+            this.verifyPromo = false;
 
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -152,14 +155,35 @@ export default {
 
             var response = await fetch("api/promo/codes", requestOptions);
             var result = await response.json();
-            console.log(result);
+            this.fullPromoCode = result;
             var count = result.length;
             if (count === 0) {
                 this.$refs.message.modal.show();
-                return;
+            }
+            else {
+                this.verifyPromo = true;
+            }
+        },
+        pay() {
+            this.modal.show();
+        },
+        async payJson() {
+            this.modal.hide();
+            for (var i=0; i<this.cart.length; i++){
+                if (this.cart[i].allowDiscount) {
+                    this.cart[i].discount = this.fullPromoCode.num == undefined ? 0 : this.fullPromoCode.num;
+                    delete this.cart[i].allowDiscount;
+                }
+                else {
+                    this.cart[i].discount = 0;
+                    delete this.cart[i].allowDiscount;
+                }
             }
             console.log(JSON.stringify(this.cart));
             this.cart = [];
+            this.fullPromoCode = {};
+            this.promo_code = '';
+            this.verifyPromo = false;
         },
         clearClient() {
             this.findClient = {};
@@ -262,12 +286,7 @@ export default {
                     this.cartElement.name = name;
                     this.cartElement.id = this.goods[i].storeid;
 
-                    if(this.goods[i].discount) {
-                        this.cartElement.discount = this.goods[i].num;
-                    }
-                    else {
-                        this.cartElement.discount = 0;
-                    }
+                    this.cartElement.allowDiscount = this.goods[i].discount;
 
                     if (this.goods[i].price != 0) {
                         this.cartElement.price = Number(this.goods[i].price);
@@ -337,6 +356,9 @@ export default {
 
 <style scoped>
 
+.promo-ico {
+
+}
 .client_login {
     display: inline-block;
     margin-top: 3px;

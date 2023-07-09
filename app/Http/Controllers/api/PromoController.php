@@ -37,7 +37,9 @@ class PromoController extends Controller
             ->whereColumn('activations', '<', 'max_activation')
             ->where('club_id', $club_id)
             ->where('promo', $promoCode)
-            ->get();
+            ->first();
+        if ($promo === null)
+            $promo = array();
         return $promo;
     }
 }

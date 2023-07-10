@@ -41,7 +41,7 @@
             <div class="col-4">
                 <div>
                     <span class="span-1">Обои экрана входа</span>
-                    <img src="img/design/obo.png" alt="">
+                    <img :src="setting.login_image" alt="">
                 </div>
             </div>
             <div class="col-4">
@@ -58,12 +58,9 @@
                     <div class="color-gamma">
                         <span style="margin-left: 10px;">Предзаготовки</span><br>
                         <div class="zagotovki">
-                            <img src="img/design/1.svg" alt=""/>
-                            <img src="img/design/2.svg" alt=""/>
-                            <img src="img/design/3.svg" alt=""/>
-                            <img src="img/design/4.svg" alt=""/>
-                            <img src="img/design/5.svg" alt=""/>
-                            <img src="img/design/6.svg" alt=""/>
+                            <div class="color-blank" :style="{background: setting.color1}"></div>
+                            <div class="color-blank" :style="{background: setting.color2}"></div>
+                            <div class="color-blank" :style="{background: setting.color3}"></div>
                         </div>
                     </div>
                 </div>
@@ -76,11 +73,47 @@
 
 <script>
 export default {
-    name: "Disign"
+    name: "Disign",
+    props: ['club_id'],
+    data() {
+        return {
+            setting: {}
+        }
+    },
+    methods: {
+        async getSetting() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.$props.club_id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/club/setting/disign", requestOptions);
+            this.setting = await response.json();
+        }
+
+    },
+    mounted() {
+        this.getSetting();
+    }
 }
 </script>
 
 <style lang="scss" scoped>
+
+.color-blank {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+}
+
 .home {
     width: 1793px;
     height: 947px;
@@ -129,7 +162,7 @@ export default {
         .zagotovki {
             display: flex;
             justify-content: space-evenly;
-            margin-top: 15px;
+            margin-top: 5px;
         }
     }
     .butt {

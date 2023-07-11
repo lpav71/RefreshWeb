@@ -65,6 +65,9 @@
                         <div style="width: 179px;height: 32px;background: var(--standart-green);border-radius: 10px;display: flex;justify-content: flex-start;align-items: center;padding-left: 15px;"><span>{{ goods }}</span></div><span style="color: var(--standart-gray);">{{ services }}</span>
                     </div>
                 </div>
+                <div class="chart_1">
+                    <GChart type="PieChart" :data="chartData" :options="chartOptions" :settings="{packages: ['corechart']}" />
+                </div>
             </div>
             <div class="tasks"><span style="color: var(--standart-gray);display: block;position: relative;top: 20px;left: 40px;width: 143px;">Список задач</span>
                 <div class="task-list">
@@ -190,14 +193,20 @@
 </template>
 
 <script>
+import {GChart} from "vue-google-charts";
+
 var dragObject = false; //Смещение объекта запрещено
 var offsetX = 0; //Смещение мышки внутри перемещаемого элемента по X
 var offsetY = 0; //Смещение мышки внутри перемещаемого элемента по Y
 var globalIndex = 0;
 export default {
+    components: {
+        GChart
+    },
     props: ['name', 'club', 'userData'],
     data() {
         return {
+            club: {},
             height: 0, //Высота окна браузера
             width: 0, //Ширина окна браузера
             widthout: 0, //Ширина окна outbox
@@ -242,10 +251,51 @@ export default {
             messageIp: '',
             clientCard: true,
             manegerHeight: 561,
-            managerMarginTop: 52
+            managerMarginTop: 52,
+            chartData: [
+                ['Finance', 'Quantity'],
+                ['Наличные', 11],
+                ['Бонусы', 2]
+            ],
+            chartOptions: {
+                pieHole: 0.4,
+                backgroundColor: '#183F52',
+                color: '#ffffff',
+                height: '120',
+                width: '270',
+                chart: {
+                    title: 'Company Performance'
+                },
+                legend: {
+                    position: 'right',
+                    maxLines: 3,
+                    textStyle: {
+                        color: '#ffffff',
+                    }
+                },
+            }
         }
     },
     methods: {
+        async getDiagramData() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("club_id", this.club.id);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+
+            var response = await fetch("api/diagram/calc", requestOptions);
+            var result = await response.json();
+            this.chartData[1][1] = ~~result.total_cash;
+            this.chartData[2][1] = ~~result.bonus;
+        },
         switchClientCard() {
             this.clientCard = !this.clientCard;
             if(this.clientCard) {
@@ -734,6 +784,8 @@ export default {
             }
         }.bind(this));
 
+        this.club = JSON.parse(this.$props.club);
+        this.getDiagramData();
         var userData = JSON.parse(this.$props.userData);
         this.uData = userData.user;
 
@@ -758,6 +810,11 @@ export default {
 
 <style scoped lang="scss">
 
+.chart_1 {
+    margin-top: 20px;
+    overflow: hidden;
+    border-radius: 10px;
+}
 .modal-body {
     padding: 15px;
 }

@@ -31,6 +31,14 @@ class FinanceController extends Controller
         );
         return $outData;
     }
+    public function diagramCalc(Request $request)
+    {
+        $clubId = $request->club_id;
+        $diagramData = DB::table('finance')
+            ->where('club_id', '=', $clubId)
+            ->select(DB::raw('SUM(cash + nocash) as total_cash'), DB::raw('SUM(bonus) as bonus'))->first();
+        return $diagramData;
+    }
 
     public function findOpenShift(Request $request)
     {

@@ -28,7 +28,7 @@
             <button class="btn btn-danger" @click="clearClient" type="button" style="width: 250px;background: var(--dark-green);border: none;">Нет логина [гость]</button>
             <span style="margin-bottom: -24px;margin-top: 35px;">Корзина</span>
             <div class="cart">
-                <div v-for="(c, index) in cart" class="cart_element">
+                <div v-for="(c, index) in cart" class="cart_element" :class="{'goods-discount': c.allowDiscount}">
                     <span style="padding-right: 0px;">x{{ c.qty }}</span>
                     <div class="cart_name">
                         <span>{{ c.name }}</span>
@@ -131,7 +131,8 @@ export default {
             findWindow: false,
             promo_code: '',
             verifyPromo: false,  //false - промокод не прошел проверку
-            fullPromoCode: {}
+            fullPromoCode: {},
+            discount: false
         }
     },
     methods: {
@@ -356,8 +357,8 @@ export default {
 
 <style scoped>
 
-.promo-ico {
-
+.goods-discount {
+    border: 1px solid #4f0;
 }
 .client_login {
     display: inline-block;

@@ -51,6 +51,7 @@ class BookingController extends Controller
             $recData['id_comp']  = $map->id_comp;
             $drawData[]          = $recData;
         }
+        
         // Обрезка time_stop до f1 даты и времени 23:59 -----------------------------------------------------------------------
         foreach ($drawData as &$item) {
             if (!is_null($item['fulldata'])) {
@@ -64,10 +65,6 @@ class BookingController extends Controller
             }
         }
         // ~Обрезка time_stop до f1 даты и времени 23:59 ----------------------------------------------------------------------
-
-        // Расчет diff и offset -----------------------------------------------------------------------------------------------
-
-        // ~Расчет diff и offset ----------------------------------------------------------------------------------------------
 
         return array_map(function ($draw) {
             $newDraw = [

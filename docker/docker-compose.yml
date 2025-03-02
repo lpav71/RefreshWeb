@@ -1,0 +1,39 @@
+services:
+    app:
+        build:
+            context: ..  # Корневая папка проекта
+            dockerfile: docker/Dockerfile  # Путь к Dockerfile относительно контекста
+        container_name: laravel_app
+        restart: unless-stopped
+        working_dir: /var/www/html
+        volumes:
+            - ../:/var/www/html
+        ports:
+            - "80:80"
+        depends_on:
+            - db_postgres
+        networks:
+            - laravel_network
+
+    db_postgres:
+        image: postgres:latest
+        container_name: my-postgres-container
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: Q12801024q
+            POSTGRES_DB: gt
+        ports:
+            - "5433:5432"
+        volumes:
+            - db-refresh-postgres:/var/lib/postgresql/data
+        restart: always
+        networks:
+            - laravel_network
+
+volumes:
+    db-refresh-postgres:
+        driver: local
+
+networks:
+    laravel_network:
+        driver: bridge
